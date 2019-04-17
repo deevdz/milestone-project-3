@@ -1,5 +1,4 @@
 {% extends 'base.html' %} {% block content %}
-    {% for recipe in recipes %}
             <h3>{{recipe.recipe_name}}</h3>
             <p>{{recipe.recipe_description}}</p>
             <p><img src="{{recipe.recipe_image}}" style="width:100%;"></p>
@@ -7,15 +6,14 @@
             <p>Cook Time: {{recipe.recipe_cook_time}} minutes</p>
             <p>Total Time: {{recipe.recipe_prep_time|int + recipe.recipe_cook_time|int}} minutes</p>
             <p>Author: {{recipe.author_name}}</p>
-            <ul>
-             {% for items in recipe.recipe_ingredients %}
-                    <li>{{items}}</li>
-            {% endfor %}
-            </ul>
-            <ol>
-             {% for items in recipe.recipe_method %}
-                    <li>{{items}}</li>
-            {% endfor %}
-            </ol>       
-    {% endfor %}
+                <ul>
+                 {% for items in recipe.recipe_ingredients %}
+                        <li>{{items}}</li>
+                {% endfor %}
+                </ul>
+                <ol>
+                 {% for items in recipe.recipe_method %}
+                        <li>{{items}}</li>
+                {% endfor %}
+                </ol>       
 {% endblock %}    
