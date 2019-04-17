@@ -13,7 +13,7 @@ from bson.objectid import ObjectId
 
 app = Flask(__name__)
 app.config["MONGO_DBNAME"] = 'onlineCookbook'
-app.config["MONGO_URI"] = os.getenv('MONGO_URI', 'mongodb://localhost')
+app.config["MONGO_URI"] = os.environ.get("MONGO_URI", 'mongodb://localhost')
 
 mongo = PyMongo(app)
 
@@ -22,10 +22,15 @@ mongo = PyMongo(app)
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 recipes = mongo.db.recipes
 
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+# Testing the DB Connection                                                                                #
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+
 @app.route('/')
 @app.route('/get_recipes')
 def get_recipes():
-    return render_template("base.html", recipes=recipes.find())
+    return render_template("recipe.html", recipes=recipes.find())
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
