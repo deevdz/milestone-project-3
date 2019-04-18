@@ -1,0 +1,11 @@
+/* Navigation */
+nav ul a{
+text-transform: uppercase;
+}
+.dropdown-content{
+   width: max-content !important;
+   height:auto !important;
+}
+nav {
+    background-color:#050C35;
+}

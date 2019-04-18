@@ -2,15 +2,32 @@
 <html>
     <head>
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
         <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}" type="text/css" />
     </head>
     <body>
+        <!-- Dropdown Structure -->
+        <ul id="dropdown1" class="dropdown-content">
+          <li class="divider"></li>
+          <li><a href="#!">three</a></li>
+        </ul>
+        <nav>
+          <div class="nav-wrapper">
+            <a href="{{url_for('home')}}" class="brand-logo">Logo</a>
+            <ul class="right hide-on-med-and-down">
+              <li><a href="{{url_for('home')}}">Home</a></li>
+              <!-- Dropdown Trigger -->
+              <li><a class="dropdown-menu" href="#!" data-target="dropdown1">Recipes<i class="material-icons right">arrow_drop_down</i></a></li>
+              <li><a href="sass.html"><i class="material-icons">search</i></a></li>
+            </ul>
+          </div>
+        </nav>
+        <!--Main Body-->        
         <div class="container">
             {% block content %} {% endblock %}
         </div>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
         <script>
               document.addEventListener('DOMContentLoaded', function() {
                 var elems = document.querySelectorAll('.slider');
@@ -20,6 +37,7 @@
               // Or with jQuery
             
               $(document).ready(function(){
+                $(".dropdown-menu").dropdown();
                 $('.slider').slider();
               });
         </script>
