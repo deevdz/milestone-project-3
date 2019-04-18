@@ -21,6 +21,7 @@ mongo = PyMongo(app)
 # Variables                                                                                                #
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 recipes = mongo.db.recipes
+recipeCategory = mongo.db.recipeCategory
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
@@ -29,7 +30,15 @@ recipes = mongo.db.recipes
 @app.route('/')
 @app.route('/home')
 def home():
-    return render_template('index.html', recipes=recipes.find())
+    return render_template('index.html', recipes=recipes.find(), recipeCategory=recipeCategory.find())
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+# Browse Recipes                                                                                           #
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+    
+@app.route('/browse_recipes/<recipe_category_name>')
+def browse_recipes(recipe_category_name):
+    return render_template('browse_recipes.html',recipes=recipes.find({"recipe_category_name": recipe_category_name}), recipeCategory=recipeCategory.find())
     
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 # Individual Recipe Page                                                                                   #
@@ -37,8 +46,8 @@ def home():
     
 @app.route('/recipe_page/<recipe_id>')
 def recipe_page(recipe_id):
-    return render_template('recipe.html', recipe=recipes.find_one({"_id": ObjectId(recipe_id)}))
-
+    return render_template('recipe.html', recipe=recipes.find_one({"_id": ObjectId(recipe_id)}), 
+    recipeCategory=recipeCategory.find())
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#

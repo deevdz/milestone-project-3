@@ -8,8 +8,10 @@
     <body>
         <!-- Dropdown Structure -->
         <ul id="dropdown1" class="dropdown-content">
-          <li class="divider"></li>
-          <li><a href="#!">three</a></li>
+            {% for category in recipeCategory %}    
+            <li class="divider"></li>
+            <li><a href="{{url_for('browse_recipes', recipe_category_name = category.recipe_category_name)}}">{{category.recipe_category_name}}</a></li>
+            {% endfor %}
         </ul>
         <nav>
           <div class="nav-wrapper">
