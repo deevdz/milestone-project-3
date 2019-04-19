@@ -1,0 +1,22 @@
+{% extends 'base.html' %} {% block content %}
+ <h3>Search Results</h3>
+ <p>Search results for: "{{keyword}}"</span> </p> 
+     {% for recipe in search_results %}
+        <div class="col s12 m7">
+            <div class="card horizontal">
+              <div class="card-image">
+                <a href="{{url_for('recipe_page', recipe_id = recipe._id)}}"><img src="{{recipe.recipe_image}}"></a>
+              </div>
+            <div class="card-stacked">
+                <div class="card-content">
+                  <a href="{{url_for('recipe_page', recipe_id = recipe._id)}}"><h5>{{recipe.recipe_name}}</h5></a>
+                  <p>{{recipe.recipe_description}}</p>
+                </div>
+            <div class="card-action">
+              <a href="{{url_for('recipe_page', recipe_id = recipe._id)}}">View Recipe >>></a>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+{% endblock %}    

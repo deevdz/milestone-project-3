@@ -12,8 +12,8 @@ from bson.objectid import ObjectId
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
 app = Flask(__name__)
-app.config["MONGO_DBNAME"] = 'onlineCookbook'
-app.config["MONGO_URI"] = os.environ.get("MONGO_URI", 'mongodb://localhost')
+app.config['MONGO_DBNAME'] = 'onlineCookbook'
+app.config['MONGO_URI'] = os.environ.get('MONGO_URI', 'mongodb://localhost')
 
 mongo = PyMongo(app)
 
@@ -22,6 +22,7 @@ mongo = PyMongo(app)
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 recipes = mongo.db.recipes
 recipeCategory = mongo.db.recipeCategory
+allergens = mongo.db.allergens
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
@@ -38,17 +39,45 @@ def home():
     
 @app.route('/browse_recipes/<recipe_category_name>')
 def browse_recipes(recipe_category_name):
-    return render_template('browse_recipes.html',recipes=recipes.find({"recipe_category_name": recipe_category_name}), recipeCategory=recipeCategory.find())
+    return render_template('browse_recipes.html',
+    recipes=recipes.find({'recipe_category_name': recipe_category_name}), 
+    recipeCategory=recipeCategory.find())
     
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+# Add Recipes                                                                                              #
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#    
+
+@app.route('/add_recipe')
+def add_recipe():
+    return render_template('add_recipe.html', recipes=recipes.find(), recipeCategory=recipeCategory.find(), 
+            allergens=allergens.find())
+
+
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 # Individual Recipe Page                                                                                   #
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
     
 @app.route('/recipe_page/<recipe_id>')
 def recipe_page(recipe_id):
-    return render_template('recipe.html', recipe=recipes.find_one({"_id": ObjectId(recipe_id)}), 
+    return render_template('recipe.html', recipe=recipes.find_one({'_id': ObjectId(recipe_id)}), 
     recipeCategory=recipeCategory.find())
 
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+# Searching Keywords                                                                                       #
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+
+@app.route('/search_keyword', methods=['POST'])
+def receive_keyword():
+    return redirect(url_for('search_keyword', keyword=request.form.get('keyword'))) 
+    
+    
+@app.route('/search_keyword/<keyword>')
+def search_keyword(keyword):
+    recipes.create_index([('recipe_name', 'text'), 
+        ('recipe_ingredients', 'text') ])
+    return render_template('search_by_keyword.html', keyword=keyword, 
+        search_results = recipes.find({'$text': {'$search': keyword}}), 
+        recipeCategory=recipeCategory.find())
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 # Development/Production environment test for debug                                                        #

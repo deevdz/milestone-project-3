@@ -20,7 +20,7 @@
               <li><a href="{{url_for('home')}}">Home</a></li>
               <!-- Dropdown Trigger -->
               <li><a class="dropdown-menu" href="#!" data-target="dropdown1">Recipes<i class="material-icons right">arrow_drop_down</i></a></li>
-              <li><a href="sass.html"><i class="material-icons">search</i></a></li>
+              <li><i id="search-btn" class="material-icons">search</i></li>
             </ul>
           </div>
         </nav>
@@ -28,8 +28,36 @@
         <div class="container">
             {% block content %} {% endblock %}
         </div>
+        
+        <!--Search Overlay-->
+            <div id="search-overlay" class="block">
+                <div class="centered">
+                    <div id='search-box'>
+                        <i id="close-btn" class="fa fa-times fa-2x"></i>
+                        <form action="{{url_for('receive_keyword')}}" id='search-form' method='post' target='_top'>
+                            <input id='search-text' name='keyword' placeholder='Search' type='text' />
+                            <button id='search-button' type='submit'>                     
+                                <span>Search</span>
+                            </button>
+                      </form>
+                    </div>
+                 </div>
+            </div>
+            
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+        <script>
+            $(document).ready(function() {
+                $('#close-btn').click(function() {
+                $('#search-overlay').fadeOut();
+                $('#search-btn').show();
+             });
+            $('#search-btn').click(function() {
+                $(this).hide();
+                $('#search-overlay').fadeIn();
+            });
+        });
+        </script>
         <script>
               document.addEventListener('DOMContentLoaded', function() {
                 var elems = document.querySelectorAll('.slider');
