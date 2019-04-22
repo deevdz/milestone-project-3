@@ -18,6 +18,7 @@
             <a href="{{url_for('home')}}" class="brand-logo">Logo</a>
             <ul class="right hide-on-med-and-down">
               <li><a href="{{url_for('home')}}">Home</a></li>
+              <li><a href="{{url_for('add_recipe')}}">Add Recipe</a></li>
               <!-- Dropdown Trigger -->
               <li><a class="dropdown-menu" href="#!" data-target="dropdown1">Recipes<i class="material-icons right">arrow_drop_down</i></a></li>
               <li><i id="search-btn" class="material-icons">search</i></li>
@@ -62,12 +63,15 @@
               document.addEventListener('DOMContentLoaded', function() {
                 var elems = document.querySelectorAll('.slider');
                 var instances = M.Slider.init(elems, options);
+                var elems = document.querySelectorAll('select');
+                var instances = M.FormSelect.init(elems, options);
               });
             
               // Or with jQuery
             
               $(document).ready(function(){
                 $(".dropdown-menu").dropdown();
+                 $('select').formSelect();
                 $('.slider').slider();
               });
         </script>
