@@ -73,7 +73,7 @@ def insert_recipe():
             'recipe_image' : request.form.get('recipe_image'),            
             'recipe_ingredients':  request.form.getlist('recipe_ingredients'),
             'recipe_method':  request.form.getlist('recipe_method'),
-            'featured_recipe':  request.form.get('featured_recipe'),
+            'featured_recipe':  request.form.get('featured_recipe')
         }   
         recipes.insert_one(complete_recipe)
         return redirect(url_for('get_recipes'))
@@ -87,9 +87,11 @@ def edit_recipe(recipe_id):
     return render_template('edit_recipe.html', recipeCategory=recipeCategory.find(), 
             allergens=allergens.find(), skillLevel=skillLevel.find(), recipes=recipes.find_one({'_id': ObjectId(recipe_id)}))
             
-@app.route('/update_recipe', methods=['POST'])
-def update_recipe():
-        complete_recipe = {
+@app.route('/update_recipe/<recipe_id>', methods=['POST'])
+def update_recipe(recipe_id):
+    recipes.update( {'_id': ObjectId(recipe_id)},
+        { 
+            '$set':{
             'recipe_name': request.form.get('recipe_name'),
             'recipe_description': request.form.get('recipe_description'),
             'recipe_category_name': request.form.get('recipe_category_name'),
@@ -98,13 +100,13 @@ def update_recipe():
             'recipe_cook_time': request.form.get('recipe_cook_time'),
             'recipe_serves': request.form.get('recipe_serves'),
             'recipe_difficulty': request.form.get('recipe_difficulty'),
+            'recipe_image' : request.form.get('recipe_image'),            
             'recipe_ingredients':  request.form.getlist('recipe_ingredients'),
             'recipe_method':  request.form.getlist('recipe_method'),
-            'featured_recipe': request.form.get('featured_recipe'),
-            'recipe_image' : request.form.get('recipe_image')
-        }
-        recipes.insert_one(complete_recipe)
-        return redirect(url_for('get_recipes'))        
+            'featured_recipe':  request.form.get('featured_recipe')
+            }
+        })    
+    return redirect(url_for('get_recipes'))        
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
