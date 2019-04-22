@@ -125,3 +125,32 @@ nav {
   color: #777;
   cursor: pointer;
 }
+
+/*Add Recipe Styling */
+
+#add_ingredient.btn-floating, #remove_ingredient.btn-floating, #add_method_step.btn-floating, #remove_method_step.btn-floating {
+width: 30px;
+height: 30px;
+line-height: 30px;
+border-radius: 20%;
+margin-top: 1.5em;
+}
+
+#add_ingredient.btn-floating, #add_method_step.btn-floating {
+  background-color: #2D6E81;
+}
+
+#remove_ingredient.btn-floating, #remove_method_step.btn-floating {
+background-color: #AE2463;
+}
+
+#add_ingredient.btn-floating i, #remove_ingredient.btn-floating i, #add_method_step.btn-floating i, #remove_method_step.btn-floating i {
+font-size: 1.4rem;
+line-height: 30px;
+}
+
+#ingredients.input-field {
+  margin-top:0;
+}
+
+

@@ -1,9 +1,9 @@
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
-# Import pre-requisites.                                                #
+# Import pre-requisites.                                                                                   #
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
 import os
-from flask import Flask, render_template, redirect, request, url_for, request
+from flask import Flask, render_template, redirect, request, url_for, request, session
 from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
 
@@ -24,14 +24,14 @@ mongo = PyMongo(app)
 recipes = mongo.db.recipes
 recipeCategory = mongo.db.recipeCategory
 allergens = mongo.db.allergens
-
+skillLevel = mongo.db.skillLevel
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 # Homepage  - Load all recipes and load recipes to slider                                                  #
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 @app.route('/')
-@app.route('/home')
-def home():
+@app.route('/index')
+def index():
     return render_template('index.html', recipes=recipes.find(), recipeCategory=recipeCategory.find())
 
 
@@ -57,7 +57,7 @@ def browse_recipes(recipe_category_name):
 @app.route('/add_recipe')
 def add_recipe():
     return render_template('add_recipe.html', recipes=recipes.find(), recipeCategory=recipeCategory.find(), 
-            allergens=allergens.find())
+            skillLevel=skillLevel.find(), allergens=allergens.find())
             
 @app.route('/insert_recipe', methods=['POST'])
 def insert_recipe():
@@ -65,14 +65,46 @@ def insert_recipe():
             'recipe_name': request.form.get('recipe_name'),
             'recipe_description': request.form.get('recipe_description'),
             'recipe_category_name': request.form.get('recipe_category_name'),
+            'allergen_type': request.form.getlist('allergen_type'),
+            'recipe_prep_time': request.form.get('recipe_prep_time'),
+            'recipe_cook_time': request.form.get('recipe_cook_time'),
+            'recipe_serves': request.form.get('recipe_serves'),
+            'recipe_difficulty': request.form.get('recipe_difficulty'),
+            'recipe_image' : request.form.get('recipe_image'),            
+            'recipe_ingredients':  request.form.getlist('recipe_ingredients'),
+            'recipe_method':  request.form.getlist('recipe_method'),
+            'featured_recipe':  request.form.get('featured_recipe'),
+        }   
+        recipes.insert_one(complete_recipe)
+        return redirect(url_for('get_recipes'))
+        
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+# Edit Recipes                                                                                             #
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#    
+
+@app.route('/edit_recipe/<recipe_id>')
+def edit_recipe(recipe_id):
+    return render_template('edit_recipe.html', recipeCategory=recipeCategory.find(), 
+            allergens=allergens.find(), skillLevel=skillLevel.find(), recipes=recipes.find_one({'_id': ObjectId(recipe_id)}))
+            
+@app.route('/update_recipe', methods=['POST'])
+def update_recipe():
+        complete_recipe = {
+            'recipe_name': request.form.get('recipe_name'),
+            'recipe_description': request.form.get('recipe_description'),
+            'recipe_category_name': request.form.get('recipe_category_name'),
+            'allergen_type': request.form.getlist('allergen_type'),
             'recipe_prep_time': request.form.get('recipe_prep_time'),
             'recipe_cook_time': request.form.get('recipe_cook_time'),
             'recipe_serves': request.form.get('recipe_serves'),
             'recipe_difficulty': request.form.get('recipe_difficulty'),
             'recipe_ingredients':  request.form.getlist('recipe_ingredients'),
+            'recipe_method':  request.form.getlist('recipe_method'),
+            'featured_recipe': request.form.get('featured_recipe'),
+            'recipe_image' : request.form.get('recipe_image')
         }
         recipes.insert_one(complete_recipe)
-        return redirect(url_for('get_recipes'))
+        return redirect(url_for('get_recipes'))        
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
