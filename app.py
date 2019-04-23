@@ -3,7 +3,7 @@
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
 import os
-from flask import Flask, render_template, redirect, request, url_for, request, session
+from flask import Flask, render_template, redirect, request, url_for, request, session, abort
 from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
 
@@ -30,6 +30,7 @@ recipes = mongo.db.recipes
 recipeCategory = mongo.db.recipeCategory
 allergens = mongo.db.allergens
 skillLevel = mongo.db.skillLevel
+userDB = mongo.db.users
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 # Homepage  - Load all recipes and load recipes to slider                                                  #
@@ -37,7 +38,23 @@ skillLevel = mongo.db.skillLevel
 @app.route('/')
 @app.route('/index')
 def index():
-    return render_template('index.html', recipes=recipes.find(), recipeCategory=recipeCategory.find())
+    if not session.get('logged_in'):
+        return render_template('login.html')
+    else:
+        return render_template('index.html', recipes=recipes.find(), recipeCategory=recipeCategory.find())
+
+@app.route('/login', methods=['POST'])
+def do_admin_login():
+    if request.form['password'] == 'password' and request.form['username'] == 'admin':
+        session['logged_in'] = True
+    else:
+        flash('wrong password!')
+    return index()
+    
+@app.route("/logout")
+def logout():
+    session['logged_in'] = False
+    return index()    
 
 
 @app.route('/get_recipes')
