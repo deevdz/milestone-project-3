@@ -35,10 +35,10 @@
                 <select multiple id="allergen_type" name="allergen_type">
                     {% set _stub = allergens.rewind() %}
                     {% for allergen in allergens %}
-                        {% if allergen in recipes.allergen_type %}
+                        {% if allergen.allergen_type in recipes.allergen_type   %}
                           <option value="{{allergen.allergen_type}}" selected>{{allergen.allergen_type}}</option>
                         {% else %}
-                        <p>Test</p>
+                        <option value="{{allergen.allergen_type}}">{{allergen.allergen_type}}</option>
                     {% endif %}
                     {% endfor %}
                 </select>
