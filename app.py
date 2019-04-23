@@ -7,6 +7,9 @@ from flask import Flask, render_template, redirect, request, url_for, request, s
 from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
 
+from flask_wtf import FlaskForm
+from wtforms import StringField, PasswordField, BooleanField, SubmitField
+from wtforms.validators import DataRequired, ValidationError
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 # Connect to external MongoDB database through URI variable hosted on app server.                          #
@@ -15,6 +18,8 @@ from bson.objectid import ObjectId
 app = Flask(__name__)
 app.config['MONGO_DBNAME'] = 'onlineCookbook'
 app.config['MONGO_URI'] = os.environ.get('MONGO_URI', 'mongodb://localhost')
+
+app.secret_key = os.urandom(23) #Creates a random string to use as session key
 
 mongo = PyMongo(app)
 
@@ -39,6 +44,22 @@ def index():
 def get_recipes():
     return render_template('all_recipes.html', 
                             recipes = recipes.find(), recipeCategory=recipeCategory.find())
+                            
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+# User Login                                                                                              #
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#                            
+class LoginForm(FlaskForm):
+    username = StringField('username',validators=[DataRequired()])
+    password = PasswordField('password',validators=[DataRequired()])
+    submit = SubmitField('Submit')
+
+
+@app.route('/login', methods=('GET', 'POST'))
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        return redirect('/success')
+    return render_template('login.html', form=form)
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 # Browse Recipes                                                                                           #
@@ -85,7 +106,8 @@ def insert_recipe():
 @app.route('/edit_recipe/<recipe_id>')
 def edit_recipe(recipe_id):
     return render_template('edit_recipe.html', recipeCategory=recipeCategory.find(), 
-            allergens=allergens.find(), skillLevel=skillLevel.find(), recipes=recipes.find_one({'_id': ObjectId(recipe_id)}))
+            allergens=allergens.find(), skillLevel=skillLevel.find(), 
+            recipes=recipes.find_one({'_id': ObjectId(recipe_id)}))
             
 @app.route('/update_recipe/<recipe_id>', methods=['POST'])
 def update_recipe(recipe_id):
@@ -134,6 +156,23 @@ def search_keyword(keyword):
     return render_template('search_by_keyword.html', keyword=keyword, 
         search_results = recipes.find({'$text': {'$search': keyword}}), 
         recipeCategory=recipeCategory.find())
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+# Error Pages                                                                                              #
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+
+@app.errorhandler(404)
+def page_not_found(error):
+    return render_template('404.html'), 404
+
+@app.errorhandler(405)
+def something_wrong(error):
+    return render_template('500.html'), 405
+    
+@app.errorhandler(500)
+def something_wrong(error):
+    return render_template('500.html'), 500
+
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 # Development/Production environment test for debug                                                        #

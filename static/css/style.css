@@ -1,3 +1,14 @@
+  body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+  }
+
+  main {
+    flex: 1 0 auto;
+  }
+
+
 /* Navigation */
 nav ul a{
 text-transform: uppercase;
@@ -153,4 +164,13 @@ line-height: 30px;
   margin-top:0;
 }
 
+
+/* Footer */
+.page-footer {
+  background-color: #2D6E81;
+}
+
+.footer-copyright {
+    background-color: #050C35 !important;
+}
 
