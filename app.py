@@ -58,16 +58,21 @@ def signin():
 
 @app.route('/login', methods=['POST'])
 def login():
-    username = request.form['username']
+    username = request.form['username'].lower()
     password = request.form['password']
     session['username'] = username
+    user = userDB.find_one({"username" : username})
     
-    if password == 'password' and username == 'admin':
+    if not user:
+        session['logged_in'] = False
+        flash('User ' + session['username'] + ' cannot be found on our system', 'alert-success')
+        return signin()
+    if password == user['password']:
         session['logged_in'] = True
-        flash('Welcome ' + session['username'], 'alert-success')
+        flash('Welcome ' + user['author_name'].capitalize(), 'alert-success')
     else:
-        flash('wrong password!')
-    return index()
+        flash('Incorrect Password, please try again.')
+    return signin()
     
 @app.route("/logout")
 def logout():
