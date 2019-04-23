@@ -3,13 +3,11 @@
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
 import os, pymongo, math
-from flask import Flask, render_template, redirect, request, url_for, request, session, abort, flash
+from flask import Flask, render_template, redirect, request, url_for, request, session, g, abort, flash
 from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
+from datetime import datetime
 
-from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField
-from wtforms.validators import DataRequired, ValidationError
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 # Connect to external MongoDB database through URI variable hosted on app server.                          #
@@ -46,14 +44,44 @@ def get_recipes():
                             recipes = recipes.find(), recipeCategory=recipeCategory.find())
                             
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
-# User Login                                                                                               #
+# User Login & Registration                                                                                #
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~# 
+@app.route('/register')
+def register():
+    return render_template('register.html', recipes=recipes.find(), 
+        recipeCategory=recipeCategory.find())
+
+
+@app.route('/signup', methods=['POST'])
+def signup():
+    author_name = request.form.get('author_name')
+    username = request.form.get('username').lower()
+    password = request.form.get('password')    
+    session['username'] = username
+    user = userDB.find_one({"username" : username})
+    
+    if user is None:
+        userDB.insert_one({
+            'author_name': author_name,
+            'username': username,
+            'password': password
+        })
+        session['logged_in'] = True
+        #flash('Welcome ' + user['author_name'] )
+        return signin()
+    else:
+        session['logged_in'] = False
+        flash('Username already exists, please try again.')
+    return register()
+
+
 @app.route('/signin')
 def signin():
     if not session.get('logged_in'):
         return render_template('login.html')
     else:
-        return render_template('index.html', recipes=recipes.find(), recipeCategory=recipeCategory.find())
+        return render_template('index.html', recipes=recipes.find(), 
+        recipeCategory=recipeCategory.find())
 
 
 @app.route('/login', methods=['POST'])
@@ -65,19 +93,33 @@ def login():
     
     if not user:
         session['logged_in'] = False
-        flash('User ' + session['username'] + ' cannot be found on our system', 'alert-success')
+        flash('User ' + session['username'] + ' cannot be found on our system')
         return signin()
     if password == user['password']:
         session['logged_in'] = True
-        flash('Welcome ' + user['author_name'].capitalize(), 'alert-success')
+        flash('Welcome ' + user['author_name'].capitalize())
+        return render_template('index.html', recipes=recipes.find(), 
+        recipeCategory=recipeCategory.find(), author=user['author_name'])
     else:
+        session['logged_in'] = False
         flash('Incorrect Password, please try again.')
-    return signin()
+    
     
 @app.route("/logout")
 def logout():
     session['logged_in'] = False
-    return render_template('index.html', recipes=recipes.find(), recipeCategory=recipeCategory.find())   
+    return render_template('index.html', recipes=recipes.find(), recipeCategory=recipeCategory.find())  
+    
+    
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+# Before Request  -Check to see if the user is logged in                                                   #
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#    
+    
+@app.before_request
+def before_request():
+    g.user = None
+    if 'user' in session:
+        g.user = session['user']
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 # Browse Recipes                                                                                           #
@@ -93,14 +135,16 @@ def browse_recipes(recipe_category_name):
 # Add Recipes                                                                                              #
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#    
 
-@app.route('/add_recipe')
+@app.route('/add_recipe', methods=['GET','POST'] )
 def add_recipe():
+    author = request.args.get('author')
     return render_template('add_recipe.html', recipes=recipes.find(), recipeCategory=recipeCategory.find(), 
-            skillLevel=skillLevel.find(), allergens=allergens.find())
-            
-@app.route('/insert_recipe', methods=['POST'])
+            skillLevel=skillLevel.find(), allergens=allergens.find(), userDB = userDB.find(), author=author)
+
+  
+@app.route('/insert_recipe', methods=['GET','POST'])
 def insert_recipe():
-        complete_recipe = {
+    complete_recipe = {
             'recipe_name': request.form.get('recipe_name'),
             'recipe_description': request.form.get('recipe_description'),
             'recipe_category_name': request.form.get('recipe_category_name'),
@@ -112,10 +156,12 @@ def insert_recipe():
             'recipe_image' : request.form.get('recipe_image'),            
             'recipe_ingredients':  request.form.getlist('recipe_ingredients'),
             'recipe_method':  request.form.getlist('recipe_method'),
-            'featured_recipe':  request.form.get('featured_recipe')
+            'featured_recipe':  request.form.get('featured_recipe'),
+            'date_time': datetime.now(),
+            'author_name':  request.args.get('author')
         }   
-        recipes.insert_one(complete_recipe)
-        return redirect(url_for('get_recipes'))
+    recipes.insert_one(complete_recipe)
+    return redirect(url_for('get_recipes'))
         
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 # Edit Recipes                                                                                             #
@@ -147,6 +193,10 @@ def update_recipe(recipe_id):
             }
         })    
     return redirect(url_for('get_recipes'))        
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+# Users My Recipes Page                                                                                    #
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#  
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
