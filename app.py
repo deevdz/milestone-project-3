@@ -2,8 +2,8 @@
 # Import pre-requisites.                                                                                   #
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
-import os
-from flask import Flask, render_template, redirect, request, url_for, request, session, abort
+import os, pymongo, math
+from flask import Flask, render_template, redirect, request, url_for, request, session, abort, flash
 from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
 
@@ -38,24 +38,7 @@ userDB = mongo.db.users
 @app.route('/')
 @app.route('/index')
 def index():
-    if not session.get('logged_in'):
-        return render_template('login.html')
-    else:
-        return render_template('index.html', recipes=recipes.find(), recipeCategory=recipeCategory.find())
-
-@app.route('/login', methods=['POST'])
-def do_admin_login():
-    if request.form['password'] == 'password' and request.form['username'] == 'admin':
-        session['logged_in'] = True
-    else:
-        flash('wrong password!')
-    return index()
-    
-@app.route("/logout")
-def logout():
-    session['logged_in'] = False
-    return index()    
-
+    return render_template('index.html', recipes=recipes.find(), recipeCategory=recipeCategory.find())
 
 @app.route('/get_recipes')
 def get_recipes():
@@ -63,20 +46,33 @@ def get_recipes():
                             recipes = recipes.find(), recipeCategory=recipeCategory.find())
                             
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
-# User Login                                                                                              #
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#                            
-class LoginForm(FlaskForm):
-    username = StringField('username',validators=[DataRequired()])
-    password = PasswordField('password',validators=[DataRequired()])
-    submit = SubmitField('Submit')
+# User Login                                                                                               #
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~# 
+@app.route('/signin')
+def signin():
+    if not session.get('logged_in'):
+        return render_template('login.html')
+    else:
+        return render_template('index.html', recipes=recipes.find(), recipeCategory=recipeCategory.find())
 
 
-@app.route('/login', methods=('GET', 'POST'))
+@app.route('/login', methods=['POST'])
 def login():
-    form = LoginForm()
-    if form.validate_on_submit():
-        return redirect('/success')
-    return render_template('login.html', form=form)
+    username = request.form['username']
+    password = request.form['password']
+    session['username'] = username
+    
+    if password == 'password' and username == 'admin':
+        session['logged_in'] = True
+        flash('Welcome ' + session['username'], 'alert-success')
+    else:
+        flash('wrong password!')
+    return index()
+    
+@app.route("/logout")
+def logout():
+    session['logged_in'] = False
+    return render_template('index.html', recipes=recipes.find(), recipeCategory=recipeCategory.find())   
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 # Browse Recipes                                                                                           #

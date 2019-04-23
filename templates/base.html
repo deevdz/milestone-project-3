@@ -13,21 +13,49 @@
             <li><a href="{{url_for('browse_recipes', recipe_category_name = category.recipe_category_name)}}">{{category.recipe_category_name}}</a></li>
             {% endfor %}
         </ul>
+        <ul id="dropdown2" class="dropdown-content">
+            <li class="divider"></li>
+            <li><a href="{{url_for('add_recipe')}}">Add Recipe</a></li>
+            <li><a href="{{url_for('logout')}}">Logout</a></li>
+            <li class="divider"></li>
+            
+        </ul>        
         <nav>
           <div class="nav-wrapper">
             <a href="{{url_for('index')}}" class="brand-logo">Logo</a>
             <ul class="right hide-on-med-and-down">
               <li><a href="{{url_for('index')}}">Home</a></li>
-              <li><a href="{{url_for('login')}}">Login</a></li>
-              <li><a href="{{url_for('logout')}}">Logout</a></li>
+              <li><a class="dropdown-menu" href="#!" data-target="dropdown1">Recipes<i class="material-icons right">arrow_drop_down</i></a></li>
+              {% if session.logged_in %}
+              <li><a class="dropdown-menu" href="#!" data-target="dropdown2">Account<i class="material-icons right">arrow_drop_down</i></a></li>
+              
+              {% else %} 
+              <li><a href="{{url_for('signin')}}">Login</a></li>
+                {% endif %}
               <!--<li><a href="{{url_for('add_recipe')}}">Add Recipe</a></li>-->
               <!-- Dropdown Trigger -->
-              <li><a class="dropdown-menu" href="#!" data-target="dropdown1">Recipes<i class="material-icons right">arrow_drop_down</i></a></li>
+              
               <li><i id="search-btn" class="material-icons">search</i></li>
             </ul>
           </div>
         </nav>
-        <!--Main Body-->  
+        <!--Main Body--> 
+        <header>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if error %}
+          <p class="error"><b>Error:</b> {{ error }}
+        {% endif %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="alert {{ category }}">
+                <div class="messages">          
+                  {{ message }}              
+                </div>
+              </div>
+            {% endfor %}
+          {% endif %}      
+        {% endwith %}
+        </header>
         <main>
             <div class="container">
                 {% block content %} {% endblock %}
