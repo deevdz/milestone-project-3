@@ -17,7 +17,7 @@ app = Flask(__name__)
 app.config['MONGO_DBNAME'] = 'onlineCookbook'
 app.config['MONGO_URI'] = os.environ.get('MONGO_URI', 'mongodb://localhost')
 
-app.secret_key = os.urandom(23) #Creates a random string to use as session key
+app.secret_key = os.getenv("SECRET", "randomstring123")
 
 mongo = PyMongo(app)
 
@@ -186,6 +186,17 @@ def update_recipe(recipe_id):
             }
         })    
     return redirect(url_for('get_recipes'))        
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+# Delete Recipes                                                                                           #
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#  
+
+
+@app.route('/delete_recipe/<recipe_id>')
+def delete_recipe(recipe_id):
+    recipes.remove({'_id': ObjectId(recipe_id)})
+    return redirect(url_for('get_recipes'))
+
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 # Users My Recipes Page                                                                                    #
