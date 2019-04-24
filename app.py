@@ -111,15 +111,6 @@ def logout():
     return render_template('index.html', recipes=recipes.find(), recipeCategory=recipeCategory.find())  
     
     
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
-# Before Request  -Check to see if the user is logged in                                                   #
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#    
-    
-@app.before_request
-def before_request():
-    g.user = None
-    if 'user' in session:
-        g.user = session['user']
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 # Browse Recipes                                                                                           #
@@ -137,13 +128,15 @@ def browse_recipes(recipe_category_name):
 
 @app.route('/add_recipe', methods=['GET','POST'] )
 def add_recipe():
-    author = request.args.get('author')
+    username=session.get('username')
     return render_template('add_recipe.html', recipes=recipes.find(), recipeCategory=recipeCategory.find(), 
-            skillLevel=skillLevel.find(), allergens=allergens.find(), userDB = userDB.find(), author=author)
+            skillLevel=skillLevel.find(), allergens=allergens.find(), userDB = userDB.find())
 
   
 @app.route('/insert_recipe', methods=['GET','POST'])
 def insert_recipe():
+    username=session.get('username')
+    user = userDB.find_one({"username" : username})    
     complete_recipe = {
             'recipe_name': request.form.get('recipe_name'),
             'recipe_description': request.form.get('recipe_description'),
@@ -158,7 +151,7 @@ def insert_recipe():
             'recipe_method':  request.form.getlist('recipe_method'),
             'featured_recipe':  request.form.get('featured_recipe'),
             'date_time': datetime.now(),
-            'author_name':  request.args.get('author')
+            'author_name': user['author_name']
         }   
     recipes.insert_one(complete_recipe)
     return redirect(url_for('get_recipes'))
@@ -198,15 +191,24 @@ def update_recipe(recipe_id):
 # Users My Recipes Page                                                                                    #
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#  
 
+@app.route('/my_recipes/')
+def my_recipes():
+    username=session.get('username')
+    user = userDB.find_one({"username" : username}) 
+    return render_template('my_recipes.html',
+    recipes=recipes.find({'author_name': user['author_name']}), 
+    recipeCategory=recipeCategory.find())
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 # Individual Recipe Page                                                                                   #
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
     
-@app.route('/recipe_page/<recipe_id>')
+@app.route('/recipe_page/<recipe_id>', methods=['GET','POST'])
 def recipe_page(recipe_id):
+    username=session.get('username')
+    user = userDB.find_one({"username" : username})     
     return render_template('recipe.html', recipe=recipes.find_one({'_id': ObjectId(recipe_id)}), 
-    recipeCategory=recipeCategory.find())
+    recipeCategory=recipeCategory.find(), user=user)
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 # Searching Keywords                                                                                       #

@@ -6,6 +6,9 @@
             <p>Cook Time: {{recipe.recipe_cook_time}} minutes</p>
             <p>Total Time: {{recipe.recipe_prep_time|int + recipe.recipe_cook_time|int}} minutes</p>
             <p>Author: {{recipe.author_name}}</p>
+            {% if (session['logged_in'] and user.author_name == recipe.author_name) %}
+            <a href="{{url_for('edit_recipe', recipe_id = recipe._id)}}">Edit Recipe</a>
+            {% endif %}
                 <ul>
                  {% for items in recipe.recipe_ingredients %}
                         <li>{{items}}</li>

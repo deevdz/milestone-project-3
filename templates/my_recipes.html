@@ -1,4 +1,5 @@
 {% extends 'base.html' %} {% block content %}
+{% if session['logged_in'] %}
      {% for recipe in recipes %}
         <div class="col s12 m7">
             <div class="card horizontal">
@@ -16,5 +17,8 @@
           </div>
         </div>
       </div>
-    {% endfor %}
+      {% endfor %}
+    {% else %}
+        <p>You must be logged in to edit a recipe </p>
+    {% endif %}
 {% endblock %}    
