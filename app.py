@@ -6,7 +6,7 @@ import os, pymongo, math
 from flask import Flask, render_template, redirect, request, url_for, request, session, g, abort, flash
 from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
-from datetime import datetime
+from datetime import datetime, timedelta
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
@@ -54,6 +54,8 @@ def register():
 
 @app.route('/signup', methods=['POST'])
 def signup():
+    session.permanent = True
+    app.permanent_session_lifetime = timedelta(minutes=30)
     author_name = request.form.get('author_name')
     username = request.form.get('username').lower()
     password = request.form.get('password')    
@@ -89,6 +91,8 @@ def login():
     username = request.form['username'].lower()
     password = request.form['password']
     session['username'] = username
+    session.permanent = True
+    app.permanent_session_lifetime = timedelta(minutes=30)
     user = userDB.find_one({"username" : username})
     
     if not user:
