@@ -36,7 +36,9 @@ userDB = mongo.db.users
 @app.route('/')
 @app.route('/index')
 def index():
-    return render_template('index.html', recipes=recipes.find().sort('date_time',pymongo.DESCENDING), recipeCategory=recipeCategory.find())
+    all_recipes = recipes.find().sort([('date_time', pymongo.DESCENDING), ("_id", pymongo.ASCENDING)]) 
+    count_recipes = all_recipes.count()
+    return render_template('index.html', recipes=recipes.find().sort('date_time',pymongo.DESCENDING), recipeCategory=recipeCategory.find(), count_recipes=count_recipes)
 
 @app.route('/get_recipes')
 def get_recipes():
