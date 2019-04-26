@@ -155,10 +155,14 @@ def insert_recipe():
             'recipe_method':  request.form.getlist('recipe_method'),
             'featured_recipe':  request.form.get('featured_recipe'),
             'date_time': datetime.now(),
-            'author_name': user['author_name']
+            'author_name': user['author_name'],
+            'ratings':[
+                    {'overall_ratings': 0.0,
+                    'total_ratings': 0}
+                ]
         }   
     recipes.insert_one(complete_recipe)
-    return redirect(url_for('get_recipes'))
+    return redirect(url_for('my_recipes'))
         
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 # Edit Recipes                                                                                             #
@@ -210,6 +214,7 @@ def delete_recipe(recipe_id):
 def my_recipes():
     username=session.get('username')
     user = userDB.find_one({"username" : username}) 
+    
     return render_template('my_recipes.html',
     recipes=recipes.find({'author_name': user['author_name']}), 
     recipeCategory=recipeCategory.find())
@@ -241,6 +246,34 @@ def search_keyword(keyword):
     return render_template('search_by_keyword.html', keyword=keyword, 
         search_results = recipes.find({'$text': {'$search': keyword}}), 
         recipeCategory=recipeCategory.find())
+        
+        
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+# Ratings                                                                                                  #
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~# 
+@app.route('/recipe_rating/<recipe_id>', methods=['POST'])
+def recipe_rating(recipe_id):
+    new_rating = request.form['new_rating']
+    recipe = recipes.find_one({'_id': ObjectId(recipe_id)})
+    for rating in recipe['ratings']:
+        overall_rating = rating['overall_ratings']
+        total_rating = rating['total_ratings']
+        flash(total_rating)
+        flash(overall_rating)
+        rating = (((int(overall_rating * total_rating) + int(new_rating)) / (int(total_rating)+1)))
+        flash(rating)
+
+    recipes.update( {'_id': ObjectId(recipe_id)},
+        { 
+            '$set':{
+            'ratings': [
+                {
+                    'total_ratings': int(total_rating) + int(new_rating),
+                    'overall_ratings': rating
+                }
+            ]}
+        })
+    return signin()
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 # Error Pages                                                                                              #

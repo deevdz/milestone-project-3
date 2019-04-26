@@ -6,10 +6,38 @@
             <p>Cook Time: {{recipe.recipe_cook_time}} minutes</p>
             <p>Total Time: {{recipe.recipe_prep_time|int + recipe.recipe_cook_time|int}} minutes</p>
             <p>Author: {{recipe.author_name}}</p>
-            {% if (session['logged_in'] and user.author_name == recipe.author_name) %}
-            <a href="{{url_for('edit_recipe', recipe_id = recipe._id)}}">Edit Recipe</a>
-            <a href="{{url_for('delete_recipe', recipe_id = recipe._id)}}">Delete Recipe</a>
-            {% endif %}
+                {% if (session['logged_in'] and user.author_name == recipe.author_name) %}
+                    <a href="{{url_for('edit_recipe', recipe_id = recipe._id)}}">Edit Recipe</a>
+                    <a href="{{url_for('delete_recipe', recipe_id = recipe._id)}}">Delete Recipe</a>
+                {% endif %}
+            {% if session['logged_in'] %}
+            <form action="{{ url_for('recipe_rating', recipe_id=recipe._id)}}" method="POST">
+                {% for rating in recipe.ratings %}
+                Ratings: {{rating.overall_ratings}} of 5
+                
+                {% if rating.total_ratings == 0 %}
+                    <p>Don't be shy be the first to rate this recipe</p>
+                {% else %}
+                    <p>Have your say - Rate this recipe:</p>
+                {% endif %} 
+                {% endfor %}
+                    <div class="input-field col s10 m3">
+                        <select id="new_rating" name="new_rating">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5" selected>5</option>
+                    </select>
+                    </div>
+                    <div class="input-field col s2">
+                        <button type="submit">Rate!</button>
+                    </div>
+                </form>
+            {% else %}
+                <p><a href="{{url_for('signin')}}">Login</a> to rate recipes!</p>
+            {% endif %} 
+        
                 <ul>
                  {% for items in recipe.recipe_ingredients %}
                         <li>{{items}}</li>
