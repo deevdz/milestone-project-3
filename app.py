@@ -17,7 +17,7 @@ app = Flask(__name__)
 app.config['MONGO_DBNAME'] = 'onlineCookbook'
 app.config['MONGO_URI'] = os.environ.get('MONGO_URI', 'mongodb://localhost')
 
-app.secret_key = os.getenv("SECRET", "randomstring123")
+app.secret_key = os.getenv('SECRET', 'randomstring123')
 
 mongo = PyMongo(app)
 
@@ -36,12 +36,12 @@ userDB = mongo.db.users
 @app.route('/')
 @app.route('/index')
 def index():
-    return render_template('index.html', recipes=recipes.find(), recipeCategory=recipeCategory.find())
+    return render_template('index.html', recipes=recipes.find().sort('date_time',pymongo.DESCENDING), recipeCategory=recipeCategory.find())
 
 @app.route('/get_recipes')
 def get_recipes():
     return render_template('all_recipes.html', 
-                            recipes = recipes.find(), recipeCategory=recipeCategory.find())
+                            recipes = recipes.find().sort('date_time',pymongo.DESCENDING), recipeCategory=recipeCategory.find())
                             
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 # User Login & Registration                                                                                #
@@ -60,7 +60,7 @@ def signup():
     username = request.form.get('username').lower()
     password = request.form.get('password')    
     session['username'] = username
-    user = userDB.find_one({"username" : username})
+    user = userDB.find_one({'username' : username})
     
     if user is None:
         userDB.insert_one({
@@ -82,7 +82,7 @@ def signin():
     if not session.get('logged_in'):
         return render_template('login.html')
     else:
-        return render_template('index.html', recipes=recipes.find(), 
+        return render_template('index.html', recipes=recipes.find().sort('date_time',pymongo.DESCENDING), 
         recipeCategory=recipeCategory.find())
 
 
@@ -93,7 +93,7 @@ def login():
     session['username'] = username
     session.permanent = True
     app.permanent_session_lifetime = timedelta(minutes=30)
-    user = userDB.find_one({"username" : username})
+    user = userDB.find_one({'username' : username})
     
     if not user:
         session['logged_in'] = False
@@ -109,10 +109,10 @@ def login():
         flash('Incorrect Password, please try again.')
     
     
-@app.route("/logout")
+@app.route('/logout')
 def logout():
     session['logged_in'] = False
-    return render_template('index.html', recipes=recipes.find(), recipeCategory=recipeCategory.find())  
+    return render_template('index.html', recipes=recipes.find().sort('date_time',pymongo.DESCENDING), recipeCategory=recipeCategory.find())  
     
     
 
@@ -123,7 +123,7 @@ def logout():
 @app.route('/browse_recipes/<recipe_category_name>')
 def browse_recipes(recipe_category_name):
     return render_template('browse_recipes.html',
-    recipes=recipes.find({'recipe_category_name': recipe_category_name}), 
+    recipes=recipes.find({'recipe_category_name': recipe_category_name}).sort('date_time',pymongo.DESCENDING), 
     recipeCategory=recipeCategory.find())
     
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
@@ -140,7 +140,7 @@ def add_recipe():
 @app.route('/insert_recipe', methods=['GET','POST'])
 def insert_recipe():
     username=session.get('username')
-    user = userDB.find_one({"username" : username})    
+    user = userDB.find_one({'username' : username})    
     complete_recipe = {
             'recipe_name': request.form.get('recipe_name'),
             'recipe_description': request.form.get('recipe_description'),
@@ -213,10 +213,10 @@ def delete_recipe(recipe_id):
 @app.route('/my_recipes/')
 def my_recipes():
     username=session.get('username')
-    user = userDB.find_one({"username" : username}) 
+    user = userDB.find_one({'username' : username}) 
     
     return render_template('my_recipes.html',
-    recipes=recipes.find({'author_name': user['author_name']}), 
+    recipes=recipes.find({'author_name': user['author_name']}).sort('date_time',pymongo.DESCENDING), 
     recipeCategory=recipeCategory.find())
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
@@ -226,7 +226,7 @@ def my_recipes():
 @app.route('/recipe_page/<recipe_id>', methods=['GET','POST'])
 def recipe_page(recipe_id):
     username=session.get('username')
-    user = userDB.find_one({"username" : username})     
+    user = userDB.find_one({'username' : username})     
     return render_template('recipe.html', recipe=recipes.find_one({'_id': ObjectId(recipe_id)}), 
     recipeCategory=recipeCategory.find(), user=user)
 
@@ -244,7 +244,7 @@ def search_keyword(keyword):
     recipes.create_index([('recipe_name', 'text'), 
         ('recipe_ingredients', 'text') ])
     return render_template('search_by_keyword.html', keyword=keyword, 
-        search_results = recipes.find({'$text': {'$search': keyword}}), 
+        search_results = recipes.find({'$text': {'$search': keyword}}).sort('date_time',pymongo.DESCENDING), 
         recipeCategory=recipeCategory.find())
         
         
@@ -253,15 +253,17 @@ def search_keyword(keyword):
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~# 
 @app.route('/recipe_rating/<recipe_id>', methods=['POST'])
 def recipe_rating(recipe_id):
+    username=session.get('username')
+    user = userDB.find_one({'username' : username}) 
     new_rating = request.form['new_rating']
     recipe = recipes.find_one({'_id': ObjectId(recipe_id)})
+    
     for rating in recipe['ratings']:
         overall_rating = rating['overall_ratings']
         total_rating = rating['total_ratings']
-        flash(total_rating)
-        flash(overall_rating)
+        #Calculation for figuring out weighted rating
         rating = (((int(overall_rating * total_rating) + int(new_rating)) / (int(total_rating)+1)))
-        flash(rating)
+        rating = (round(rating,1))
 
     recipes.update( {'_id': ObjectId(recipe_id)},
         { 
@@ -273,7 +275,7 @@ def recipe_rating(recipe_id):
                 }
             ]}
         })
-    return signin()
+    return redirect(url_for('recipe_page', recipe_id = recipe_id))
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 # Error Pages                                                                                              #
@@ -284,7 +286,7 @@ def page_not_found(error):
     return render_template('404.html'), 404
 
 @app.errorhandler(405)
-def something_wrong(error):
+def method_not_allowed(error):
     return render_template('500.html'), 405
     
 @app.errorhandler(500)
