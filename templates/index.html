@@ -14,7 +14,7 @@
             {% endfor %}
         </ul>
   </div>
-  <p>{{count_recipes}} Recipes found</p>
+  <p>{{count_recipes}} Recipes found. Recipe Pages:{{total_no_of_pages}}</p>
     {% set _stub = recipes.rewind() %}
      {% for recipe in recipes %}
         <div class="col s12 m7">

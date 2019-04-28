@@ -1,4 +1,6 @@
 {% extends 'base.html' %} {% block content %}
+Displaying {{count_recipes}} Recipe(s). No of Pages: {{total_no_of_pages}}
+<p>Recipe Pages = {{recipe_pages}}</p>
      {% for recipe in recipes %}
         <div class="col s12 m7">
             <div class="card horizontal">

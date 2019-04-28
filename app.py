@@ -36,14 +36,26 @@ userDB = mongo.db.users
 @app.route('/')
 @app.route('/index')
 def index():
-    all_recipes = recipes.find().sort([('date_time', pymongo.DESCENDING), ("_id", pymongo.ASCENDING)]) 
+    all_recipes = recipes.find().sort([('date_time', pymongo.DESCENDING), ('_id', pymongo.ASCENDING)]) 
     count_recipes = all_recipes.count()
-    return render_template('index.html', recipes=recipes.find().sort('date_time',pymongo.DESCENDING), recipeCategory=recipeCategory.find(), count_recipes=count_recipes)
+    return render_template('index.html', recipes=recipes.find().sort('date_time',pymongo.DESCENDING), 
+    recipeCategory=recipeCategory.find(), count_recipes=count_recipes, page=1)
 
-@app.route('/get_recipes')
-def get_recipes():
+@app.route('/get_recipes/<page>', methods=['GET','POST'])
+def get_recipes(page):
+    #Count the number of recipes in the Database
+    all_recipes = recipes.find().sort([('date_time', pymongo.DESCENDING), ('_id', pymongo.ASCENDING)]) 
+    count_recipes = all_recipes.count()
+    #Variables for Pagination
+    offset = (int(page) - 1) * 5
+    limit = 5
+    recipe_pages = recipes.find().sort([('date_time', pymongo.DESCENDING), ('_id', pymongo.ASCENDING)]).limit(limit)
+    total_no_of_pages = int(math.ceil(count_recipes/limit))
+    if count_recipes == 0:
+        page = 0
     return render_template('all_recipes.html', 
-                            recipes = recipes.find().sort('date_time',pymongo.DESCENDING), recipeCategory=recipeCategory.find())
+                            recipes = recipes.find().sort('date_time',pymongo.DESCENDING), recipeCategory=recipeCategory.find(), 
+                            count_recipes=count_recipes,  total_no_of_pages=total_no_of_pages)
                             
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 # User Login & Registration                                                                                #
@@ -122,11 +134,22 @@ def logout():
 # Browse Recipes                                                                                           #
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
     
-@app.route('/browse_recipes/<recipe_category_name>')
+@app.route('/browse_recipes/<recipe_category_name>/1', methods=['GET', 'POST'])
 def browse_recipes(recipe_category_name):
+    #Count the number of recipes in the Database
+    page=1
+    all_recipes = recipes.find({'recipe_category_name': recipe_category_name}).sort([('date_time', pymongo.DESCENDING), ('_id', pymongo.ASCENDING)]) 
+    count_recipes = all_recipes.count()
+    #Variables for Pagination
+    offset = (int(page) - 1) * 2
+    limit = 2
+    recipe_pages = recipes.find({'recipe_category_name': recipe_category_name}).sort([('date_time', pymongo.DESCENDING), ('_id', pymongo.ASCENDING)]).limit(limit)
+    total_no_of_pages = int(math.ceil(count_recipes/limit))
+    if count_recipes == 0:
+        page = 0    
     return render_template('browse_recipes.html',
     recipes=recipes.find({'recipe_category_name': recipe_category_name}).sort('date_time',pymongo.DESCENDING), 
-    recipeCategory=recipeCategory.find())
+    recipeCategory=recipeCategory.find(),count_recipes=count_recipes, total_no_of_pages=total_no_of_pages, recipe_pages=recipe_pages)
     
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 # Add Recipes                                                                                              #
