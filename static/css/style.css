@@ -135,7 +135,8 @@ nav {
 
 /*Add Recipe Styling */
 
-#add_ingredient.btn-floating, #remove_ingredient.btn-floating, #add_method_step.btn-floating, #remove_method_step.btn-floating {
+#add_ingredient.btn-floating, #remove_ingredient.btn-floating, 
+#add_method_step.btn-floating, #remove_method_step.btn-floating {
 width: 30px;
 height: 30px;
 line-height: 30px;
@@ -151,7 +152,8 @@ margin-top: 1.5em;
 background-color: #AE2463;
 }
 
-#add_ingredient.btn-floating i, #remove_ingredient.btn-floating i, #add_method_step.btn-floating i, #remove_method_step.btn-floating i {
+#add_ingredient.btn-floating i, #remove_ingredient.btn-floating i, 
+#add_method_step.btn-floating i, #remove_method_step.btn-floating i {
 font-size: 1.4rem;
 line-height: 30px;
 }
@@ -244,6 +246,25 @@ margin-top: 12px;
 
 .register a {
   color:#F2C59A;
+}
+
+/* Styling for Ratings */
+.star-ratings-sprite {
+  background: url("/static/images/star-rating-sprite.png") repeat-x;
+  font-size: 0;
+  height: 21px;
+  line-height: 0;
+  overflow: hidden;
+  text-indent: -999em;
+  width: 110px;
+  margin: 0 auto;
+}
+.star-ratings-sprite-rating {
+  background: url("/static/images/star-rating-sprite.png") repeat-x;
+  background-position: 0 100%;
+  float: left;
+  height: 21px;
+  display: block;
 }
 
 

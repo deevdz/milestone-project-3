@@ -13,7 +13,10 @@
             {% if session['logged_in'] %}
             <form action="{{ url_for('recipe_rating', recipe_id=recipe._id)}}" method="POST">
                 {% for rating in recipe.ratings %}
-                Ratings: {{rating.overall_ratings}} of 5
+                Ratings: <div class="star-ratings-sprite"><span style="width:{{((rating.overall_ratings / 5)*100)}}%" class="star-ratings-sprite-rating"></span></div>
+                
+                
+                {{rating.overall_ratings}} of 5
                 
                 {% if rating.total_ratings == 0 %}
                     <p>Don't be shy be the first to rate this recipe</p>
