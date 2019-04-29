@@ -34,7 +34,7 @@ userDB = mongo.db.users
 # Homepage  - Load all recipes and load recipes to slider                                                  #
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 @app.route('/')
-@app.route('/index')
+@app.route('/index/1')
 def index():
     all_recipes = recipes.find().sort([('date_time', pymongo.DESCENDING), ('_id', pymongo.ASCENDING)]) 
     count_recipes = all_recipes.count()
@@ -54,7 +54,7 @@ def get_recipes(page):
         page = 0
     return render_template('all_recipes.html', 
                             recipes = recipes.find().sort('date_time',pymongo.DESCENDING), recipeCategory=recipeCategory.find(), 
-                            count_recipes=count_recipes,  total_no_of_pages=total_no_of_pages)
+                            count_recipes=count_recipes,  total_no_of_pages=total_no_of_pages, page=1)
                             
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 # User Login & Registration                                                                                #
@@ -147,10 +147,9 @@ def browse_recipes(recipe_category_name, page):
                     ("_id", pymongo.ASCENDING)]).skip(offset).limit(limit)
     total_no_of_pages = int(math.ceil(count_recipes/limit))
     if count_recipes == 0:
-        page = 1    
+        page = 0    
     return render_template('browse_recipes.html',
-    recipes=recipe_pages, 
-    recipeCategory=recipeCategory.find(),count_recipes=count_recipes, total_no_of_pages=total_no_of_pages, 
+    recipes=recipe_pages, recipeCategory=recipeCategory.find(),count_recipes=count_recipes, total_no_of_pages=total_no_of_pages, 
     page=page, recipe_category_name=recipe_category_name)
     
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
@@ -237,14 +236,27 @@ def delete_recipe(recipe_id):
 # Users My Recipes Page                                                                                    #
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#  
 
-@app.route('/my_recipes/')
-def my_recipes():
+@app.route('/my_recipes/<page>', methods=['GET','POST'])
+def my_recipes(page):
     username=session.get('username')
-    user = userDB.find_one({'username' : username}) 
+    user = userDB.find_one({'username' : username})
+    author = user['author_name']
     
+    #Count the number of recipes in the Database
+    all_recipes = recipes.find({'author_name': author}).sort([('date_time', pymongo.DESCENDING), ('_id', pymongo.ASCENDING)]) 
+    count_recipes = all_recipes.count()
+    #Variables for Pagination
+    offset = (int(page) - 1) * 5
+    limit = 5
+    total_no_of_pages = int(math.ceil(count_recipes/limit))
+    recipe_pages = recipes.find({'author_name': author}).sort([("date_time", pymongo.DESCENDING), 
+                    ("_id", pymongo.ASCENDING)]).skip(offset).limit(limit)
+    total_no_of_pages = int(math.ceil(count_recipes/limit))
+    if count_recipes == 0:
+        page = 0    
     return render_template('my_recipes.html',
-    recipes=recipes.find({'author_name': user['author_name']}).sort('date_time',pymongo.DESCENDING), 
-    recipeCategory=recipeCategory.find())
+    recipes=recipe_pages.sort('date_time',pymongo.DESCENDING), count_recipes=count_recipes, 
+    total_no_of_pages=total_no_of_pages, page=page, author_name = author)
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 # Individual Recipe Page                                                                                   #
@@ -268,8 +280,9 @@ def receive_keyword():
     
 @app.route('/search_keyword/<keyword>')
 def search_keyword(keyword):
-    recipes.create_index([('recipe_name', 'text'), 
-        ('recipe_ingredients', 'text') ])
+    recipes.create_index([('recipe_name', pymongo.ASCENDING), 
+        ('recipe_ingredients', pymongo.ASCENDING), 
+        ('recipe_category_name', pymongo.ASCENDING)], unique=True)
     return render_template('search_by_keyword.html', keyword=keyword, 
         search_results = recipes.find({'$text': {'$search': keyword}}).sort('date_time',pymongo.DESCENDING), 
         recipeCategory=recipeCategory.find())
