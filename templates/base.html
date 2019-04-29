@@ -10,7 +10,7 @@
         <ul id="dropdown1" class="dropdown-content">
             {% for category in recipeCategory %}    
             <li class="divider"></li>
-            <li><a href="{{url_for('browse_recipes', recipe_category_name = category.recipe_category_name)}}">{{category.recipe_category_name}}</a></li>
+            <li><a href="{{url_for('browse_recipes', recipe_category_name = category.recipe_category_name, page=page)}}">{{category.recipe_category_name}}</a></li>
             {% endfor %}
         </ul>
         <ul id="dropdown2" class="dropdown-content">

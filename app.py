@@ -47,10 +47,9 @@ def get_recipes(page):
     all_recipes = recipes.find().sort([('date_time', pymongo.DESCENDING), ('_id', pymongo.ASCENDING)]) 
     count_recipes = all_recipes.count()
     #Variables for Pagination
-    offset = (int(page) - 1) * 5
-    limit = 5
-    recipe_pages = recipes.find().sort([('date_time', pymongo.DESCENDING), ('_id', pymongo.ASCENDING)]).limit(limit)
-    total_no_of_pages = int(math.ceil(count_recipes/limit))
+    offset = (int(page) - 1) * 3
+    limit = 3
+    total_no_of_pages = int(math.ceil(count_recipes/limit))     
     if count_recipes == 0:
         page = 0
     return render_template('all_recipes.html', 
@@ -134,22 +133,25 @@ def logout():
 # Browse Recipes                                                                                           #
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
     
-@app.route('/browse_recipes/<recipe_category_name>/1', methods=['GET', 'POST'])
-def browse_recipes(recipe_category_name):
+@app.route('/browse_recipes/<recipe_category_name>/<page>', methods=['GET', 'POST'])
+def browse_recipes(recipe_category_name, page):
     #Count the number of recipes in the Database
-    page=1
     all_recipes = recipes.find({'recipe_category_name': recipe_category_name}).sort([('date_time', pymongo.DESCENDING), ('_id', pymongo.ASCENDING)]) 
     count_recipes = all_recipes.count()
+    
     #Variables for Pagination
-    offset = (int(page) - 1) * 2
-    limit = 2
-    recipe_pages = recipes.find({'recipe_category_name': recipe_category_name}).sort([('date_time', pymongo.DESCENDING), ('_id', pymongo.ASCENDING)]).limit(limit)
+    offset = (int(page) - 1) * 4
+    limit = 4
+    
+    recipe_pages = recipes.find({'recipe_category_name': recipe_category_name}).sort([("date_time", pymongo.DESCENDING), 
+                    ("_id", pymongo.ASCENDING)]).skip(offset).limit(limit)
     total_no_of_pages = int(math.ceil(count_recipes/limit))
     if count_recipes == 0:
-        page = 0    
+        page = 1    
     return render_template('browse_recipes.html',
-    recipes=recipes.find({'recipe_category_name': recipe_category_name}).sort('date_time',pymongo.DESCENDING), 
-    recipeCategory=recipeCategory.find(),count_recipes=count_recipes, total_no_of_pages=total_no_of_pages, recipe_pages=recipe_pages)
+    recipes=recipe_pages, 
+    recipeCategory=recipeCategory.find(),count_recipes=count_recipes, total_no_of_pages=total_no_of_pages, 
+    page=page, recipe_category_name=recipe_category_name)
     
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 # Add Recipes                                                                                              #
