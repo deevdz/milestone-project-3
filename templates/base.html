@@ -3,6 +3,7 @@
     <head>
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+        <link href="https://fonts.googleapis.com/css?family=Libre+Baskerville:400,700|Montserrat:100,300,400" rel="stylesheet"> 
         <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}" type="text/css" />
     </head>
     <body>
@@ -10,7 +11,7 @@
         <ul id="dropdown1" class="dropdown-content">
             {% for category in recipeCategory %}    
             <li class="divider"></li>
-            <li><a href="{{url_for('browse_recipes', recipe_category_name = category.recipe_category_name, page=page)}}">{{category.recipe_category_name}}</a></li>
+            <li><a href="{{url_for('browse_recipes', recipe_category_name = category.recipe_category_name, page=1)}}">{{category.recipe_category_name}}</a></li>
             {% endfor %}
         </ul>
         <ul id="dropdown2" class="dropdown-content">
@@ -23,7 +24,7 @@
         </ul>        
         <nav>
           <div class="nav-wrapper">
-            <a href="{{url_for('index')}}" class="brand-logo">Logo</a>
+            <a href="{{url_for('index')}}" class="brand-logo"><img src="/static/images/yummy_in_my_tummy.png"></a>
             <ul class="right hide-on-med-and-down">
               <li><a href="{{url_for('index')}}">Home</a></li>
               <li><a class="dropdown-menu" href="#!" data-target="dropdown1">Recipes<i class="material-icons right">arrow_drop_down</i></a></li>
@@ -94,7 +95,7 @@
                 <div class="centered">
                     <div id='search-box'>
                         <i id="close-btn" class="fa fa-times fa-2x"></i>
-                        <form action="{{url_for('receive_keyword')}}" id='search-form' method='post' target='_top'>
+                        <form action="{{url_for('receive_keyword', page=1)}}" id='search-form' method='post' target='_top'>
                             <input id='search-text' name='keyword' placeholder='Search' type='text' />
                             <button id='search-button' type='submit'>                     
                                 <span>Search</span>

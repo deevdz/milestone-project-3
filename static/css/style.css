@@ -2,12 +2,20 @@
     display: flex;
     min-height: 100vh;
     flex-direction: column;
+    font-family: 'Montserrat', sans-serif;
   }
 
   main {
     flex: 1 0 auto;
   }
 
+h5 {
+  font-family: 'Libre Baskerville', serif;
+}
+
+h3 {
+  font-family: 'Libre Baskerville', serif;
+}
 
 /* Navigation */
 nav ul a{
@@ -19,7 +27,20 @@ text-transform: uppercase;
 }
 nav {
     background-color:#050C35;
+    height: 90px;
+    line-height: 90px;
 }
+
+.nav-wrapper i {
+    height: 90px !important;
+    line-height: 90px !important;
+}
+
+.brand-logo img {
+  padding:5px;
+}
+
+
 
 /* Search Overlay */
 .slider {
