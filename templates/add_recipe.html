@@ -112,6 +112,14 @@
             On
             </label>
         </div>
+<div class="row col s12 flow-text">        
+  Input field(might be hidden):
+  <input name="recipe_tags" value="Cooking" type="hidden">
+  
+  The Chip:
+  <div class="chips chips-placeholder"/>
+
+  </div>
         <!--<input type="text" name="author_name" id="author_name" value="{{author}}" disabled placeholder="{{author}}">-->
         <div class="row">
             <button class="btn waves-effect waves-light" type="submit" name="action">Add Recipe
@@ -124,5 +132,4 @@
 {% else %}
 <p>You must be logged in to add a recipe </p>
 {% endif %}
-
 {% endblock %}    

@@ -82,7 +82,7 @@ def signup():
 @app.route('/signin')
 def signin():
     if not session.get('logged_in'):
-        return render_template('login.html')
+        return render_template('login.html', recipeCategory=recipeCategory.find(), page=1)
     else:
         return render_template('index.html', recipes=recipes.find().sort('date_time',pymongo.DESCENDING), 
         recipeCategory=recipeCategory.find(), page=1)
@@ -155,7 +155,9 @@ def add_recipe():
 @app.route('/insert_recipe', methods=['GET','POST'])
 def insert_recipe():
     username=session.get('username')
-    user = userDB.find_one({'username' : username})    
+    user = userDB.find_one({'username' : username}) 
+    recipe_tags = request.form.get('recipe_tags')
+    recipe_tags_split = [x.strip() for x in recipe_tags.split(',')]
     complete_recipe = {
             'recipe_name': request.form.get('recipe_name'),
             'recipe_description': request.form.get('recipe_description'),
@@ -176,7 +178,8 @@ def insert_recipe():
                     'total_ratings': 0,
                     'no_of_ratings':0
                     }
-                ]
+                ],
+            'recipe_tags': recipe_tags_split
         }   
     recipes.insert_one(complete_recipe)
     return redirect(url_for('my_recipes',page=1))
@@ -193,6 +196,8 @@ def edit_recipe(recipe_id):
             
 @app.route('/update_recipe/<recipe_id>', methods=['POST'])
 def update_recipe(recipe_id):
+    recipe_tags = request.form.get('recipe_tags')
+    recipe_tags_split = [x.strip() for x in recipe_tags.split(',')]
     recipes.update( {'_id': ObjectId(recipe_id)},
         { 
             '$set':{
@@ -207,7 +212,8 @@ def update_recipe(recipe_id):
             'recipe_image' : request.form.get('recipe_image'),            
             'recipe_ingredients':  request.form.getlist('recipe_ingredients'),
             'recipe_method':  request.form.getlist('recipe_method'),
-            'featured_recipe':  request.form.get('featured_recipe')
+            'featured_recipe':  request.form.get('featured_recipe'),
+            'recipe_tags': recipe_tags_split
             }
         })    
     return redirect(url_for('get_recipes'))        

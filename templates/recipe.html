@@ -60,9 +60,13 @@
                  {% for items in recipe.recipe_method %}
                         <li>{{items}}</li>
                 {% endfor %}
-                </ol>     
+                </ol>    
+                {% for items in recipe.recipe_tags %}
+                     {% if items !="" %}
                  <div class="chip">
-    <a href="#">Tag</a>
-    <i class="close material-icons">close</i>
-  </div>
+                    <a href="{{url_for('search_keyword',keyword=items, page=1)}}"">{{items}}</a>
+                  </div>
+                  {% endif %}
+                {% endfor %}
+                
 {% endblock %}    
