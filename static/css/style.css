@@ -9,26 +9,52 @@
     flex: 1 0 auto;
   }
 
-h5 {
+h1, h2, h3, h4, h5, h6 {
   font-family: 'Libre Baskerville', serif;
 }
 
-h3 {
-  font-family: 'Libre Baskerville', serif;
+a {
+  color:#98a959;;
+}
+
+h3, h4, h5, h6 {
+  color:#98a959;
+}
+
+.chip {
+  background-color: #f9f9f9;
 }
 
 /* Navigation */
 nav ul a{
 text-transform: uppercase;
+color:#78766a;
 }
 .dropdown-content{
    width: max-content !important;
    height:auto !important;
 }
 nav {
-    background-color:#050C35;
+    background-color:#fff;
     height: 90px;
     line-height: 90px;
+    -webkit-box-shadow: 0 2px 2px 0 rgba(183,182,181,0.14),0 1px 5px 0 rgba(183,182,181,0.12),0 3px 1px -2px rgba(183,182,181,.2);
+    box-shadow: -1px 2px 2px 0 rgba(183,182,181,0.14),0 1px 5px 0 rgba(183,182,181,0.12),0 3px 1px -2px rgba(183,182,181,0.2);
+}
+
+nav ul a:hover {
+    background-color: rgba(250,230,131,0.5);
+}
+
+.dropdown-content li > a, .dropdown-content li > span {
+    color: #78766a;
+    text-transform: capitalize;
+    font-size:14px;
+    letter-spacing: 1px;
+}
+
+.active {
+    background-color: #ffffff!important;
 }
 
 .nav-wrapper i {
@@ -50,12 +76,13 @@ nav {
 #search-btn{
   padding: 2px 10px;
   border-radius: 2px;
-  color: #FFF;
+  color: #78766a;
 }
 
 #search-btn:hover{
-  background-color: rgba(174,36,99,0.8);
+  background-color: rgba(152,169,89,0.8);
   cursor: pointer;
+  color:#ffffff;
   
 }
 #search-overlay{
@@ -128,22 +155,26 @@ nav {
 }
 
 #search-button {
-  position: absolute;
-  top: 0;
-  right: 0;
-  height: 4.7em;
-  width: 100px;
-  font-size: 14px;
-  color: #fff;
-  text-align: center;
-  line-height: 42px;
-  border-width: 0;
-  background-color: #4d90fe;
-  -webkit-border-radius: 0 2px 2px 0;
-  -moz-border-radius: 0 2px 2px 0;
-  border-radius: 0 2px 2px 0;
-  cursor: pointer;
+position: absolute;
+top: 0;
+right: 0;
+height: 3.8em;
+width: 100px;
+font-size: 15px;
+color: #fff;
+text-align: center;
+line-height: 42px;
+border-width: 0;
+background-color: #98a959;
+-webkit-border-radius: 0 2px 2px 0;
+-moz-border-radius: 0 2px 2px 0;
+border-radius: 0 2px 2px 0;
+cursor: pointer;
+font-weight: 700;
+letter-spacing: 2px;
+text-transform: uppercase;
 }
+
 #close-btn{
   position: fixed;
   top: 1em;
@@ -198,7 +229,7 @@ margin: 20px auto;
 width: 300px;
 }
 .login-screen {
-background-color: #2D6E81;
+background-color: #98a959;
 padding: 20px;
 border-radius: 5px
 }
@@ -215,28 +246,31 @@ text-align: center;
 margin-bottom: 10px;
 }
  
-input {
+.login input {
 text-align: center;
 background-color: #ECF0F1;
-border: 2px solid transparent;
+border-bottom: 2px solid #fff !important;
+color:#fff !important;
 border-radius: 3px;
 font-size: 16px;
 font-weight: 200;
 padding: 10px 0;
 width: 250px;
+font-weight: 800;
 transition: border .5s;
 }
  
-input:focus {
-border: 2px solid #3498DB;
+.login input:focus {
+border: 2px solid #fff !important;
 box-shadow: none;
 }
  
-.btn {
+.login .btn {
 border: 2px solid transparent;
-background: #3498DB;
+background: #f3d63d;
 color: #ffffff;
 font-size: 16px;
+font-weight: 800;
 line-height: 25px;
 padding: 10px 0;
 text-decoration: none;
@@ -247,26 +281,29 @@ transition: 0.25s;
 display: block;
 width: 250px;
 margin: 0 auto;
+border:none !important;
 }
  
-.btn:hover {
-background-color: #2980B9;
+.login .btn:hover {
+background-color: #fae683;
 }
  
-.login-link {
+.login .login-link {
 font-size: 12px;
 color: #444;
 display: block;
 margin-top: 12px;
 }
 
-.register {
+.login .register {
   text-align:center;
   color:#fff;
 }
 
-.register a {
-  color:#F2C59A;
+.login .register a {
+  color:#f3d63d;
+  font-weight:800;
+  letter-spacing: 1px;
 }
 
 /* Styling for Ratings */
@@ -291,10 +328,81 @@ margin-top: 12px;
 
 /* Footer */
 .page-footer {
-  background-color: #2D6E81;
+  background-color: #b7b6bc;
 }
 
 .footer-copyright {
-    background-color: #050C35 !important;
+    background-color: #78766a !important;
+}
+
+
+/* SLider Code  */
+.mySlides {display: none;}
+img {vertical-align: middle;max-height:400px;}
+
+/* Slideshow container */
+.slideshow-container {
+  padding-top:20px;
+  max-width: 1000px;
+  position: relative;
+  margin: auto;
+}
+
+/* Caption text */
+.text {
+  color: #f2f2f2;
+  font-size: 15px;
+  padding: 8px 12px;
+  position: absolute;
+  bottom: 8px;
+  width: 100%;
+  text-align: center;
+}
+
+/* Number text (1/3 etc) */
+.numbertext {
+  color: #f2f2f2;
+  font-size: 12px;
+  padding: 8px 12px;
+  position: absolute;
+  top: 0;
+}
+
+/* The dots/bullets/indicators */
+.dot {
+  height: 15px;
+  width: 15px;
+  margin: 0 2px;
+  background-color: #bbb;
+  border-radius: 50%;
+  display: inline-block;
+  transition: background-color 0.6s ease;
+}
+
+.active {
+  background-color: #717171;
+}
+
+/* Fading animation */
+.fade {
+  -webkit-animation-name: fade;
+  -webkit-animation-duration: 1.5s;
+  animation-name: fade;
+  animation-duration: 1.5s;
+}
+
+@-webkit-keyframes fade {
+  from {opacity: .4} 
+  to {opacity: 1}
+}
+
+@keyframes fade {
+  from {opacity: .4} 
+  to {opacity: 1}
+}
+
+/* On smaller screens, decrease text size */
+@media only screen and (max-width: 300px) {
+  .text {font-size: 11px}
 }
 

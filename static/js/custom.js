@@ -10,25 +10,12 @@ $(document).ready(function() {
     });
 });
 
-// Materialize Code
-document.addEventListener('DOMContentLoaded', function() {
-    var elems = document.querySelectorAll('.slider');
-    var instances = M.Slider.init(elems, options);
-    //var elems = document.querySelectorAll('select');
-    //var instances = M.FormSelect.init(elems, options);
-    //var elems = document.querySelectorAll('.chips');
-    //var instances = M.Chips.init(elems, options);
-});
-  
+ // Materialize Code
   $(document).ready(function() {
     $('select').material_select();
+    $(".button-collapse").sideNav();
   });         
 
-
-//$('.chips-placeholder').chips({
-//  placeholder: 'Enter a tag',
-//  secondaryPlaceholder: '+Tag',
-//});
 
 // Code for Adding and Removing Ingredients and Steps on Add Recipe Page
 var ingredient_field = '<div class="row new-ingredient"> <div class="input-field col s10 m11"><input type="text" name="recipe_ingredients" class="validate" required><label>Ingredient(s)</label></div><div class="col s2 m1"><a class="btn-floating waves-effect waves-light" id="remove_ingredient"> <i class="material-icons">remove</i></a></div></div>';
@@ -55,6 +42,7 @@ $("body").on("click","#remove_method_step", function() {
    $(this).parents(".new-method-step").remove();
 }); 
 
+//Code to bind chip input to hidden input field
      function updateChipInput(chip){
        var newval= $(chip).material_chip('data')
           .reduce(function(result,val){ result.push(val.tag); return result;},[]).join(",")
@@ -84,3 +72,20 @@ $("body").on("click","#remove_method_step", function() {
        updateChipInput(this);
     });  
    });
+   
+   
+ // Code for Homepage Slider
+var slideIndex = 0;
+showSlides();
+
+function showSlides() {
+  var i;
+  var slides = document.getElementsByClassName("mySlides");
+  for (i = 0; i < slides.length; i++) {
+    slides[i].style.display = "none";
+  }
+  slideIndex++;
+  if (slideIndex > slides.length) {slideIndex = 1}
+  slides[slideIndex-1].style.display = "block";
+  setTimeout(showSlides, 5000); // Change image every 2 seconds
+}

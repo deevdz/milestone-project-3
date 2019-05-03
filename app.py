@@ -297,7 +297,36 @@ def search_keyword(keyword, page):
         search_results = recipe_pages.sort('date_time',pymongo.DESCENDING), 
         recipeCategory=recipeCategory.find(), count_recipes=count_recipes, 
         total_no_of_pages=total_no_of_pages, page=page)
-        
+
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+# Searching Tags                                                                                           #
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+
+@app.route('/search_tag', methods=['POST'])
+def receive_tag():
+    return redirect(url_for('search_tag', keyword=request.form.get('tag'), page=1)) 
+    
+    
+@app.route('/search_tag/<tag>/<page>', methods=['GET','POST'])
+def search_tag(tag, page):
+    recipes.create_index([('recipe_tags', pymongo.ASCENDING)], unique=True)
+    #Count the number of recipes in the Database
+    all_recipes = recipes.find({'recipe_tags': tag}).sort([('date_time', pymongo.DESCENDING), ('_id', pymongo.ASCENDING)]) 
+    count_recipes = all_recipes.count()
+    
+    #Variables for Pagination
+    offset = (int(page) - 1) * 4
+    limit = 4
+    total_no_of_pages = int(math.ceil(count_recipes/limit))
+    
+    recipe_pages = recipes.find({'recipe_tags': tag}).sort([("date_time", pymongo.DESCENDING), 
+                    ("_id", pymongo.ASCENDING)]).skip(offset).limit(limit)
+                    
+    return render_template('search_by_tag.html', tag=tag, 
+        search_results = recipe_pages.sort('date_time',pymongo.DESCENDING), 
+        recipeCategory=recipeCategory.find(), count_recipes=count_recipes, 
+        total_no_of_pages=total_no_of_pages, page=page)     
         
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 # Ratings                                                                                                  #
