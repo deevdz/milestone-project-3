@@ -21,9 +21,63 @@ h3, h4, h5, h6 {
   color:#98a959;
 }
 
+h6 {
+  font-weight: 900;
+  text-transform: uppercase;
+}
+/* Form Styling */
+::-webkit-input-placeholder {
+  color: black;
+}
+
+:-ms-input-placeholder { 
+  color: black;
+}
+
+::placeholder {
+  color: black;
+}
+
 .chip {
   background-color: #f9f9f9;
 }
+
+
+input.valid:not([type]), input.valid:not([type]):focus, input[type="text"].valid:not(.browser-default), input[type="text"].valid:not(.browser-default):focus, input[type="password"].valid:not(.browser-default), input[type="password"].valid:not(.browser-default):focus, input[type="email"].valid:not(.browser-default), input[type="email"].valid:not(.browser-default):focus, input[type="url"].valid:not(.browser-default), input[type="url"].valid:not(.browser-default):focus, input[type="time"].valid:not(.browser-default), input[type="time"].valid:not(.browser-default):focus, input[type="date"].valid:not(.browser-default), input[type="date"].valid:not(.browser-default):focus, input[type="datetime"].valid:not(.browser-default), input[type="datetime"].valid:not(.browser-default):focus, input[type="datetime-local"].valid:not(.browser-default), input[type="datetime-local"].valid:not(.browser-default):focus, input[type="tel"].valid:not(.browser-default), input[type="tel"].valid:not(.browser-default):focus, input[type="number"].valid:not(.browser-default), input[type="number"].valid:not(.browser-default):focus, input[type="search"].valid:not(.browser-default), input[type="search"].valid:not(.browser-default):focus, textarea.materialize-textarea.valid, textarea.materialize-textarea.valid:focus, .select-wrapper.valid > input.select-dropdown {
+    border-bottom: 1px solid #98a959;
+    -webkit-box-shadow: 0 1px 0 0 #98a959;
+    box-shadow: 0 1px 0 0 #98a959;
+}
+
+.add-recipe-name, .add-recipe-prep, .add-recipe-ingredients,.add-recipe-tags {
+  background: rgba(182,183,188,0.05);
+  border-radius:2px;
+  padding:10px 10px 20px;
+}
+
+.add-recipe-category, .add-recipe-image,.add-recipe-method,.add-recipe-featured {
+  background: rgba(250,230,131,0.2);
+  border-radius:2px;
+  padding:10px 10px 20px;
+}
+
+.switch label input[type="checkbox"]:checked + .lever::after {
+    background-color: #f3d63d;
+}
+
+.switch label input[type="checkbox"]:checked + .lever {
+    background-color: #fae683;
+}
+
+.add-recipe-button {
+  background-color: #98a959;
+}
+
+.add-recipe-button:hover, .add-recipe-button:hover {
+    background-color: #f3d63d;
+}
+
+
 
 /* Navigation */
 nav ul a{
@@ -66,7 +120,16 @@ nav ul a:hover {
   padding:5px;
 }
 
+nav .button-collapse {
+    color: #78766a;
+}
 
+/*Header Styles */
+.flash-message {
+  margin-top:20px;
+  color: #98a959;
+  font-weight: 700;
+}
 
 /* Search Overlay */
 .slider {
@@ -179,6 +242,7 @@ text-transform: uppercase;
   position: fixed;
   top: 1em;
   right: 1em;
+  color:#ffffff;
 }
 #close-btn:hover{
   color: #777;
@@ -197,11 +261,11 @@ margin-top: 1.5em;
 }
 
 #add_ingredient.btn-floating, #add_method_step.btn-floating {
-  background-color: #2D6E81;
+background-color: #f3d63d;
 }
 
 #remove_ingredient.btn-floating, #remove_method_step.btn-floating {
-background-color: #AE2463;
+background-color: #78766a;
 }
 
 #add_ingredient.btn-floating i, #remove_ingredient.btn-floating i, 
@@ -404,5 +468,17 @@ img {vertical-align: middle;max-height:400px;}
 /* On smaller screens, decrease text size */
 @media only screen and (max-width: 300px) {
   .text {font-size: 11px}
+  
+  
 }
 
+
+@media only screen and (max-width: 468px) {
+.nav-wrapper i {
+    height: 40px !important;
+    line-height: 40px !important;
+}
+.side-nav .collapsible-header, .side-nav.fixed .collapsible-header {
+  padding:0 32px;
+}
+}

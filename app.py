@@ -99,7 +99,7 @@ def login():
     
     if not user:
         session['logged_in'] = False
-        flash('User ' + session['username'] + ' cannot be found on our system')
+        flash('User ' + session['username'] + ' cannot be found on our system. Please try again.')
         return signin()
     if password == user['password']:
         session['logged_in'] = True
@@ -109,7 +109,7 @@ def login():
     else:
         session['logged_in'] = False
         flash('Incorrect Password, please try again.')
-    
+        return signin()
     
 @app.route('/logout')
 def logout():
@@ -216,7 +216,7 @@ def update_recipe(recipe_id):
             'recipe_tags': recipe_tags_split
             }
         })    
-    return redirect(url_for('get_recipes'))        
+    return redirect(url_for('my_recipes',page=1))       
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 # Delete Recipes                                                                                           #
@@ -226,7 +226,7 @@ def update_recipe(recipe_id):
 @app.route('/delete_recipe/<recipe_id>')
 def delete_recipe(recipe_id):
     recipes.remove({'_id': ObjectId(recipe_id)})
-    return redirect(url_for('get_recipes'))
+    return redirect(url_for('my_recipes',page=1))
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
@@ -278,9 +278,8 @@ def receive_keyword():
     
 @app.route('/search_keyword/<keyword>/<page>', methods=['GET','POST'])
 def search_keyword(keyword, page):
-    recipes.create_index([('recipe_name', pymongo.ASCENDING), 
-        ('recipe_ingredients', pymongo.ASCENDING), 
-        ('recipe_category_name', pymongo.ASCENDING)], unique=True)
+    recipes.create_index([('recipe_name', 'text'), ('recipe_ingredients', 'text'), ('recipe_category_name','text')])        
+    
     #Count the number of recipes in the Database
     all_recipes = recipes.find({'$text': {'$search': keyword}}).sort([('date_time', pymongo.DESCENDING), ('_id', pymongo.ASCENDING)]) 
     count_recipes = all_recipes.count()
@@ -310,7 +309,7 @@ def receive_tag():
     
 @app.route('/search_tag/<tag>/<page>', methods=['GET','POST'])
 def search_tag(tag, page):
-    recipes.create_index([('recipe_tags', pymongo.ASCENDING)], unique=True)
+    recipes.create_index([('recipe_tags', pymongo.ASCENDING)])
     #Count the number of recipes in the Database
     all_recipes = recipes.find({'recipe_tags': tag}).sort([('date_time', pymongo.DESCENDING), ('_id', pymongo.ASCENDING)]) 
     count_recipes = all_recipes.count()

@@ -1,10 +1,55 @@
 {% extends 'base.html' %} {% block content %}
-            <h3>{{recipe.recipe_name}}</h3>
-            <p>{{recipe.recipe_description}}</p>
-            <p><img src="{{recipe.recipe_image}}" style="width:100%;"></p>
+<div class="row">
+    <div class="col s12">
+        <h4>{{recipe.recipe_name}}</h4>
+    </div>
+</div>
+<div class="row">
+    <div class="col s5">
+       <p><img src="{{recipe.recipe_image}}" style="width:100%;"></p> 
+    </div>
+    <div class="col s7">
+        
+    </div>
+</div>
+<div class="row">
+    <div class="col s12">
+        <p><em>{{recipe.recipe_description}}</em></p>
+    </div>
+</div>
+<div class="row">
+    <div class="col s4">
+        <h5>Ingredients</h5>
+        <ul>
+            {% for items in recipe.recipe_ingredients %}
+            <li>{{items}}</li>
+            {% endfor %}
+        </ul>        
+    </div>
+    <div class="col s7">
+        <h5>Method</h5>
+        <ol>
+            {% for items in recipe.recipe_method %}
+                <li>{{items}}</li>
+            {% endfor %}
+        </ol>   
+    </div>
+</div>
+<div class="row">
+    <div class="col s12"><p>Recipe Tags: </p>
+        {% for items in recipe.recipe_tags %}
+            {% if items !="" %}
+                <div class="chip">
+                    <a href="{{url_for('search_tag',tag=items, page=1)}}">{{items}}</a>
+                </div>
+            {% endif %}
+        {% endfor %}
+        
+    </div>
+</div>
+
             <p>Prep Time: {{recipe.recipe_prep_time}} minutes</p>
             <p>Cook Time: {{recipe.recipe_cook_time}} minutes</p>
-            <p>Total Time: {{recipe.recipe_prep_time|int + recipe.recipe_cook_time|int}} minutes</p>
             <p>Author: {{recipe.author_name}}</p>
                 {% if (session['logged_in'] and user.author_name == recipe.author_name) %}
                     <a href="{{url_for('edit_recipe', recipe_id = recipe._id)}}">Edit Recipe</a>
@@ -51,22 +96,8 @@
             {% endif %} 
             {% endif %} 
         
-                <ul>
-                 {% for items in recipe.recipe_ingredients %}
-                        <li>{{items}}</li>
-                {% endfor %}
-                </ul>
-                <ol>
-                 {% for items in recipe.recipe_method %}
-                        <li>{{items}}</li>
-                {% endfor %}
-                </ol>    
-                {% for items in recipe.recipe_tags %}
-                     {% if items !="" %}
-                 <div class="chip">
-                    <a href="{{url_for('search_tag',tag=items, page=1)}}"">{{items}}</a>
-                  </div>
-                  {% endif %}
-                {% endfor %}
+
+   
+                
                 
 {% endblock %}    

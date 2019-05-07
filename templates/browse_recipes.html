@@ -1,9 +1,12 @@
 {% extends 'base.html' %} {% block content %}
-Displaying {{count_recipes}} Recipe(s). No of Pages: {{total_no_of_pages}}
+<h3>{{recipe_category_name}}</h3>
+ {% if count_recipes == 0 %}
+  <p>We currently have no recipes to display in this category. Why not <a href="{{url_for('signin')}}">login</a> and add a recipe :)</p>
+    {% else %}
     <div class="row">
         <div class="col s12">
-            <p> Page {{ page }} of {{total_no_of_pages}}</p>
-            <ul class="right-align">
+            <p>Displaying {{count_recipes}} Recipe(s). Page {{ page }} of {{total_no_of_pages}}</p>
+            <ul class="pagination right-align">
                 <li id="prev-page-url" {% if page|int > 1 %} class= "" {% else %} class="disabled" {% endif %}>
                     <a {% if page|int > 1 %} href="{{url_for('browse_recipes',recipe_category_name = recipe_category_name, page=page|int-1)}}"{% endif %}><i class="material-icons">chevron_left</i>Prev</a>
                 </li>
@@ -31,4 +34,5 @@ Displaying {{count_recipes}} Recipe(s). No of Pages: {{total_no_of_pages}}
         </div>
       </div>
     {% endfor %}
+{% endif %}
 {% endblock %}    

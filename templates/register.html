@@ -1,6 +1,7 @@
 {% extends 'base.html' %} {% block content %}
     {% if session['logged_in'] %}
-     <h5>You're logged in already!</h5>
+     <h5 class="center">You are currently logged in. <br /><br />Registration not required!</h5>
+     <p class="center">Go to <a href="{{url_for('my_recipes',page=1)}}">My Recipes</a></p>
      {% else %}
      <form action="/signup" method="POST">
         <div class="login">
@@ -24,7 +25,7 @@
                     <input type="submit" value="Join Now" class="btn btn-primary btn-large btn-block">
                  </div>
                  <div class="register">
-                     <p>Already have an account? <a href="">Sign in</a></p>
+                     <p>Already have an account? <a href="{{url_for('signin')}}">Sign in</a></p>
                 </div>
             </div>
         </div>

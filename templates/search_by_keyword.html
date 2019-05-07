@@ -1,11 +1,12 @@
 {% extends 'base.html' %} {% block content %}
- <h3>Search Results</h3>
- <p>Search results for: "{{keyword}}"</span> </p> 
-Displaying {{count_recipes}} Recipe(s). No of Pages: {{total_no_of_pages}}
+<h3>Search: {{keyword}}</h3>
+{% if count_recipes == 0 %}
+<p>We currently have no recipes to display for this search term. Why not <a href="{{url_for('signin')}}">login</a> and add a recipe :)</p>
+    {% else %}
     <div class="row">
         <div class="col s12">
-            <p> Page {{ page }} of {{total_no_of_pages}}</p>
-            <ul class="right-align">
+            <p>Displaying {{count_recipes}} Recipe(s). Page {{ page }} of {{total_no_of_pages}}</p>
+            <ul class="pagination right-align">
                 <li id="prev-page-url" {% if page|int > 1 %} class= "" {% else %} class="disabled" {% endif %}>
                     <a {% if page|int > 1 %} href="{{url_for('search_keyword',keyword=keyword, page=page|int-1)}}"{% endif %}><i class="material-icons">chevron_left</i>Prev</a>
                 </li>
@@ -14,7 +15,7 @@ Displaying {{count_recipes}} Recipe(s). No of Pages: {{total_no_of_pages}}
                 </li>
             </ul>
         </div>
-</div> 
+    </div> 
      {% for recipe in search_results %}
         <div class="col s12 m7">
             <div class="card horizontal">
@@ -33,4 +34,5 @@ Displaying {{count_recipes}} Recipe(s). No of Pages: {{total_no_of_pages}}
         </div>
       </div>
       {% endfor %}
+{% endif %}
 {% endblock %}    

@@ -1,25 +1,35 @@
 // Code for Search Overlay
+var search_screen = document.getElementById('search-overlay');
+
 $(document).ready(function() {
-    $('#close-btn').click(function() {
-        $('#search-overlay').fadeOut();
-        $('#search-btn').show();
-    });
     $('#search-btn').click(function() {
         $(this).hide();
         $('#search-overlay').fadeIn();
     });
 });
 
+window.onclick = function(event) {
+    if (event.target == search_screen) {
+        search_screen.style.display = 'none';
+        $('#search-btn').show();
+    }
+};
+
  // Materialize Code
   $(document).ready(function() {
-    $('select').material_select();
     $(".button-collapse").sideNav();
-  });         
+    $('select').material_select();
+  });  
+  
+$('.button-collapse').sideNav({
+      closeOnClick: true, // Closes side-nav on <a> clicks, useful for Angular/Meteor
+    }
+  );  
 
 
-// Code for Adding and Removing Ingredients and Steps on Add Recipe Page
-var ingredient_field = '<div class="row new-ingredient"> <div class="input-field col s10 m11"><input type="text" name="recipe_ingredients" class="validate" required><label>Ingredient(s)</label></div><div class="col s2 m1"><a class="btn-floating waves-effect waves-light" id="remove_ingredient"> <i class="material-icons">remove</i></a></div></div>';
-var step_field =   '<div class="row new-method-step"> <div class="input-field col s10 m11"><input type="text" name="recipe_method" class="validate" required><label>Step</label></div><div class="col s2 m1"><a class="btn-floating waves-effect waves-light" id="remove_method_step"> <i class="material-icons">remove</i></a></div></div>'; 
+// Code for Adding and Removing Ingredients and Steps on Add Recipe Paget
+var ingredient_field = '<div class="new-ingredient"><div class="input-field col s11"><input placeholder="Ingredients" type="text" name="recipe_ingredients" class="validate" required></div><div class="col s1"><a class="btn-floating waves-effect waves-light" id="remove_ingredient"> <i class="material-icons">remove</i></a></div></div>';
+var step_field =   '<div class="new-method-step"><div class="input-field col s11"><input placeholder="Steps" type="text" name="recipe_method" class="validate" required></div><div class="col s1"><a class="btn-floating waves-effect waves-light" id="remove_method_step"> <i class="material-icons">remove</i></a></div></div>'; 
 
 // Add Ingredient to Recipe
 $("#add_ingredient").click(function() {
@@ -44,7 +54,8 @@ $("body").on("click","#remove_method_step", function() {
 
 //Code to bind chip input to hidden input field
      function updateChipInput(chip){
-       var newval= $(chip).material_chip('data')
+         var newval = "";
+       newval= $(chip).material_chip('data')
           .reduce(function(result,val){ result.push(val.tag); return result;},[]).join(",")
   
        $('input[name="recipe_tags"]').val(newval);
@@ -57,18 +68,18 @@ $("body").on("click","#remove_method_step", function() {
        })
     
      $('.chips').material_chip({
-       data: data,
-      autocompleteData: {
-       'Apple': "x",
-       'Microsoft': "u",
-       'Google': "y"
-      }   
+       data: data  
     });
+    
+$('.chips-placeholder').material_chip({
+    placeholder: 'Enter a tag',
+    secondaryPlaceholder: '+Tag',
+  });
     
      $('.chips').on('chip.add', function(e, chip){
        updateChipInput(this);
     })
-     .on('chip.delete', function(e, chip){
+     $('.chips').on('chip.delete', function(e, chip){
        updateChipInput(this);
     });  
    });

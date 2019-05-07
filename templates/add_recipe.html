@@ -1,127 +1,119 @@
 {% extends 'base.html' %} {% block content %}
 {% if session['logged_in'] %}
-<h1>Add Recipe</h1>
+<h4>Add New Recipe</h4>
   <div class="row">
     <form method="POST" action="{{ url_for('insert_recipe', author=session.get('username')) }}" class="col s12" >
-        <div class="row">
+        <div class="row add-recipe-name">
             <div class="input-field col s12">
-                <i class="material-icons prefix">content_paste</i>
-                <input id="recipe_name" type="text" class="validate" name="recipe_name" required>
-                <label for="recipe_name">Recipe Name</label>
+                <h6>Recipe Name</h6>
+                <input id="recipe_name" type="text" class="validate" name="recipe_name" placeholder="*Please enter a Recipe Name." required>
+                
+            </div>
+            <div class="input-field col s12">
+                <h6>Recipe Short Desciption</h6>
+                <input id="recipe_description" type="text" class="validate" name="recipe_description" placeholder="*Please enter a short description of your recipe.*" required>
             </div>
         </div>
-        <div class="row">
-            <div class="input-field col s12">
-                <i class="material-icons prefix">content_paste</i>
-                <input id="recipe_description" type="text" class="validate" name="recipe_description" required>
-                <label for="recipe_description">Recipe Description</label>
-            </div>
-        </div>
-        <div class="row">
-            <div class="input-field col s6">
+        <div class="row add-recipe-category">
+            <div class="input-field col s12 m6">
+                <h6>Recipe Category</h6>
                     <select id="recipe_category_name" name="recipe_category_name" required>
-                      <option value="" disabled selected>Choose your option</option>
+                      <option value="" disabled selected>*Choose your option</option>
                       {% set _stub = recipeCategory.rewind() %}
                       {% for category in recipeCategory %}
                       <option value="{{category.recipe_category_name}}">{{category.recipe_category_name}}</option>
                       {% endfor %}
                     </select>
-                    <label>Recipe Category</label>
             </div>
-            <div class="input-field col s6">
+            <div class="input-field col s12 m6">
+                <h6>Allergens</h6>
                 <select multiple id="allergen_type" name="allergen_type">
-                  <option value="" disabled selected>Choose your option:</option>
+                  <option value="" disabled selected>Choose your option(s):</option>
                     {% set _stub = recipeCategory.rewind() %}
                     {% for allergen in allergens %}
                       <option value="{{allergen.allergen_type}}">{{allergen.allergen_type}}</option>
                     {% endfor %}
                 </select>
-                <label>Allergens</label>
             </div>
         </div>         
-        <div class="row">
-            <div class="input-field col s6">
-                <i class="material-icons prefix">content_paste</i>
-                <input id="recipe_prep_time" type="text" class="validate" name="recipe_prep_time" required>
-                <label for="recipe_prep_time">Recipe Preparation Time</label>
+        <div class="row add-recipe-prep">
+            <div class="input-field col s12 m6">
+                <h6>Recipe Preparation Time</h6>
+                <input id="recipe_prep_time" type="text" class="validate" name="recipe_prep_time" placeholder="*How long to prepare?" required>
             </div>
-            <div class="input-field col s6">
-                <i class="material-icons prefix">content_paste</i>
-                <input id="recipe_cook_time" type="text" class="validate" name="recipe_cook_time" required>
-                <label for="recipe_cook_time">Recipe Cook Time</label>
+            <div class="input-field col s12 m6">
+                <h6>Recipe Cook Time</h6>
+                <input id="recipe_cook_time" type="text" class="validate" name="recipe_cook_time" placeholder="*How long to cook?" required>
             </div>            
-        </div>
-        <div class="row">
-            <div class="input-field col s6">
-                <i class="material-icons prefix">content_paste</i>
-                <input id="recipe_serves" type="text" class="validate" name="recipe_serves" required>
-                <label for="recipe_serves">Recipe Serves</label>
+            <div class="input-field col s12 m6">
+                <h6>Recipe Serves</h6>
+                <input id="recipe_serves" type="text" class="validate" name="recipe_serves" placeholder="*How many does it serve?" required>
             </div>
-            <div class="input-field col s6">
+            <div class="input-field col s12 m6">
+                <h6>Recipe Difficulty</h6>
                     <select id="recipe_difficulty" name="recipe_difficulty" required>
-                      <option value="" disabled selected>Choose your option</option>
+                      <option value="" disabled selected>*Choose your option</option>
                       {% set _stub = skillLevel.rewind() %}
                       {% for skill in skillLevel %}
                       <option value="{{skill.recipe_difficulty}}">{{skill.recipe_difficulty}}</option>
                       {% endfor %}
                     </select>
-                    <label>Recipe Difficulty</label>
             </div>
         </div>
-        <div class="row">
+        <div class="row add-recipe-image">
             <div class="input-field col s12">
-                <i class="material-icons prefix">content_paste</i>
-                <input id="recipe_image" type="text" class="validate" name="recipe_image" required>
-                <label for="recipe_image">Image URL</label>
+                <h6>Image URL</h6>
+                <input id="recipe_image" type="text" class="validate" name="recipe_image" placeholder="*Please enter the location of your image starting with http(s)://" required>
             </div>
         </div>        
-        <div class="row">
-            <div class="col s12 flow-text">Ingredients</div>
-        </div>
-        <div id="ingredients">
-            <div class="row">
-               <div class="input-field col s10 m11">
-                   <input required placeholder="1 cup Flour" id="recipe_ingredients" name="recipe_ingredients" type="text" class="validate">
+        <div class="row add-recipe-ingredients">
+            <div class="col s12">
+                <h6>Ingredients</h6>
+                <div id="ingredients">
+                   <div class="input-field col s11">
+                       <input required placeholder="One Ingredient Required* Eg: 1 cup Flour" id="recipe_ingredients" name="recipe_ingredients" type="text" class="validate">
+                    </div>
+                    <div class="col s1">
+                        <a class="btn-floating waves-effect waves-light" id="add_ingredient"><i class="material-icons">add</i> Add Ingredient</a>
+                    </div>
                 </div>
-                <div class="col s2 m1">
-                    <a class="btn-floating waves-effect waves-light" id="add_ingredient"><i class="material-icons">add</i></a>
+            </div>
+        </div>
+        <div class="row add-recipe-method">
+            <div class="col s12">
+                <h6>Method</h6>
+                <div id="steps">
+                    <div class="input-field col s10 m11">
+                           <input required placeholder="Step 1 - Turn the oven to 220" id="recipe_method" name="recipe_method" type="text" class="validate">
+                    </div>
+                    <div class="col s2 m1">
+                        <a class="btn-floating waves-effect waves-light" id="add_method_step"><i class="material-icons">add</i></a>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col s12 flow-text">Method</div>
+        <div class="row add-recipe-tags">
+            <div class="col s12">  
+                <h6>Recipe Tags</h6>
+                <input name="recipe_tags" value="" type="hidden">
+                <div class="chips chips-placeholder"></div>
+            </div>
         </div>
-        <div id="steps">
-            <div class="row">
-               <div class="input-field col s10 m11">
-                   <input required placeholder="Step 1 - Turn the oven to 220" id="recipe_method" name="recipe_method" type="text" class="validate">
-                </div>
-                <div class="col s2 m1">
-                    <a class="btn-floating waves-effect waves-light" id="add_method_step"><i class="material-icons">add</i></a>
+        <div class="row add-recipe-featured">
+            <div class="col s12">
+                <h6 for="featured_recipe">Featured on the Homepage Slider</h6>    
+                  <div class="switch">
+                    <label>
+                    Off
+                    <input type="checkbox" name="featured_recipe" id="featured_recipe">
+                    <span class="lever"></span>
+                    On
+                    </label>
                 </div>
             </div>
-        </div>  
-        
- 
-        <div class="row col s12 flow-text">
-        <label for="featured_recipe">Featured on the Homepage Slider</label>    
-          <div class="switch">
-            <label>
-            <input type="checkbox" name="featured_recipe" id="featured_recipe">
-            <span class="lever"></span>
-            On
-            </label>
         </div>
-<div class="row col s12 flow-text">        
-  <input name="recipe_tags" value="Cooking" type="hidden">
-  
-  Recipe Tags
-  <div class="chips chips-placeholder"/>
-
-  </div>
-        <!--<input type="text" name="author_name" id="author_name" value="{{author}}" disabled placeholder="{{author}}">-->
-        <div class="row">
-            <button class="btn waves-effect waves-light" type="submit" name="action">Add Recipe
+        <div class="row col s12 center">
+            <button class="center btn add-recipe-button waves-effect waves-light" type="submit" name="action">Add Recipe
                 <i class="material-icons right">playlist_add</i>
             </button>
         </div>
@@ -129,6 +121,7 @@
     </form>
   </div>
 {% else %}
-<p>You must be logged in to add a recipe </p>
+<h5 class="center">You must be logged in to Add a Recipe </h5>
+<p class="center">Go to <a href="{{url_for('signin')}}">Login page</a></p>
 {% endif %}
 {% endblock %}    
