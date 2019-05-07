@@ -1,39 +1,65 @@
 {% extends 'base.html' %} {% block content %}
-<div class="slideshow-container">
-  {% set _stub = recipes.rewind() %}
-  {% for recipe in recipes if recipe.featured_recipe == "on" %}
-  <div class="mySlides fade">
-    <img src="{{recipe.recipe_image}}" style="width:100%">
-    <div class="text"><h3>{{recipe.recipe_name}}</h3></div>
+<div class="slider">
+    <ul class="slides">
+    {% set _stub = recipes.rewind() %}
+    {% for recipe in recipes if recipe.featured_recipe == "on" %}      
+      <li>
+        <img src="{{recipe.recipe_image}}" style="width:100%">
+        <div class="caption center-align">
+          <h3>{{recipe.recipe_name}}</h3>
+          <h5 class="light grey-text text-lighten-3">{{recipe.recipe_description}}</h5>
+          <a class="btn" href="{{url_for('recipe_page', recipe_id = recipe._id)}}">View Recipe</a>
+        </div>
+      </li>
+    {% endfor %}
+    </ul>
   </div>
-{% endfor %}
-</div>
-<br>
 
 <div class="row">
-  <div class="col s8">
-{% set _stub = recipes.rewind() %}
-     {% for recipe in recipes %}
-            <div class="card">
+  <div class="col s12 m8">
+     <div class="row">
+      {% set _stub = recipes.rewind() %}
+      {% for recipe in recipes %}       
+        <div class="col s12 m6">
+          <div class="card medium">
               <div class="card-image">
                 <a href="{{url_for('recipe_page', recipe_id = recipe._id)}}"><img src="{{recipe.recipe_image}}"></a>
               </div>
-            <div class="card-title">
-                <div class="card-content">
-                  <a href="{{url_for('recipe_page', recipe_id = recipe._id)}}"><h5>{{recipe.recipe_name}}</h5></a>
+              <div class="card-title">
+              <div class="card-content">
+                  <a href="{{url_for('recipe_page', recipe_id = recipe._id)}}"><h6>{{recipe.recipe_name}}</h6></a>
                   <p>{{recipe.recipe_description}}</p>
                 </div>
-            <div class="card-action">
-              <a href="{{url_for('recipe_page', recipe_id = recipe._id)}}">View Recipe >>></a>
+              <div class="card-action">
+                <a href="{{url_for('recipe_page', recipe_id = recipe._id)}}">View Recipe >>></a>
             </div>
           </div>
         </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+  <div class="col s12 m3 offset-m1">
+    <div class="row center">
+      <h6>
+        About Lemon & Ginger
+      </h6>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+    </div>
+    <div class="row center">
+      <h6>
+        Popular Tags
+      </h6>
+      {% set _stub = recipes.rewind() %}
+      {% for items in recipes.recipe_tags %}
+            {% if items !="" %}
+                <div class="chip">
+                    <a href="{{url_for('search_tag',tag=items, page=1)}}">{{items}}</a>
+                </div>
+            {% endif %}
         {% endfor %}
-
-
-            </div>
-      <div class="col s3 offset-s1">
-
+    </div>
+  </div>
 </div>
 {% endblock %}    
 

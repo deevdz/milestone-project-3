@@ -18,7 +18,7 @@
             <li class="divider"></li>
             <li><a href="{{url_for('add_recipe')}}">Add Recipe</a></li>
             <li class="divider"></li>
-            <li><a href="{{url_for('my_recipes', page=page)}}">My Recipes</a></li>
+            <li><a href="{{url_for('my_recipes', page=1)}}">My Recipes</a></li>
             <li class="divider"></li>
             <li><a href="{{url_for('logout')}}">Logout</a></li>
             <li class="divider"></li>
@@ -65,7 +65,7 @@
                       <div class="collapsible-body">
                         <ul>
                           <li><a href="{{url_for('add_recipe')}}">Add Recipe</a></li>
-                          <li><a href="{{url_for('my_recipes', page=page)}}">My Recipes</a></li>
+                          <li><a href="{{url_for('my_recipes', page=1)}}">My Recipes</a></li>
                           <li><a href="{{url_for('logout')}}">Logout</a></li>
                         </ul>
                       </div>
@@ -80,7 +80,7 @@
         </nav>
         <!--Main Body--> 
         <div class="container">
-        <header class="center row flash-message">
+          <header class="center row flash-message">
             {% with messages = get_flashed_messages(with_categories=true) %}
         {% if error %}
           <p class="error"><b>Error:</b> {{ error }}
@@ -98,9 +98,9 @@
         </header>
         </div>
         <main>
-            <div class="container">
+          <div class="container">
                 {% block content %} {% endblock %}
-            </div>
+          </div>
         </main>
         <!--Footer-->
         <footer class="page-footer">

@@ -1,15 +1,94 @@
 {% extends 'base.html' %} {% block content %}
 <div class="row">
-    <div class="col s12">
+    <div class="col s12 m8">
         <h4>{{recipe.recipe_name}}</h4>
     </div>
-</div>
-<div class="row">
-    <div class="col s5">
-       <p><img src="{{recipe.recipe_image}}" style="width:100%;"></p> 
+    <div class="col s6 m2 center">
+        {% if (session['logged_in'] and user.author_name == recipe.author_name) %}
+            <a href="{{url_for('edit_recipe', recipe_id = recipe._id)}}"><i class="material-icons tiny">edit</i>
+            <p>Edit Recipe</p></a>
+        {% endif %}
     </div>
-    <div class="col s7">
-        
+    <div class="col s6 m2 center">
+        {% if (session['logged_in'] and user.author_name == recipe.author_name) %}
+            <a href="{{url_for('delete_recipe', recipe_id = recipe._id)}}"><i class="material-icons tiny">delete</i>
+            <p>Delete Recipe</p></a>
+        {% endif %}
+    </div>
+</div>
+<div class="row recipe-details">
+    <div class="col s12 m5">
+       <img src="{{recipe.recipe_image}}" style="width:100%;">
+       {% for rating in recipe.ratings %}
+        <div class="star-ratings-sprite"><span style="width:{{((rating.overall_ratings / 5)*100)}}%" class="star-ratings-sprite-rating"></span></div>
+       {% endfor%}
+    </div>
+    <div class="col s12 m7">
+        <div class="row">
+            <div class="col s6">
+                <i class="material-icons">timer</i> Prep Time: {{recipe.recipe_prep_time}}
+            </div>
+            <div class="col s6">
+                <i class="material-icons">watch_later</i> Cook Time: {{recipe.recipe_cook_time}}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s6">
+                <i class="material-icons">local_dining</i> Serves: {{recipe.recipe_serves}}
+            </div>
+            <div class="col s6">
+                <i class="material-icons">trending_up</i> Difficulty: {{recipe.recipe_difficulty}}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12">
+                <i class="material-icons">note</i> Allergens: 
+                {% for items in recipe.allergen_type %}
+                   {{items}},
+                {% endfor %}
+            </div>
+        </div> 
+        <div class="row">
+            <div class="col s12">
+                <i class="material-icons">cake</i> Category: {{recipe.recipe_category_name}}
+            </div>
+        </div> 
+        <div class="row">
+            <div class="col s12">
+                {% for rating in recipe.ratings %}
+                    <i class="material-icons">star</i>Ratings: {{rating.overall_ratings}} out of 5 from {{rating.no_of_ratings}} ratings.
+                {% if session['logged_in'] and recipe_id in recipe_rated_by_author %}
+                    <p>You have already rated this recipe</p>
+                {% elif session['logged_in'] %}
+                    <form action="{{ url_for('recipe_rating', recipe_id=recipe._id)}}" method="POST">
+                        {% if rating.total_ratings == 0 %}
+                        <div class="col s6 m6">
+                        <p>Be the first to rate this recipe</p>
+                        </div>
+                        {% else %}
+                        <div class="col s6 m6">
+                        <p>Have your say - Rate this recipe:</p>
+                        </div>
+                        {% endif %} 
+                    <div class="input-field col s4 m2">
+                        <select id="new_rating" name="new_rating">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5" selected>5</option>
+                        </select>
+                    </div>
+                    <div class="input-field col s2 m2">
+                        <button type="submit">Rate!</button>
+                    </div>
+                </form>
+            {% else %}
+                <p><a href="{{url_for('signin')}}">Login</a> to rate this recipe!</p>
+            {% endif %}
+            {% endfor %}
+            </div>
+        </div>
     </div>
 </div>
 <div class="row">
@@ -18,7 +97,7 @@
     </div>
 </div>
 <div class="row">
-    <div class="col s4">
+    <div class="col s12 m4">
         <h5>Ingredients</h5>
         <ul>
             {% for items in recipe.recipe_ingredients %}
@@ -26,7 +105,7 @@
             {% endfor %}
         </ul>        
     </div>
-    <div class="col s7">
+    <div class="col s12 m7">
         <h5>Method</h5>
         <ol>
             {% for items in recipe.recipe_method %}
@@ -36,68 +115,40 @@
     </div>
 </div>
 <div class="row">
-    <div class="col s12"><p>Recipe Tags: </p>
-        {% for items in recipe.recipe_tags %}
-            {% if items !="" %}
+    <div class="col s12 m3">
+        <h5><i class="material-icons small padding">share</i> Share Recipe: </h5>
+        <div id="share-buttons">
+            <!-- Email -->
+            <a href="mailto:?Subject=Simple Share Buttons&amp;Body=I%20saw%20this%20and%20thought%20of%20you!%20 https://simplesharebuttons.com">
+                <img src="https://simplesharebuttons.com/images/somacro/email.png" alt="Email" />
+            </a>
+            <!-- Facebook -->
+            <a href="http://www.facebook.com/sharer.php?u=https://simplesharebuttons.com" target="_blank">
+                <img src="https://simplesharebuttons.com/images/somacro/facebook.png" alt="Facebook" />
+            </a>
+            <!-- Pinterest -->
+            <a href="javascript:void((function()%7Bvar%20e=document.createElement('script');e.setAttribute('type','text/javascript');e.setAttribute('charset','UTF-8');e.setAttribute('src','http://assets.pinterest.com/js/pinmarklet.js?r='+Math.random()*99999999);document.body.appendChild(e)%7D)());">
+                <img src="https://simplesharebuttons.com/images/somacro/pinterest.png" alt="Pinterest" />
+            </a>    
+            <!-- Print -->
+            <a href="javascript:;" onclick="window.print()">
+                <img src="https://simplesharebuttons.com/images/somacro/print.png" alt="Print" />
+            </a>
+            <!-- Yummly -->
+            <a href="http://www.yummly.com/urb/verify?url=https://simplesharebuttons.com&amp;title=Simple Share Buttons" target="_blank">
+                <img src="https://simplesharebuttons.com/images/somacro/yummly.png" alt="Yummly" />
+            </a>
+        </div>  
+    </div>
+    <div class="col s12 m7 offset-m1">
+        <h5><i class="material-icons small padding">label_outline</i> Recipe Tags: </h5>
+        {% for tags in recipe.recipe_tags %}
+            {% if tags !="" %}
                 <div class="chip">
-                    <a href="{{url_for('search_tag',tag=items, page=1)}}">{{items}}</a>
+                    <a href="{{url_for('search_tag',tag=items, page=1)}}">{{tags}}</a>
                 </div>
             {% endif %}
         {% endfor %}
-        
     </div>
 </div>
-
-            <p>Prep Time: {{recipe.recipe_prep_time}} minutes</p>
-            <p>Cook Time: {{recipe.recipe_cook_time}} minutes</p>
-            <p>Author: {{recipe.author_name}}</p>
-                {% if (session['logged_in'] and user.author_name == recipe.author_name) %}
-                    <a href="{{url_for('edit_recipe', recipe_id = recipe._id)}}">Edit Recipe</a>
-                    <a href="{{url_for('delete_recipe', recipe_id = recipe._id)}}">Delete Recipe</a>
-                {% endif %}
-                {% if session['logged_in'] and recipe_id in recipe_rated_by_author %}
-                    <p>You have already rated this recipe</p>
-                {% for rating in recipe.ratings %}
-                Ratings: <div class="star-ratings-sprite"><span style="width:{{((rating.overall_ratings / 5)*100)}}%" class="star-ratings-sprite-rating"></span></div>
-                
-                
-                {{rating.overall_ratings}} out of 5 from {{rating.no_of_ratings}} ratings.
-                {% endfor %}
-                {% else %} 
-            {% if session['logged_in'] %}
-            <form action="{{ url_for('recipe_rating', recipe_id=recipe._id)}}" method="POST">
-                {% for rating in recipe.ratings %}
-                Ratings: <div class="star-ratings-sprite"><span style="width:{{((rating.overall_ratings / 5)*100)}}%" class="star-ratings-sprite-rating"></span></div>
-                
-                
-                {{rating.overall_ratings}} out of 5 from {{rating.no_of_ratings}} ratings.
-                
-                {% if rating.total_ratings == 0 %}
-                    <p>Don't be shy be the first to rate this recipe</p>
-                {% else %}
-                    <p>Have your say - Rate this recipe:</p>
-                {% endif %} 
-                {% endfor %}
-                    <div class="input-field col s10 m3">
-                        <select id="new_rating" name="new_rating">
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5" selected>5</option>
-                    </select>
-                    </div>
-                    <div class="input-field col s2">
-                        <button type="submit">Rate!</button>
-                    </div>
-                </form>
-            {% else %}
-                <p><a href="{{url_for('signin')}}">Login</a> to rate recipes!</p>
-            {% endif %} 
-            {% endif %} 
-        
-
-   
-                
-                
 {% endblock %}    
