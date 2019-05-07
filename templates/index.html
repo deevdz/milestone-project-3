@@ -47,17 +47,19 @@
       <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
     </div>
     <div class="row center">
-      <h6>
+      <h6 style="margin-bottom:30px;">
         Popular Tags
       </h6>
-      {% set _stub = recipes.rewind() %}
-      {% for items in recipes.recipe_tags %}
-            {% if items !="" %}
-                <div class="chip">
-                    <a href="{{url_for('search_tag',tag=items, page=1)}}">{{items}}</a>
-                </div>
-            {% endif %}
-        {% endfor %}
+    {% set _stub = recipes.rewind() %}
+    {% for recipe in recipes %}
+      {% for items in recipe.recipe_tags %}
+          {% if items !="" %}
+            <div class="chip">
+              <a href="{{url_for('search_tag',tag=items,page=1)}}">{{items}}</a>
+            </div>
+          {% endif %}
+      {% endfor %}
+    {% endfor %}
     </div>
   </div>
 </div>

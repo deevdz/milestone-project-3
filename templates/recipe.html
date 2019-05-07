@@ -142,10 +142,10 @@
     </div>
     <div class="col s12 m7 offset-m1">
         <h5><i class="material-icons small padding">label_outline</i> Recipe Tags: </h5>
-        {% for tags in recipe.recipe_tags %}
-            {% if tags !="" %}
+        {% for items in recipe.recipe_tags %}
+            {% if items !="" %}
                 <div class="chip">
-                    <a href="{{url_for('search_tag',tag=items, page=1)}}">{{tags}}</a>
+                    <a href="{{url_for('search_tag',tag=items, page=1)}}">{{items}}</a>
                 </div>
             {% endif %}
         {% endfor %}

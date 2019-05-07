@@ -102,6 +102,10 @@ input.valid:not([type]), input.valid:not([type]):focus, input[type="text"].valid
 .card-action a {
   color:#fff !important;
 }
+
+.card-image {
+  max-height: 45%;
+}
 /* Navigation */
 nav ul a{
 text-transform: uppercase;
