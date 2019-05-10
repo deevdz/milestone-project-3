@@ -106,6 +106,33 @@ input.valid:not([type]), input.valid:not([type]):focus, input[type="text"].valid
 .card-image {
   max-height: 40% !important;
 }
+
+/*Homepage Right Headers*/
+.fancy {
+  line-height: 0.5;
+  text-align: center;
+}
+.fancy span {
+  display: inline-block;
+  position: relative;  
+}
+.fancy span:before,
+.fancy span:after {
+  content: "";
+  position: absolute;
+  height: 5px;
+  border-top: 2px solid #98a959;
+  top: 0;
+  width: 30px;
+}
+.fancy span:before {
+  right: 100%;
+  margin-right: 15px;
+}
+.fancy span:after {
+  left: 100%;
+  margin-left: 15px;
+}
 /* Navigation */
 nav ul a{
 text-transform: uppercase;

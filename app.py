@@ -2,7 +2,7 @@
 # Import pre-requisites.                                                                                   #
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
-import os, pymongo, math
+import os, pymongo, math, random
 from flask import Flask, render_template, redirect, request, url_for, request, session, g, abort, flash
 from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
@@ -37,6 +37,7 @@ userDB = mongo.db.users
 @app.route('/index/1')
 def index():
     tags = recipes.distinct("recipe_tags")
+    random.shuffle(tags)
     return render_template('index.html', recipes=recipes.find().sort('date_time',pymongo.DESCENDING), 
     recipeCategory=recipeCategory.find(), page=1, tags=tags)
 
