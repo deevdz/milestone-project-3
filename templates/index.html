@@ -41,8 +41,8 @@
   </div>
   <div class="col s12 m3 offset-m1">
     <div class="row center">
-      <h6>
-        About Lemon & Ginger
+      <h6 class="fancy" style="margin-bottom:30px;">
+        <span>About Us</span>
       </h6>
       <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
     </div>
@@ -51,7 +51,7 @@
         <span>Popular Tags</span>
       </h6>
     {% set _stub = recipes.rewind() %}
-    {% for items in tags %}
+    {% for items in tags[0:20] %}
           {% if items !="" %}
             <div class="chip">
               <a href="{{url_for('search_tag',tag=items,page=1)}}">{{items}}</a>
