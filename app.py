@@ -43,9 +43,20 @@ def index():
 
 @app.route('/get_recipes', methods=['GET','POST'])
 def get_recipes():
+    #Count the number of recipes in the Database
+    all_recipes = recipes.find({'recipe_category_name': recipe_category_name}).sort([('date_time', pymongo.DESCENDING), ('_id', pymongo.ASCENDING)]) 
+    count_recipes = all_recipes.count()
+    
+    #Variables for Pagination
+    offset = (int(page) - 1) * 3
+    limit = 3
+    
+    recipe_pages = recipes.find({'recipe_category_name': recipe_category_name}).sort([("date_time", pymongo.DESCENDING), 
+                    ("_id", pymongo.ASCENDING)]).skip(offset).limit(limit)
+    total_no_of_pages = int(math.ceil(count_recipes/limit))    
 
     return render_template('all_recipes.html', recipes = recipes.find().sort('date_time',pymongo.DESCENDING), 
-                            recipeCategory=recipeCategory.find(), page=1)
+                            recipeCategory=recipeCategory.find(), count_recipes=count_recipes, total_no_of_pages=total_no_of_pages, page=page)
                             
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 # User Login & Registration                                                                                #
@@ -84,11 +95,13 @@ def signup():
 
 @app.route('/signin')
 def signin():
+    tags = recipes.distinct("recipe_tags")
+    random.shuffle(tags)
     if not session.get('logged_in'):
-        return render_template('login.html', recipeCategory=recipeCategory.find(), page=1)
+        return render_template('login.html', recipeCategory=recipeCategory.find(), tags=tags, page=1)
     else:
         return render_template('index.html', recipes=recipes.find().sort('date_time',pymongo.DESCENDING), 
-        recipeCategory=recipeCategory.find(), page=1)
+        recipeCategory=recipeCategory.find(), tags=tags, page=1)
 
 
 @app.route('/login', methods=['POST'])
@@ -99,6 +112,8 @@ def login():
     session.permanent = True
     app.permanent_session_lifetime = timedelta(minutes=30)
     user = userDB.find_one({'username' : username})
+    tags = recipes.distinct("recipe_tags")
+    random.shuffle(tags)
     
     if not user:
         session['logged_in'] = False
@@ -107,8 +122,8 @@ def login():
     if password == user['password']:
         session['logged_in'] = True
         flash('Welcome ' + user['author_name'].capitalize())
-        return render_template('index.html', recipes=recipes.find(), 
-        recipeCategory=recipeCategory.find(), author=user['author_name'])
+        return render_template('index.html', recipes=recipes.find().sort('date_time',pymongo.DESCENDING), 
+        recipeCategory=recipeCategory.find(), author=user['author_name'], tags=tags, page=1)
     else:
         session['logged_in'] = False
         flash('Incorrect Password, please try again.')
@@ -117,8 +132,10 @@ def login():
 @app.route('/logout')
 def logout():
     session['logged_in'] = False
+    tags = recipes.distinct("recipe_tags")
+    random.shuffle(tags)
     return render_template('index.html', recipes=recipes.find().sort('date_time',pymongo.DESCENDING), 
-    recipeCategory=recipeCategory.find(), page=1)  
+    recipeCategory=recipeCategory.find(),tags = tags, page=1)  
     
     
 
@@ -159,6 +176,7 @@ def add_recipe():
 def insert_recipe():
     username=session.get('username')
     user = userDB.find_one({'username' : username}) 
+    #Request Recipe tags and split into array based on comma
     recipe_tags = request.form.get('recipe_tags')
     recipe_tags_split = [x.strip() for x in recipe_tags.split(',')]
     complete_recipe = {
@@ -263,12 +281,15 @@ def my_recipes(page):
 @app.route('/recipe_page/<recipe_id>', methods=['GET','POST'])
 def recipe_page(recipe_id):
     username=session.get('username')
+    logged_in=session.get('logged_in')
     user = userDB.find_one({'username' : username}) 
-
-    recipe_rated_by_author = user['recipes_rated']
-        
-    return render_template('recipe.html', recipe=recipes.find_one({'_id': ObjectId(recipe_id)}), 
-    recipeCategory=recipeCategory.find(), recipe_id = recipe_id, recipe_rated_by_author=recipe_rated_by_author, user=user, page=1)
+    if not user:
+        return render_template('recipe.html', recipe=recipes.find_one({'_id': ObjectId(recipe_id)}), 
+        recipeCategory=recipeCategory.find(), recipe_id = recipe_id,  page=1)
+    else:      
+        recipe_rated_by_author = user['recipes_rated']
+        return render_template('recipe.html', recipe=recipes.find_one({'_id': ObjectId(recipe_id)}), 
+        recipeCategory=recipeCategory.find(), recipe_id = recipe_id, recipe_rated_by_author=recipe_rated_by_author, user=user, page=1)
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 # Searching Keywords                                                                                       #

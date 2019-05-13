@@ -19,7 +19,11 @@
   <div class="col s12 m8">
      <div class="row">
       {% set _stub = recipes.rewind() %}
-      {% for recipe in recipes %}       
+      {% if count_recipes == 0 %}
+        <p>We currently have no recipes to display in this category. Why not <a href="{{url_for('signin')}}">login</a> and add a recipe :)</p>
+      {% else %}      
+                        Total:{{total_no_of_pages}}
+      {% for recipe in recipes %} 
         <div class="col s12 m6">
           <div class="card medium">
               <div class="card-image">
@@ -37,6 +41,8 @@
         </div>
         </div>
       {% endfor %}
+    {% endif %}
+
     </div>
   </div>
   <div class="col s12 m3 offset-m1">
@@ -51,7 +57,8 @@
         <span>Popular Tags</span>
       </h6>
     {% set _stub = recipes.rewind() %}
-    {% for items in tags[0:20] %}
+    <!--Limit no of Tags displayed -->
+    {% for items in tags[0:21] %}
           {% if items !="" %}
             <div class="chip">
               <a href="{{url_for('search_tag',tag=items,page=1)}}">{{items}}</a>
