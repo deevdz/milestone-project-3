@@ -2,7 +2,7 @@
 {% if session['logged_in'] %}
 <h3>My Recipes</h3>
     {% if count_recipes == 0 %}
-        <p>You currently have no recipes on our system. Why not add one now.</p>
+        <p>You currently have no recipes on our system. Why not <a href="{{url_for('add_recipe')}}">add one now</a>.</p>
     {% else %}
         <div class="row">
             <div class="col s12 m6">

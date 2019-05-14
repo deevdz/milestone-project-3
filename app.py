@@ -73,7 +73,6 @@ def signup():
             'recipes_rated':[]
         })
         session['logged_in'] = True
-        flash('Welcome ' + user['author_name'] )
         return signin()
     else:
         session['logged_in'] = False
