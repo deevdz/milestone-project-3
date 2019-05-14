@@ -161,8 +161,8 @@ def browse_recipes(recipe_category_name, page):
     count_recipes = all_recipes.count()
     
     #Variables for Pagination
-    offset = (int(page) - 1) * 4
-    limit = 4
+    offset = (int(page) - 1) * 6
+    limit = 6
     
     recipe_pages = recipes.find({'recipe_category_name': recipe_category_name}).sort([("date_time", pymongo.DESCENDING), 
                     ("_id", pymongo.ASCENDING)]).skip(offset).limit(limit)
@@ -275,8 +275,8 @@ def my_recipes(page):
     all_recipes = recipes.find({'author_name': author}).sort([('date_time', pymongo.DESCENDING), ('_id', pymongo.ASCENDING)]) 
     count_recipes = all_recipes.count()
     #Variables for Pagination
-    offset = (int(page) - 1) * 4
-    limit = 4
+    offset = (int(page) - 1) * 6
+    limit = 6
     total_no_of_pages = int(math.ceil(count_recipes/limit))
     recipe_pages = recipes.find({'author_name': author}).sort([("date_time", pymongo.DESCENDING), 
                     ("_id", pymongo.ASCENDING)]).skip(offset).limit(limit)
@@ -322,8 +322,8 @@ def search_keyword(keyword, page):
     count_recipes = all_recipes.count()
     
     #Variables for Pagination
-    offset = (int(page) - 1) * 4
-    limit = 4
+    offset = (int(page) - 1) * 6
+    limit = 6
     total_no_of_pages = int(math.ceil(count_recipes/limit))
     
     recipe_pages = recipes.find({'$text': {'$search': keyword}}).sort([("date_time", pymongo.DESCENDING), 
@@ -352,8 +352,8 @@ def search_tag(tag, page):
     count_recipes = all_recipes.count()
     
     #Variables for Pagination
-    offset = (int(page) - 1) * 4
-    limit = 4
+    offset = (int(page) - 1) * 6
+    limit = 6
     total_no_of_pages = int(math.ceil(count_recipes/limit))
     
     recipe_pages = recipes.find({'recipe_tags': tag}).sort([("date_time", pymongo.DESCENDING), 

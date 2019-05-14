@@ -60,17 +60,19 @@
                 {% if session['logged_in'] and recipe_id in recipe_rated_by_author %}
                     <p>You have already rated this recipe</p>
                 {% elif session['logged_in'] %}
+                <div class="row">
+                    <div class="col s12">
                     <form action="{{ url_for('recipe_rating', recipe_id=recipe._id)}}" method="POST">
                         {% if rating.total_ratings == 0 %}
-                        <div class="col s6 m6">
+                        <div class="input-field col s6 m6">
                         <p>Be the first to rate this recipe</p>
                         </div>
                         {% else %}
-                        <div class="col s6 m5">
+                        <div class="input-field col s6 m6">
                         <p>Have your say - Rate this recipe:</p>
                         </div>
                         {% endif %} 
-                    <div class="input-field col s4 m2">
+                    <div class="input-field col s2 m2" style="margin-top: 0px;">
                         <select id="new_rating" name="new_rating">
                             <option value="1">1</option>
                             <option value="2">2</option>
@@ -80,9 +82,11 @@
                         </select>
                     </div>
                     <div class="input-field col s2 m2">
-                        <button type="submit">Rate!</button>
+                        <button class="rate btn" type="submit">Rate!</button>
                     </div>
                 </form>
+                </div>
+            </div>
             {% else %}
                 <p><a href="{{url_for('signin')}}">Login</a> to rate this recipe!</p>
             {% endif %}

@@ -401,6 +401,10 @@ border-radius: 5px
 text-align: center;
 color: #fff;
 }
+
+.app-title h1 {
+  color:#ffffff;
+}
  
 .login-form {
 text-align: center;
@@ -488,6 +492,28 @@ margin-top: 12px;
   display: block;
 }
 
+.rate.btn {
+border: 1px solid transparent;
+background: #f3d63d;
+color: #ffffff;
+font-size: 14px;
+font-weight: 800;
+line-height: 18px;
+padding: 2px;
+text-decoration: none;
+text-shadow: none;
+border-radius: 3px;
+box-shadow: none;
+transition: 0.25s;
+display: block;
+width: 70px;
+margin: 0 auto;
+border:none !important;
+}
+ 
+.rate.btn:hover {
+background-color: #fae683;
+}
 
 /*Recipe Page Styling */
 
