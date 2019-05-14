@@ -50,7 +50,7 @@
               <li class="no-padding">
                   <ul class="collapsible collapsible-accordion">
                     <li>
-                      <a class="collapsible-header waves-effect" href="">Recipes<i class="material-icons right">arrow_drop_down</i></a>
+                      <a class="collapsible-header waves-effect">Recipes<i class="material-icons right">arrow_drop_down</i></a>
                       <div class="collapsible-body">
                         <ul>
                           {% set _stub = recipeCategory.rewind() %}
@@ -64,7 +64,7 @@
               </li>
               <li class="divider"></li>
               {% if session.logged_in %}
-                <li class="no-padding">
+              <li class="no-padding">
                   <ul class="collapsible collapsible-accordion">
                     <li>
                       <a class="collapsible-header waves-effect">Account<i class="material-icons right">arrow_drop_down</i><i class="material-icons right">account_circle</i></a>
@@ -81,6 +81,15 @@
               {% else %} 
               <li><a href="{{url_for('signin')}}"><i class="material-icons right">account_circle</i>Login</a></li>
               {% endif %}
+              <li class="divider"></li>
+              <li class="no-padding">
+                <form action="{{url_for('receive_keyword', page=1)}}" id='search-form' method='post' target='_top'>
+                  <input id='search-text' name='keyword' placeholder='Search' type='text' />
+                  <button id='search-button' type='submit'>                     
+                    <i class="material-icons right">search</i>
+                  </button>
+                </form>                
+              </li>
             </ul>            
           </div>
         </nav>

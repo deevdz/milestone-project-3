@@ -129,6 +129,30 @@ input.valid:not([type]), input.valid:not([type]):focus, input[type="text"].valid
   color:#f3d63d;
 }
 
+/*Right Line Headers */
+.fancy-right {
+  line-height: 0.1;
+  text-align: left;
+  margin-bottom:30px;
+}
+.fancy-right span {
+  display: inline-block;
+  position: relative;  
+}
+.fancy-right span:after {
+  content: "";
+  position: absolute;
+  height: 5px;
+  border-bottom: 1px solid #98a959;
+  top: 0;
+  width: 80%;
+}
+
+.fancy-right span:after {
+  left: 100%;
+  margin-left: 15px;
+}
+
 
 /*Homepage Right Headers*/
 .fancy {
@@ -292,6 +316,7 @@ nav .button-collapse {
   color: #333;
   outline: none;
   font-size: 1.4em;
+  padding:5px;
 }
 
 #search-button {
@@ -503,5 +528,19 @@ display: inline;
 }
 .side-nav .collapsible-header, .side-nav.fixed .collapsible-header {
   padding:0 32px;
+}
+#search-form {
+  width:280px;
+}
+
+#search-text {
+  width: 234px;
+  padding: 5px;
+}
+
+#search-button {
+  width:30px;
+  position:relative;
+  padding:2px;
 }
 }

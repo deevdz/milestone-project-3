@@ -18,7 +18,7 @@
   <!--Other Recipes you might like section-->
   <div class="col s12 m8">
      <div class="row" style="margin:30px 5px;">
-      <h5>You may also be interested in</h5>
+      <h5 class="fancy-right"><span>You may also be interested in</span></h5>
       {% set _stub = recipes.rewind() %}
       {% if count_recipes == 0 %}
         <p>We currently have no recipes to display in this category. Why not <a href="{{url_for('signin')}}">login</a> and add a recipe :)</p>
