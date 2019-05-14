@@ -1,7 +1,7 @@
 {% extends 'base.html' %} {% block content %}
 <!--Featured Recipe Slider-->
 <div class="row margin-30">
-  <div class="uk-position-relative uk-visible-toggle uk-light" tabindex="-1" uk-slideshow="min-height: 250; max-height: 400; animation: push" >
+  <div class="uk-position-relative uk-visible-toggle uk-light" tabindex="-1" uk-slideshow="min-height: 250; max-height: 400; autoplay: true; animation: push" >
       <ul class="uk-slideshow-items">
       {% set _stub = recipes.rewind() %}
         {% for recipe in recipes if recipe.featured_recipe == "on" %}      
