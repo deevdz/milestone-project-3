@@ -1,7 +1,7 @@
 {% extends 'base.html' %} {% block content %}
 <h3>All Recipes</h3>
  {% if count_recipes == 0 %}
-  <p>We currently have no recipes to display in this category. Why not <a href="{{url_for('signin')}}">login</a> and add a recipe :)</p>
+  <p>We currently have no recipes to display in this category. Why not <a href="{{url_for('signin')}}">login</a> and <a href="{{url_for('add_recipe')}}">add a recipe</a> :)</p>
     {% else %}
     <div class="row">
         <div class="col s12 m4">

@@ -25,7 +25,7 @@
       <h5 class="fancy-right"><span>You may also be interested in</span></h5>
       {% set _stub = recipes.rewind() %}
       {% if count_recipes == 0 %}
-        <p>We currently have no recipes to display in this category. Why not <a href="{{url_for('signin')}}">login</a> and add a recipe :)</p>
+        <p>We currently have no recipes to display in this category. Why not <a href="{{url_for('signin')}}">login</a> and <a href="{{url_for('add_recipe')}}">add a recipe</a> :)</p>
       {% else %}      
       {% for recipe in recipes[0:4] %} 
         <div class="col s12 m6">
