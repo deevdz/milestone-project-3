@@ -156,6 +156,8 @@ def all_recipes(page):
     
 @app.route('/browse_recipes/<recipe_category_name>/<page>', methods=['GET', 'POST'])
 def browse_recipes(recipe_category_name, page):
+    tags = recipes.distinct("recipe_tags")
+    random.shuffle(tags)    
     #Count the number of recipes in the Database
     all_recipes = recipes.find({'recipe_category_name': recipe_category_name}).sort([('date_time', pymongo.DESCENDING), ('_id', pymongo.ASCENDING)]) 
     count_recipes = all_recipes.count()
@@ -170,7 +172,7 @@ def browse_recipes(recipe_category_name, page):
    
     return render_template('browse_recipes.html',
     recipes=recipe_pages, recipeCategory=recipeCategory.find(),count_recipes=count_recipes, total_no_of_pages=total_no_of_pages, 
-    page=page, recipe_category_name=recipe_category_name, page_title='Lemon & Ginger, Recipe Finder')
+    page=page, recipe_category_name=recipe_category_name, page_title='Lemon & Ginger, Recipe Finder', tags=tags)
     
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 # Add Recipes                                                                                              #
