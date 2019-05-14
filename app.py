@@ -39,24 +39,12 @@ def index():
     tags = recipes.distinct("recipe_tags")
     random.shuffle(tags)
     return render_template('index.html', recipes=recipes.find().sort('date_time',pymongo.DESCENDING), 
-    recipeCategory=recipeCategory.find(), page=1, tags=tags)
+    recipeCategory=recipeCategory.find(), page=1, tags=tags, page_title='Lemon & Ginger, Recipe Finder')
 
 @app.route('/get_recipes', methods=['GET','POST'])
 def get_recipes():
-    #Count the number of recipes in the Database
-    all_recipes = recipes.find({'recipe_category_name': recipe_category_name}).sort([('date_time', pymongo.DESCENDING), ('_id', pymongo.ASCENDING)]) 
-    count_recipes = all_recipes.count()
-    
-    #Variables for Pagination
-    offset = (int(page) - 1) * 3
-    limit = 3
-    
-    recipe_pages = recipes.find({'recipe_category_name': recipe_category_name}).sort([("date_time", pymongo.DESCENDING), 
-                    ("_id", pymongo.ASCENDING)]).skip(offset).limit(limit)
-    total_no_of_pages = int(math.ceil(count_recipes/limit))    
-
-    return render_template('all_recipes.html', recipes = recipes.find().sort('date_time',pymongo.DESCENDING), 
-                            recipeCategory=recipeCategory.find(), count_recipes=count_recipes, total_no_of_pages=total_no_of_pages, page=page)
+    return render_template('get_recipes.html', recipes = recipes.find().sort('date_time',pymongo.DESCENDING), 
+                            recipeCategory=recipeCategory.find())
                             
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 # User Login & Registration                                                                                #
@@ -64,7 +52,7 @@ def get_recipes():
 @app.route('/register')
 def register():
     return render_template('register.html', recipes=recipes.find(), 
-        recipeCategory=recipeCategory.find(), page=1)
+        recipeCategory=recipeCategory.find(), page=1, page_title='Register at Lemon & Ginger, Recipe Finder')
 
 
 @app.route('/signup', methods=['POST'])
@@ -85,7 +73,7 @@ def signup():
             'recipes_rated':[]
         })
         session['logged_in'] = True
-        #flash('Welcome ' + user['author_name'] )
+        flash('Welcome ' + user['author_name'] )
         return signin()
     else:
         session['logged_in'] = False
@@ -98,10 +86,10 @@ def signin():
     tags = recipes.distinct("recipe_tags")
     random.shuffle(tags)
     if not session.get('logged_in'):
-        return render_template('login.html', recipeCategory=recipeCategory.find(), tags=tags, page=1)
+        return render_template('login.html', recipeCategory=recipeCategory.find(), tags=tags, page=1, page_title='Login at Lemon & Ginger Recipe Finder')
     else:
         return render_template('index.html', recipes=recipes.find().sort('date_time',pymongo.DESCENDING), 
-        recipeCategory=recipeCategory.find(), tags=tags, page=1)
+        recipeCategory=recipeCategory.find(), tags=tags, page=1, page_title='Login at Lemon & Ginger, Recipe Finder')
 
 
 @app.route('/login', methods=['POST'])
@@ -123,7 +111,7 @@ def login():
         session['logged_in'] = True
         flash('Welcome ' + user['author_name'].capitalize())
         return render_template('index.html', recipes=recipes.find().sort('date_time',pymongo.DESCENDING), 
-        recipeCategory=recipeCategory.find(), author=user['author_name'], tags=tags, page=1)
+        recipeCategory=recipeCategory.find(), author=user['author_name'], tags=tags, page=1, page_title='Welcome to Lemon & Ginger, Recipe Finder')
     else:
         session['logged_in'] = False
         flash('Incorrect Password, please try again.')
@@ -135,12 +123,36 @@ def logout():
     tags = recipes.distinct("recipe_tags")
     random.shuffle(tags)
     return render_template('index.html', recipes=recipes.find().sort('date_time',pymongo.DESCENDING), 
-    recipeCategory=recipeCategory.find(),tags = tags, page=1)  
+    recipeCategory=recipeCategory.find(),tags = tags, page=1, page_title='Logout of Lemon & Ginger, Recipe Finder')  
     
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+# Return all Recipes                                                                                   #
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+    
+@app.route('/all_recipes/<page>', methods=['GET', 'POST'])
+def all_recipes(page):
+    tags = recipes.distinct("recipe_tags")
+    random.shuffle(tags)
+    #Count the number of recipes in the Database
+    all_recipes = recipes.find().sort([('date_time', pymongo.DESCENDING), ('_id', pymongo.ASCENDING)]) 
+    count_recipes = all_recipes.count()
+    
+    #Variables for Pagination
+    offset = (int(page) - 1) * 6
+    limit = 6
+    
+    recipe_pages = recipes.find().sort([("date_time", pymongo.DESCENDING), 
+                    ("_id", pymongo.ASCENDING)]).skip(offset).limit(limit)
+    total_no_of_pages = int(math.ceil(count_recipes/limit))
+   
+    return render_template('all_recipes.html',
+    recipes=recipe_pages, recipeCategory=recipeCategory.find(),count_recipes=count_recipes, total_no_of_pages=total_no_of_pages, 
+    page=page, page_title='All Recipes at Lemon & Ginger, Recipe Finder', tags=tags)
+
     
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
-# Browse Recipes                                                                                           #
+# Browse Recipes in a Category                                                                                           #
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
     
 @app.route('/browse_recipes/<recipe_category_name>/<page>', methods=['GET', 'POST'])
@@ -159,7 +171,7 @@ def browse_recipes(recipe_category_name, page):
    
     return render_template('browse_recipes.html',
     recipes=recipe_pages, recipeCategory=recipeCategory.find(),count_recipes=count_recipes, total_no_of_pages=total_no_of_pages, 
-    page=page, recipe_category_name=recipe_category_name)
+    page=page, recipe_category_name=recipe_category_name, page_title='Lemon & Ginger, Recipe Finder')
     
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 # Add Recipes                                                                                              #
@@ -169,7 +181,7 @@ def browse_recipes(recipe_category_name, page):
 def add_recipe():
     username=session.get('username')
     return render_template('add_recipe.html', recipes=recipes.find(), recipeCategory=recipeCategory.find(), 
-            skillLevel=skillLevel.find(), allergens=allergens.find(), userDB = userDB.find(), page=1)
+            skillLevel=skillLevel.find(), allergens=allergens.find(), userDB = userDB.find(), page=1, page_title='Add a recipe to Lemon & Ginger, Recipe Finder')
 
   
 @app.route('/insert_recipe', methods=['GET','POST'])
@@ -203,7 +215,7 @@ def insert_recipe():
             'recipe_tags': recipe_tags_split
         }   
     recipes.insert_one(complete_recipe)
-    return redirect(url_for('my_recipes',page=1))
+    return redirect(url_for('my_recipes',page=1, page_title='My Recipes at Lemon & Ginger, Recipe Finder'))
         
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 # Edit Recipes                                                                                             #
@@ -212,7 +224,7 @@ def insert_recipe():
 @app.route('/edit_recipe/<recipe_id>')
 def edit_recipe(recipe_id):
     return render_template('edit_recipe.html', recipeCategory=recipeCategory.find(), 
-            allergens=allergens.find(), skillLevel=skillLevel.find(), page=1,
+            allergens=allergens.find(), skillLevel=skillLevel.find(), page=1, page_title='Edit Recipe on Lemon & Ginger, Recipe Finder',
             recipes=recipes.find_one({'_id': ObjectId(recipe_id)}))
             
 @app.route('/update_recipe/<recipe_id>', methods=['POST'])
@@ -237,7 +249,7 @@ def update_recipe(recipe_id):
             'recipe_tags': recipe_tags_split
             }
         })    
-    return redirect(url_for('my_recipes',page=1))       
+    return redirect(url_for('my_recipes',page=1, page_title='My Recipes at Lemon & Ginger, Recipe Finder'))       
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 # Delete Recipes                                                                                           #
@@ -247,7 +259,7 @@ def update_recipe(recipe_id):
 @app.route('/delete_recipe/<recipe_id>')
 def delete_recipe(recipe_id):
     recipes.remove({'_id': ObjectId(recipe_id)})
-    return redirect(url_for('my_recipes',page=1))
+    return redirect(url_for('my_recipes',page=1, page_title='My Recipes at Lemon & Ginger, Recipe Finder'))
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
@@ -272,7 +284,8 @@ def my_recipes(page):
   
     return render_template('my_recipes.html',
     recipes=recipe_pages.sort('date_time',pymongo.DESCENDING), count_recipes=count_recipes, 
-    total_no_of_pages=total_no_of_pages, page=page, author_name = author, recipeCategory=recipeCategory.find())
+    total_no_of_pages=total_no_of_pages, page=page, author_name = author,
+    page_title='My Recipes at Lemon & Ginger, Recipe Finder', recipeCategory=recipeCategory.find())
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 # Individual Recipe Page                                                                                   #
@@ -289,7 +302,8 @@ def recipe_page(recipe_id):
     else:      
         recipe_rated_by_author = user['recipes_rated']
         return render_template('recipe.html', recipe=recipes.find_one({'_id': ObjectId(recipe_id)}), 
-        recipeCategory=recipeCategory.find(), recipe_id = recipe_id, recipe_rated_by_author=recipe_rated_by_author, user=user, page=1)
+        recipeCategory=recipeCategory.find(), recipe_id = recipe_id, recipe_rated_by_author=recipe_rated_by_author, 
+        user=user, page=1, page_title='Recipe at Lemon & Ginger, Recipe Finder')
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 # Searching Keywords                                                                                       #
@@ -319,7 +333,7 @@ def search_keyword(keyword, page):
     return render_template('search_by_keyword.html', keyword=keyword, 
         search_results = recipe_pages.sort('date_time',pymongo.DESCENDING), 
         recipeCategory=recipeCategory.find(), count_recipes=count_recipes, 
-        total_no_of_pages=total_no_of_pages, page=page)
+        total_no_of_pages=total_no_of_pages, page=page, page_title='Search Results, Lemon & Ginger, Recipe Finder')
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
@@ -349,7 +363,7 @@ def search_tag(tag, page):
     return render_template('search_by_tag.html', tag=tag, 
         search_results = recipe_pages.sort('date_time',pymongo.DESCENDING), 
         recipeCategory=recipeCategory.find(), count_recipes=count_recipes, 
-        total_no_of_pages=total_no_of_pages, page=page)     
+        total_no_of_pages=total_no_of_pages, page=page, page_title='Tag Results, Lemon & Ginger, Recipe Finder')     
         
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 # Ratings                                                                                                  #
@@ -383,7 +397,7 @@ def recipe_rating(recipe_id):
     userDB.update({"username": username},
                 {'$addToSet': 
                 {'recipes_rated' : recipe_id}}) 
-    return redirect(url_for('recipe_page', recipe_id = recipe_id))
+    return redirect(url_for('recipe_page', recipe_id = recipe_id, page_title='Recipe at Lemon & Ginger, Recipe Finder'))
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 # Error Pages                                                                                              #
@@ -391,15 +405,12 @@ def recipe_rating(recipe_id):
 
 @app.errorhandler(404)
 def page_not_found(error):
-    return render_template('404.html',recipeCategory=recipeCategory.find(), page=1), 404
+    return render_template('404.html',recipeCategory=recipeCategory.find(), page=1, page_title='404 Error Page, Lemon & Ginger'), 404
 
-@app.errorhandler(405)
-def method_not_allowed(error):
-    return render_template('500.html',recipeCategory=recipeCategory.find(), page=1), 405
-    
+
 @app.errorhandler(500)
 def something_wrong(error):
-    return render_template('500.html',recipeCategory=recipeCategory.find(), page=1), 500
+    return render_template('500.html',recipeCategory=recipeCategory.find(), page=1, page_title='500 Error Page, Lemon & Ginger'), 500
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#

@@ -17,7 +17,7 @@ window.onclick = function(event) {
 
  // Materialize Code
   $(document).ready(function() {
-    $(".button-collapse").sideNav();
+    $('.button-collapse').sideNav();
     $('select').material_select();
     $('.slider').slider();
   });  
@@ -26,6 +26,7 @@ $('.button-collapse').sideNav({
       closeOnClick: true, // Closes side-nav on <a> clicks, useful for Angular/Meteor
     }
   );  
+
 
 // Code for Adding and Removing Ingredients and Steps on Add Recipe Paget
 var ingredient_field = '<div class="new-ingredient"><div class="input-field col s11"><input placeholder="Ingredients" type="text" name="recipe_ingredients" class="validate" required></div><div class="col s1"><a class="btn-floating waves-effect waves-light" id="remove_ingredient"> <i class="material-icons">remove</i></a></div></div>';
@@ -83,3 +84,4 @@ $('.chips-placeholder').material_chip({
        updateChipInput(this);
     });  
    });
+   

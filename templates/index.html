@@ -1,4 +1,5 @@
 {% extends 'base.html' %} {% block content %}
+<!--Featured Recipes Slider -->
 <div class="slider">
     <ul class="slides">
     {% set _stub = recipes.rewind() %}
@@ -6,9 +7,7 @@
       <li>
         <img src="{{recipe.recipe_image}}" style="width:100%">
         <div class="caption center-align">
-          <h3>{{recipe.recipe_name}}</h3>
-          <h5 class="light grey-text text-lighten-3">{{recipe.recipe_description}}</h5>
-          <a class="btn" href="{{url_for('recipe_page', recipe_id = recipe._id)}}">View Recipe</a>
+          <a href="{{url_for('recipe_page', recipe_id = recipe._id)}}"><h3>{{recipe.recipe_name}}</h3></a>
         </div>
       </li>
     {% endfor %}
@@ -16,14 +15,15 @@
   </div>
 
 <div class="row">
+  <!--Other Recipes you might like section-->
   <div class="col s12 m8">
-     <div class="row">
+     <div class="row" style="margin:30px 5px;">
+      <h5>You may also be interested in</h5>
       {% set _stub = recipes.rewind() %}
       {% if count_recipes == 0 %}
         <p>We currently have no recipes to display in this category. Why not <a href="{{url_for('signin')}}">login</a> and add a recipe :)</p>
       {% else %}      
-                        Total:{{total_no_of_pages}}
-      {% for recipe in recipes %} 
+      {% for recipe in recipes[0:4] %} 
         <div class="col s12 m6">
           <div class="card medium">
               <div class="card-image">
@@ -39,18 +39,57 @@
             </div>
           </div>
         </div>
-        </div>
+      </div>
       {% endfor %}
+      <div class="row center">
+        <a class="waves-effect waves-light btn-large center margin-30 all-recipes" href="{{url_for('all_recipes', page=1)}}">Browse all recipes</a>
+      </div>
     {% endif %}
-
     </div>
   </div>
+  
+  <!--Right Toolbar - About, Categories, Tag Cloud-->
   <div class="col s12 m3 offset-m1">
-    <div class="row center">
+    <div class="row center" style="margin:30px 0;">
       <h6 class="fancy" style="margin-bottom:30px;">
         <span>About Us</span>
       </h6>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+      <p>Established in 2019, Lemon & Ginger is for home cooks looking for some inspiration, dinner ideas, family meals and yummy bakes. </p><p>Search through our fantastic recipes to find that special meal or share your own favourite recipes.</p>
+    </div>
+    <div class="row center homepage-categories">
+       <h6 class="fancy" style="margin-bottom:30px;">
+        <span>Categories</span>
+      </h6>
+      <div class="row margin-30">
+        <div class="col s6 m6">
+          <a href="{{url_for('browse_recipes', recipe_category_name = 'Starter', page=1)}}"><img src="/static/images/starter-icon.png" alt="Starters">
+          <p>STARTER</p></a>
+        </div>
+        <div class="col s6 m6">
+          <a href="{{url_for('browse_recipes', recipe_category_name = 'Breakfast', page=1)}}"><img src="/static/images/breakfast-icon.png" alt="Breakfast">
+          <p>BREAKFAST</p></a>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s6 m6">
+          <a href="{{url_for('browse_recipes', recipe_category_name = 'Lunch', page=1)}}"><img src="/static/images/lunch-icon.png" alt="Lunch">
+          <p>LUNCH</p></a>
+        </div>
+        <div class="col s6 m6">
+          <a href="{{url_for('browse_recipes', recipe_category_name = 'Main', page=1)}}"><img src="/static/images/mains-icon.png" alt="Main">
+          <p>Main</p></a>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s6 m6">
+          <a href="{{url_for('browse_recipes', recipe_category_name = 'Dessert', page=1)}}"><img src="/static/images/desserts-icon.png" alt="Dessert">
+          <p>DESSERT</p></a>
+        </div>
+        <div class="col s6 m6">
+          <a href="{{url_for('browse_recipes', recipe_category_name = 'Snack', page=1)}}"><img src="/static/images/snack-icon.png" alt="Snack">
+          <p>SNACK</p></a>
+        </div>
+      </div>      
     </div>
     <div class="row center">
       <h6 class="fancy" style="margin-bottom:30px;">

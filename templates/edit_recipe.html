@@ -14,7 +14,7 @@
             </div>
         </div>
         <div class="row add-recipe-category">
-            <div class="input-field col s6">
+            <div class="input-field col s12" m6>
                 <h6>Recipe Category</h6>
                 <select id="recipe_category_name" name="recipe_category_name" required>
                     {% set _stub = recipeCategory.rewind() %}
@@ -27,7 +27,7 @@
                     {% endfor %}
                 </select>
             </div>
-            <div class="input-field col s6">
+            <div class="input-field col s12 m6">
                 <h6>Allergens</h6>
                 <select multiple id="allergen_type" name="allergen_type">
                     {% set _stub = allergens.rewind() %}
@@ -42,19 +42,19 @@
             </div>
         </div>         
         <div class="row add-recipe-prep">
-            <div class="input-field col s6">
+            <div class="input-field col s12 m6">
                 <h6>Recipe Preparation Time</h6>
                 <input placeholder="Recipe Preparation Time" id="recipe_prep_time" type="text" class="validate" name="recipe_prep_time" value="{{recipes.recipe_prep_time}}" required>
             </div>
-            <div class="input-field col s6">
+            <div class="input-field col s12 m6">
                 <h6>Recipe Cook Time</h6>
                 <input placeholder="Recipe Cook Time" id="recipe_cook_time" type="text" class="validate" name="recipe_cook_time" value="{{recipes.recipe_cook_time}}" required>
             </div>            
-            <div class="input-field col s6">
+            <div class="input-field col s12 m6">
                 <h6>Recipe Serves</h6>
                 <input placeholder="Recipe Serves" id="recipe_serves" type="text" class="validate" name="recipe_serves" value="{{recipes.recipe_serves}}" required>
             </div>
-            <div class="input-field col s6">
+            <div class="input-field col s12 m6">
                 <h6>Recipe Difficulty</h6>
                 <select id="recipe_difficulty" name="recipe_difficulty" required>
                 {% set _stub = skillLevel.rewind() %}

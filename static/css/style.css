@@ -27,6 +27,10 @@ h6 {
   text-transform: uppercase;
 }
 
+.margin-30 {
+  margin:30px auto;
+}
+
 .material-icons {
   vertical-align: middle;
 }
@@ -106,6 +110,25 @@ input.valid:not([type]), input.valid:not([type]):focus, input[type="text"].valid
 .card-image {
   max-height: 40% !important;
 }
+
+/* Homepage All Recipes Button */
+.all-recipes {
+  background-color:#98a959;
+}
+.all-recipes:hover, .all-recipes:focus {
+  background-color:#f3d63d;
+}
+
+/*Homepage Categories Secion*/
+.homepage-categories {
+  background-color:rgba(152,169,89,0.05);
+  padding:30px 5px;
+}
+
+.homepage-categories a {
+  color:#f3d63d;
+}
+
 
 /*Homepage Right Headers*/
 .fancy {
