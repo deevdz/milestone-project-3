@@ -53,13 +53,13 @@ $("body").on("click","#remove_method_step", function() {
 }); 
 
 //Code to bind chip input to hidden input field
-     function updateChipInput(chip){
-         var newval = "";
-       newval= $(chip).material_chip('data')
+    function updateChipInput(chip){
+        var newval = "";
+        newval= $(chip).material_chip('data')
           .reduce(function(result,val){ result.push(val.tag); return result;},[]).join(",")
   
-       $('input[name="recipe_tags"]').val(newval);
-     }
+        $('input[name="recipe_tags"]').val(newval);
+    }
     
     $(document).ready(function(){
      var data= $('input[name="recipe_tags"]').val().split(',') 

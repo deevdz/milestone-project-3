@@ -1,8 +1,10 @@
 {% extends 'base.html' %} {% block content %}
 <h3>{{recipe_category_name}}</h3>
- {% if count_recipes == 0 %}
-  <p>We currently have no recipes to display in this category. Why not <a href="{{url_for('signin')}}">login</a> and <a href="{{url_for('add_recipe')}}">add a recipe</a> :)</p>
-    {% else %}
+ {% if session['logged_in'] and count_recipes == 0 %}
+  <p>We currently have no recipes to display in this category. Why not <a href="{{url_for('add_recipe')}}">add a recipe now</a> :)</p>
+  {% elif count_recipes == 0 %}
+  <p>We currently have no recipes to display in this category. Why not <a href="{{url_for('signin')}}">login</a> and add a recipe now :)</p>
+  {% else %}
     <div class="row">
         <div class="col s12 m4">
             <p>Displaying {{count_recipes}} Recipe(s). Page {{ page }} of {{total_no_of_pages}}</p>
@@ -41,6 +43,7 @@
         </div>
     {% endfor %}
     </div>
+
     <!--Right Sidebar-->
     <div class="col s12 m3 offset-m1">
     <div class="row center homepage-categories">

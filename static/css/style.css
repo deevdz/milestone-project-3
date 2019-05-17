@@ -103,6 +103,10 @@ input.valid:not([type]), input.valid:not([type]):focus, input[type="text"].valid
   background: #98a959 !important;
 }
 
+.card-action:hover {
+  background: #f3d63d !important;
+}
+
 .card-action a {
   color:#fff !important;
 }
@@ -471,6 +475,10 @@ margin-top: 12px;
   color:#f3d63d;
   font-weight:800;
   letter-spacing: 1px;
+}
+
+.message {
+  text-transform: capitalize;
 }
 
 /* Styling for Ratings */

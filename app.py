@@ -128,7 +128,7 @@ def logout():
 # Return all Recipes                                                                                   #
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
     
-@app.route('/all_recipes/<page>', methods=['GET', 'POST'])
+@app.route('/all_recipes/<page>', methods=['GET'])
 def all_recipes(page):
     tags = recipes.distinct("recipe_tags")
     random.shuffle(tags)
@@ -154,7 +154,7 @@ def all_recipes(page):
 # Browse Recipes in a Category                                                                                           #
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
     
-@app.route('/browse_recipes/<recipe_category_name>/<page>', methods=['GET', 'POST'])
+@app.route('/browse_recipes/<recipe_category_name>/<page>', methods=['GET'])
 def browse_recipes(recipe_category_name, page):
     tags = recipes.distinct("recipe_tags")
     random.shuffle(tags)    
@@ -257,7 +257,7 @@ def update_recipe(recipe_id):
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#  
 
 
-@app.route('/delete_recipe/<recipe_id>')
+@app.route('/delete_recipe/<recipe_id>', methods=['DELETE'] )
 def delete_recipe(recipe_id):
     recipes.remove({'_id': ObjectId(recipe_id)})
     return redirect(url_for('my_recipes',page=1, page_title='My Recipes at Lemon & Ginger, Recipe Finder'))
@@ -267,7 +267,7 @@ def delete_recipe(recipe_id):
 # Users My Recipes Page                                                                                    #
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#  
 
-@app.route('/my_recipes/<page>', methods=['GET','POST'])
+@app.route('/my_recipes/<page>', methods=['GET'])
 def my_recipes(page):
     username=session.get('username')
     user = userDB.find_one({'username' : username})
@@ -292,7 +292,7 @@ def my_recipes(page):
 # Individual Recipe Page                                                                                   #
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
     
-@app.route('/recipe_page/<recipe_id>', methods=['GET','POST'])
+@app.route('/recipe_page/<recipe_id>', methods=['GET'])
 def recipe_page(recipe_id):
     username=session.get('username')
     logged_in=session.get('logged_in')
@@ -315,7 +315,7 @@ def receive_keyword():
     return redirect(url_for('search_keyword', keyword=request.form.get('keyword'), page=1)) 
     
     
-@app.route('/search_keyword/<keyword>/<page>', methods=['GET','POST'])
+@app.route('/search_keyword/<keyword>/<page>', methods=['GET'])
 def search_keyword(keyword, page):
     recipes.create_index([('recipe_name', 'text'), ('recipe_ingredients', 'text'), ('recipe_category_name','text')])        
     
@@ -341,12 +341,12 @@ def search_keyword(keyword, page):
 # Searching Tags                                                                                           #
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
-@app.route('/search_tag', methods=['POST'])
+@app.route('/search_tag', methods=['GET'])
 def receive_tag():
     return redirect(url_for('search_tag', keyword=request.form.get('tag'), page=1)) 
     
     
-@app.route('/search_tag/<tag>/<page>', methods=['GET','POST'])
+@app.route('/search_tag/<tag>/<page>', methods=['GET'])
 def search_tag(tag, page):
     recipes.create_index([('recipe_tags', pymongo.ASCENDING)])
     #Count the number of recipes in the Database
