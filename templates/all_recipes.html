@@ -7,6 +7,10 @@
         <div class="col s12 m4">
             <p>Displaying {{count_recipes}} Recipe(s). Page {{ page }} of {{total_no_of_pages}}</p>
         </div>
+        {% if total_no_of_pages <= 1 %}
+        <div class="col s12 m4">
+        </div>
+        {% else %}        
         <div class="col s12 m4">
             <ul class="pagination right-align">
                 <li id="prev-page-url" {% if page|int > 1 %} class= "" {% else %} class="disabled" {% endif %}>
@@ -17,9 +21,10 @@
                 </li>
             </ul>
         </div>
+        {% endif %}
     </div>
-<!--Main Section-->
-<div class="row">
+    <!--Main Section-->
+    <div class="row">
     <!--Left Area - Recipes-->
     <div class="col s12 m8">
      {% for recipe in recipes %}
@@ -94,6 +99,5 @@
     </div>
 </div>
 </div>
-
 {% endif %}
 {% endblock %}    

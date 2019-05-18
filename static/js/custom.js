@@ -16,16 +16,14 @@ window.onclick = function(event) {
 };
 
  // Materialize Code
-  $(document).ready(function() {
+$(document).ready(function() {
     $('.button-collapse').sideNav();
     $('select').material_select();
-  });  
+ });  
   
 $('.button-collapse').sideNav({
       closeOnClick: true, // Closes side-nav on <a> clicks, useful for Angular/Meteor
-    }
-  );  
-
+});  
 
 // Code for Adding and Removing Ingredients and Steps on Add Recipe Paget
 var ingredient_field = '<div class="new-ingredient"><div class="input-field col s11"><input placeholder="Ingredients" type="text" name="recipe_ingredients" class="validate" required></div><div class="col s1"><a class="btn-floating waves-effect waves-light" id="remove_ingredient"> <i class="material-icons">remove</i></a></div></div>';
@@ -51,36 +49,3 @@ $("#add_method_step").click(function() {
 $("body").on("click","#remove_method_step", function() {
    $(this).parents(".new-method-step").remove();
 }); 
-
-//Code to bind chip input to hidden input field
-    function updateChipInput(chip){
-        var newval = "";
-        newval= $(chip).material_chip('data')
-          .reduce(function(result,val){ result.push(val.tag); return result;},[]).join(",")
-  
-        $('input[name="recipe_tags"]').val(newval);
-    }
-    
-    $(document).ready(function(){
-     var data= $('input[name="recipe_tags"]').val().split(',') 
-       .map(function(tag){
-         return {tag:tag}
-       })
-    
-     $('.chips').material_chip({
-       data: data  
-    });
-    
-$('.chips-placeholder').material_chip({
-    placeholder: 'Enter a tag',
-    secondaryPlaceholder: '+Tag',
-  });
-    
-     $('.chips').on('chip.add', function(e, chip){
-       updateChipInput(this);
-    })
-     $('.chips').on('chip.delete', function(e, chip){
-       updateChipInput(this);
-    });  
-   });
-   
