@@ -30,6 +30,7 @@ allergens = mongo.db.allergens
 skillLevel = mongo.db.skillLevel
 userDB = mongo.db.users
 
+
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 # Homepage  - Load all recipes and load recipes to slider                                                  #
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
@@ -264,10 +265,11 @@ def update_recipe(recipe_id):
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#  
 
 
-@app.route('/delete_recipe/<recipe_id>')
+@app.route('/delete_recipe/<recipe_id>', methods=['POST'])
 def delete_recipe(recipe_id):
     recipes.remove({'_id': ObjectId(recipe_id)})
     return redirect(url_for('my_recipes',page=1, page_title='My Recipes at Lemon & Ginger, Recipe Finder'))
+  
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
@@ -291,7 +293,7 @@ def my_recipes(page):
   
     return render_template('my_recipes.html',
     recipes=recipe_pages.sort('date_time',pymongo.DESCENDING), count_recipes=count_recipes, 
-    total_no_of_pages=total_no_of_pages, page=page, author_name = author,
+    total_no_of_pages=total_no_of_pages, page=page, author_name = username,
     page_title='My Recipes at Lemon & Ginger, Recipe Finder', recipeCategory=recipeCategory.find())
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#

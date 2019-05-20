@@ -3,16 +3,19 @@
     <div class="col s12 m8">
         <h4>{{recipe.recipe_name}}</h4>
     </div>
-    <div class="col s6 m2 center">
+    <div class="col s6 m2 center margin-top-20" style="vertical-align:middle;">
         {% if (session['logged_in'] and user.username == recipe.author_name) %}
-            <a href="{{url_for('edit_recipe', recipe_id = recipe._id)}}"><i class="material-icons tiny">edit</i>
-            <p>Edit Recipe</p></a>
+            <a href="{{url_for('edit_recipe', recipe_id = recipe._id)}}">
+            <p><i class="material-icons tiny">edit</i> Edit Recipe</p></a>
         {% endif %}
     </div>
-    <div class="col s6 m2 center">
+    <div class="col s6 m2 center margin-top-20">
         {% if (session['logged_in'] and user.username == recipe.author_name) %}
-            <a href="{{url_for('delete_recipe', recipe_id = recipe._id)}}"><i class="material-icons tiny">delete</i>
-            <p>Delete Recipe</p></a>
+        <form action="{{ url_for('delete_recipe', recipe_id = recipe._id) }}" method="post">
+            <i class="material-icons tiny delete_recipe">delete</i>
+            <input type="hidden" name="_method" value="DELETE" />
+            <input type="submit" class="delete_recipe" value="Delete Recipe" />
+        </form>
         {% endif %}
     </div>
 </div>

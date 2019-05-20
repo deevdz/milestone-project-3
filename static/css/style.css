@@ -35,6 +35,10 @@ a:hover {
   margin:30px auto;
 }
 
+.margin-top-20 {
+  margin:20px auto 0;
+}
+
 .material-icons {
   vertical-align: middle;
 }
@@ -88,6 +92,12 @@ input.valid:not([type]), input.valid:not([type]):focus, input[type="text"].valid
 
 .add-recipe-button:hover, .add-recipe-button:hover {
     background-color: #f3d63d;
+}
+
+.delete_recipe {
+  border:0;
+  background:none;
+  color:#f55d3e;
 }
 
 /*Homepage Slider Styling */
