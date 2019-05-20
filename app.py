@@ -7,7 +7,7 @@ from flask import Flask, render_template, redirect, request, url_for, request, s
 from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
 from datetime import datetime, timedelta
-
+from werkzeug.security import generate_password_hash, check_password_hash
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 # Connect to external MongoDB database through URI variable hosted on app server.                          #
@@ -20,7 +20,6 @@ app.config['MONGO_URI'] = os.environ.get('MONGO_URI', 'mongodb://localhost')
 app.secret_key = os.getenv('SECRET', 'randomstring123')
 
 mongo = PyMongo(app)
-
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 # Variables                                                                                                #
@@ -42,7 +41,7 @@ def index():
     return render_template('index.html', recipes=recipes.find().sort('date_time',pymongo.DESCENDING), 
     recipeCategory=recipeCategory.find(), page=1, tags=tags, page_title='Lemon & Ginger, Recipe Finder')
 
-@app.route('/get_recipes', methods=['GET','POST'])
+@app.route('/get_recipes')
 def get_recipes():
     return render_template('get_recipes.html', recipes = recipes.find().sort('date_time',pymongo.DESCENDING), 
                             recipeCategory=recipeCategory.find())
@@ -62,7 +61,7 @@ def signup():
     app.permanent_session_lifetime = timedelta(minutes=30)
     author_name = request.form.get('author_name')
     username = request.form.get('username').lower()
-    password = request.form.get('password')    
+    password = generate_password_hash(request.form.get('password'))    
     session['username'] = username
     user = userDB.find_one({'username' : username})
     
@@ -74,6 +73,7 @@ def signup():
             'recipes_rated':[]
         })
         session['logged_in'] = True
+        flash('Welcome to Lemon & Ginger ' + author_name)
         return signin()
     else:
         session['logged_in'] = False
@@ -107,15 +107,16 @@ def login():
         session['logged_in'] = False
         flash('User ' + session['username'] + ' cannot be found on our system. Please try again.')
         return signin()
-    if password == user['password']:
+    elif not check_password_hash(user['password'],password):
+        session['logged_in'] = False
+        flash('Incorrect Password, please try again.')
+        return signin()   
+    else:
         session['logged_in'] = True
         flash('Welcome ' + user['author_name'].capitalize())
         return render_template('index.html', recipes=recipes.find().sort('date_time',pymongo.DESCENDING), 
-        recipeCategory=recipeCategory.find(), author=user['author_name'], tags=tags, page=1, page_title='Welcome to Lemon & Ginger, Recipe Finder')
-    else:
-        session['logged_in'] = False
-        flash('Incorrect Password, please try again.')
-        return signin()
+        recipeCategory=recipeCategory.find(), author=user['author_name'], tags=tags, page=1, page_title='Welcome to Lemon & Ginger, Recipe Finder')        
+
     
 @app.route('/logout')
 def logout():
@@ -179,14 +180,14 @@ def browse_recipes(recipe_category_name, page):
 # Add Recipes                                                                                              #
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#    
 
-@app.route('/add_recipe', methods=['GET','POST'] )
+@app.route('/add_recipe', methods=['GET'] )
 def add_recipe():
     username=session.get('username')
     return render_template('add_recipe.html', recipes=recipes.find(), recipeCategory=recipeCategory.find(), 
             skillLevel=skillLevel.find(), allergens=allergens.find(), userDB = userDB.find(), page=1, page_title='Add a recipe to Lemon & Ginger, Recipe Finder')
 
   
-@app.route('/insert_recipe', methods=['GET','POST'])
+@app.route('/insert_recipe', methods=['POST'])
 def insert_recipe():
     username=session.get('username')
     user = userDB.find_one({'username' : username}) 

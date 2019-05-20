@@ -109,7 +109,7 @@
             {% endfor %}
         </ul>        
     </div>
-    <div class="col s12 m7">
+    <div class="col s12 offset-m1 m7">
         <h5>Method</h5>
         <ol>
             {% for items in recipe.recipe_method %}
@@ -119,7 +119,7 @@
     </div>
 </div>
 <div class="row margin-30">
-    <div class="col s12 m3">
+    <div class="col s12 m4">
         <h5><i class="material-icons small padding">share</i> Share Recipe: </h5>
             <!-- Sharingbutton Facebook -->
             <a class="resp-sharing-button__link" href="https://facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdeevdz-milestone-3.herokuapp.com{{url_for('recipe_page', recipe_id = recipe._id)}}" target="_blank" rel="noopener" aria-label="">
