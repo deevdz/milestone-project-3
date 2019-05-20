@@ -4,13 +4,13 @@
         <h4>{{recipe.recipe_name}}</h4>
     </div>
     <div class="col s6 m2 center">
-        {% if (session['logged_in'] and user.author_name == recipe.author_name) %}
+        {% if (session['logged_in'] and user.username == recipe.author_name) %}
             <a href="{{url_for('edit_recipe', recipe_id = recipe._id)}}"><i class="material-icons tiny">edit</i>
             <p>Edit Recipe</p></a>
         {% endif %}
     </div>
     <div class="col s6 m2 center">
-        {% if (session['logged_in'] and user.author_name == recipe.author_name) %}
+        {% if (session['logged_in'] and user.username == recipe.author_name) %}
             <a href="{{url_for('delete_recipe', recipe_id = recipe._id)}}"><i class="material-icons tiny">delete</i>
             <p>Delete Recipe</p></a>
         {% endif %}

@@ -86,7 +86,8 @@ def signin():
     tags = recipes.distinct("recipe_tags")
     random.shuffle(tags)
     if not session.get('logged_in'):
-        return render_template('login.html', recipeCategory=recipeCategory.find(), tags=tags, page=1, page_title='Login at Lemon & Ginger Recipe Finder')
+        return render_template('login.html', recipeCategory=recipeCategory.find(), tags=tags, page=1, 
+        page_title='Login at Lemon & Ginger Recipe Finder')
     else:
         return render_template('index.html', recipes=recipes.find().sort('date_time',pymongo.DESCENDING), 
         recipeCategory=recipeCategory.find(), tags=tags, page=1, page_title='Login at Lemon & Ginger, Recipe Finder')
@@ -115,7 +116,8 @@ def login():
         session['logged_in'] = True
         flash('Welcome ' + user['author_name'].capitalize())
         return render_template('index.html', recipes=recipes.find().sort('date_time',pymongo.DESCENDING), 
-        recipeCategory=recipeCategory.find(), author=user['author_name'], tags=tags, page=1, page_title='Welcome to Lemon & Ginger, Recipe Finder')        
+        recipeCategory=recipeCategory.find(), author=user['author_name'], tags=tags, page=1, 
+        page_title='Welcome to Lemon & Ginger, Recipe Finder')        
 
     
 @app.route('/logout')
@@ -161,7 +163,8 @@ def browse_recipes(recipe_category_name, page):
     tags = recipes.distinct("recipe_tags")
     random.shuffle(tags)    
     #Count the number of recipes in the Database
-    all_recipes = recipes.find({'recipe_category_name': recipe_category_name}).sort([('date_time', pymongo.DESCENDING), ('_id', pymongo.ASCENDING)]) 
+    all_recipes = recipes.find({'recipe_category_name': recipe_category_name}).sort([('date_time', pymongo.DESCENDING), 
+    ('_id', pymongo.ASCENDING)]) 
     count_recipes = all_recipes.count()
     
     #Variables for Pagination
@@ -184,7 +187,8 @@ def browse_recipes(recipe_category_name, page):
 def add_recipe():
     username=session.get('username')
     return render_template('add_recipe.html', recipes=recipes.find(), recipeCategory=recipeCategory.find(), 
-            skillLevel=skillLevel.find(), allergens=allergens.find(), userDB = userDB.find(), page=1, page_title='Add a recipe to Lemon & Ginger, Recipe Finder')
+            skillLevel=skillLevel.find(), allergens=allergens.find(), userDB = userDB.find(), page=1, 
+            page_title='Add a recipe to Lemon & Ginger, Recipe Finder')
 
   
 @app.route('/insert_recipe', methods=['POST'])
@@ -208,7 +212,7 @@ def insert_recipe():
             'recipe_method':  request.form.getlist('recipe_method'),
             'featured_recipe':  request.form.get('featured_recipe'),
             'date_time': datetime.now(),
-            'author_name': user['author_name'],
+            'author_name': user['username'],
             'ratings':[
                     {'overall_ratings': 0.0,
                     'total_ratings': 0,
@@ -227,7 +231,8 @@ def insert_recipe():
 @app.route('/edit_recipe/<recipe_id>')
 def edit_recipe(recipe_id):
     return render_template('edit_recipe.html', recipeCategory=recipeCategory.find(), 
-            allergens=allergens.find(), skillLevel=skillLevel.find(), page=1, page_title='Edit Recipe on Lemon & Ginger, Recipe Finder',
+            allergens=allergens.find(), skillLevel=skillLevel.find(), page=1, 
+            page_title='Edit Recipe on Lemon & Ginger, Recipe Finder',
             recipes=recipes.find_one({'_id': ObjectId(recipe_id)}))
             
 @app.route('/update_recipe/<recipe_id>', methods=['POST'])
@@ -273,16 +278,15 @@ def delete_recipe(recipe_id):
 def my_recipes(page):
     username=session.get('username')
     user = userDB.find_one({'username' : username})
-    author = user['author_name']
     
     #Count the number of recipes in the Database
-    all_recipes = recipes.find({'author_name': author}).sort([('date_time', pymongo.DESCENDING), ('_id', pymongo.ASCENDING)]) 
+    all_recipes = recipes.find({'author_name': username}).sort([('date_time', pymongo.DESCENDING), ('_id', pymongo.ASCENDING)]) 
     count_recipes = all_recipes.count()
     #Variables for Pagination
     offset = (int(page) - 1) * 6
     limit = 6
     total_no_of_pages = int(math.ceil(count_recipes/limit))
-    recipe_pages = recipes.find({'author_name': author}).sort([("date_time", pymongo.DESCENDING), 
+    recipe_pages = recipes.find({'author_name': username}).sort([("date_time", pymongo.DESCENDING), 
                     ("_id", pymongo.ASCENDING)]).skip(offset).limit(limit)
   
     return render_template('my_recipes.html',
