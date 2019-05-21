@@ -21,15 +21,17 @@ Some of the queries were easy to forsee while some evolved over the development 
 
 The final database schema consists of five collections which include recipes, users, allergens, recipeCategory and skillLevel. 
 
-Final database schema diagram can be found in the folder [Database Schema](/planning/database_schema).
+Final database schema diagrams can be found in the folder [Database Schema](https://github.com/deevdz/milestone-project-3/blob/master/planning/database_schema).
 
 
 UX
 -----------------------------------------
-Documentation for the initial planning process can be [found here](/planning/Online Cookbook Project - Initial Thoughts.pdf).
+Documentation for the initial planning process can be [found here](https://github.com/deevdz/milestone-project-3/blob/master/planning/Online%20Cookbook%20Project%20-%20Initial%20Thoughts.pdf).
 
 Features
 -----------------------------------------
+
+
 Technologies Used
 -----------------------------------------
 The website is designed using following technologies:
@@ -47,10 +49,10 @@ The website is designed using following technologies:
    [UIkit](https://getuikit.com/)
 
 
-
-
 Testing
 -----------------------------------------
+
+
 Deployment
 -----------------------------------------
 Deployment and source control was carried out via GitHub and Heroku. The repository location is as follows:[https://github.com/deevdz/milestone-project-3](https://github.com/deevdz/milestone-project-3)
