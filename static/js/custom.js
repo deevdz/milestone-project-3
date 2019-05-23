@@ -48,4 +48,31 @@ $("#add_method_step").click(function() {
 // Remove the Ingredient from Recipe
 $("body").on("click","#remove_method_step", function() {
    $(this).parents(".new-method-step").remove();
-}); 
+});
+
+//Code to bind chip input to hidden input field
+function updateChipInput(chip){
+  var newval = "";
+  newval = $(chip).material_chip('data').reduce(function(result,val){ result.push(val.tag); return result;},[]).join(",");
+  $('input[name="recipe_tags"]').val(newval);
+}
+$(document).ready(function(){
+  if ($('.chips')[0]) {
+      var data = $('input[name="recipe_tags"]').val().split(',').map(function(tag){
+        return {tag:tag}
+      })
+      $('.chips').material_chip({
+        data: data  
+      });
+      $('.chips-placeholder').material_chip({
+          placeholder: 'Enter a tag',
+          secondaryPlaceholder: '+Tag',
+      });
+      $('.chips').on('chip.add', function(e, chip){
+          updateChipInput(this);
+        })
+        $('.chips').on('chip.delete', function(e, chip){
+            updateChipInput(this);
+        });
+    }
+});
