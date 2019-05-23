@@ -240,6 +240,16 @@ nav .button-collapse {
     color: #78766a;
 }
 
+.username-nav {
+  color: #78766a !important;
+  font-size: 14px;
+  letter-spacing: 1px;
+  display: block;
+  line-height: 22px;
+  padding: 14px 16px;
+  cursor: none !important;
+}
+
 /*Header Styles */
 .flash-message {
   margin-top:20px;

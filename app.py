@@ -39,6 +39,7 @@ userDB = mongo.db.users
 def index():
     tags = recipes.distinct("recipe_tags")
     random.shuffle(tags)
+    username=session.get('username')
     return render_template('index.html', recipes=recipes.find().sort('date_time',pymongo.DESCENDING), 
     recipeCategory=recipeCategory.find(), page=1, tags=tags, page_title='Lemon & Ginger, Recipe Finder')
 

@@ -2,7 +2,7 @@ Online Cookbook - Data Centric Development Milestone Project
 ======================================
 **Online Cookbook Project - Milestone Project 3 for the Code Institute**
 
-This project was designed and developed to be an online recipe cookbook for users. Users can browse and rate recipes listed. Users also have the option to create their own account where they can add, edit and delete their own recipes.
+This [project](https://deevdz-milestone-3.herokuapp.com/) was designed and developed to be an online recipe cookbook for users. Users can browse and rate recipes listed. Users also have the option to create their own account where they can add, edit and delete their own recipes.
 
 The project needs to be able to demonstrate the use of CRUD functions:
 ```
@@ -15,21 +15,46 @@ The project needs to be able to demonstrate the use of CRUD functions:
 
 Database Schema
 -----------------------------------------
-[MongoDB](https://www.mongodb.com/) was used to create the database for this website and it was hosted by [Atlas](https://www.mongodb.com/cloud/atlas).
+[MongoDB](https://www.mongodb.com/) was used to create the database for this website and it is hosted by [Atlas](https://www.mongodb.com/cloud/atlas).
 
-Some of the queries were easy to forsee while some evolved over the development of the site.
+Some of the queries were easy to forsee while some evolved over the development of the site. Original plans for the database schema can be [found here](https://github.com/deevdz/milestone-project-3/blob/master/planning/Online%20Cookbook%20Project%20-%20Initial%20Thoughts.pdf).
 
 The final database schema consists of five collections which include recipes, users, allergens, recipeCategory and skillLevel. 
 
 Final database schema diagrams can be found in the folder [Database Schema](https://github.com/deevdz/milestone-project-3/blob/master/planning/database_schema).
 
-
 UX
 -----------------------------------------
 Documentation for the initial planning process can be [found here](https://github.com/deevdz/milestone-project-3/blob/master/planning/Online%20Cookbook%20Project%20-%20Initial%20Thoughts.pdf).
 
+The wireframes for this site were generated using Adobe Illustrator. Wireframes for the site can be found in the folder [planning > wireframes](https://github.com/deevdz/milestone-project-3/tree/master/planning/wireframes)
+
+After browsing through food blogs and recipe archives online the decision was made to use earthy tones. Colour Palette and final logo design can be [found here]().
+
+Research was carried out on complimentary fonts and Libre Baskerville and Monsterrat were chosen for the site.
+
+###### User Stories
+  * As a user - I am immediately aware what the nature of the site is and its purpose
+  * As a user - I can navigate through the recipes by various means i.e. Feature Slider, Navigation dropdown
+  * As a user - I can browse the site without being a logged in user
+  * As a user - I can create a user profile, and log in and out
+  * As a user - I can add, edit and delete my own recipes through my user account
+  * As a user - I can rate a recipe once, as long as I am logged in user
+  * As a user - I receive an error message if I am unable to login or register
+  * As a user - I am able to access the site on mobile or tablet and have a similar experience as a desktop device
+  * As a user - I can search for a recipe to filter my results
+  * As a user - I can filter recipes based on recipe tags
+  * As a user - I am able to see the total number of recipes in a category
+  * As a user - I am able to see the details of the recipe
+  * As a user - I am prompted to sign up or add a recipe if a category is empty
+  * As a user - I am able to page through categories if there are more than 6 results.
+
+
 Features
 -----------------------------------------
+###### Existing Features
+
+###### Feature to Implement
 
 
 Technologies Used
@@ -51,6 +76,33 @@ The website is designed using following technologies:
 
 Testing
 -----------------------------------------
+**Responsiveness Testing:**
+
+Developer Tools, android mobile phone and android tablet were used to test the appearance of website on mobile/tablet screen size.  
+   
+All tests were carried out manually and the testing process was as follows:
+
+**Homepage**
+
+**Category Pages**
+
+**User Account**
+
+###### Register Page
+###### Login Page
+###### Add Recipe
+###### Edit Recipe
+###### Delete Recipe
+###### Logout
+
+**Recipe Page**
+
+**Search by Keyword**
+
+**Serach by Tag**
+
+**Error Pages**
+
 
 
 Deployment
@@ -61,7 +113,7 @@ Heroku App Location is as follows [https://deevdz-milestone-3.herokuapp.com/](ht
 
 Following steps were taken to deploy the website:
 1. Database and Tables were created in an Atlas MongoDB account
-2. Project workspace was created in Cloud 9. In this workspace: Flask was installed -  MongoDB client for Atlas was installed - 
+2. Project workspace was created in Cloud 9. In this workspace: Flask was installed - `sudo pip install flask`.
 3. Setup app.py file and imported flask and os - `from flask import Flask. import os`
 4. Created an instance of flask - `app = flask(__name__)`
 5. Tested the connection as proof of concept. `CLI - show collections` (prove connection)
@@ -85,3 +137,30 @@ Following steps were taken to deploy the website:
 
 Credits
 -----------------------------------------
+**Content**
+
+All site recipes and images are sourced from [BBC Food](https://www.bbc.com/food/recipes) and [Pinterest](https://www.pinterest.ie/).
+
+
+**Code References**
+
+  * [Full screen search overlay](https://codepen.io/thisisabhinay/pen/MypbGK)  
+  * [Formula for calculating user ratings](https://stackoverflow.com/questions/10196579/algorithm-used-to-calculate-5-star-ratings/38378697)  
+  * [Issues with for loops](https://stackoverflow.com/questions/34877236/for-loop-not-working-in-jinja-flask)
+  * [Star Ratings CSS](https://codepen.io/Bluetidepro/pen/GkpEa)
+  * [Share Links](https://sharingbuttons.io/)
+  * [Splitting Tag List to create array](https://pynative.com/python-accept-list-input-from-user/)
+  * [Taking input Using Materialize Chips](https://stackoverflow.com/questions/42253115/symfony-best-practice-using-materialize-css-chips-with-symfony-forms?rq=1)
+  * [Information on Logging In](https://pythonspot.com/login-authentication-with-flask/)
+  * [Information on how to keep a session live](https://stackoverflow.com/questions/18662558/flask-login-session-times-out-too-soon)
+  * [Passing Username through Session](https://stackoverflow.com/questions/27611216/how-to-pass-a-variable-between-flask-pages/27611281#27611281)
+  * [Pagination](https://www.youtube.com/watch?v=Lnt6JqtzM7I)
+  * [Hashing Passwords](https://www.youtube.com/watch?v=jJ4awOToB6k)
+
+**Acknowledgements**
+
+I would like to thank my tutors and mentor at the Code Institute for all their help and support during the development of this project.
+
+**Contact**
+
+Created by [Deirdre van der Zee](mailto:deirdrevanderzee@gmail.com).

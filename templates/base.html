@@ -21,6 +21,7 @@
             {% endfor %}
         </ul>
         <ul id="dropdown2" class="dropdown-content">
+            <li class="username-nav">Hi {{session.username|capitalize}}</a></li>          
             <li class="divider"></li>
             <li><a href="{{url_for('add_recipe')}}">Add Recipe</a></li>
             <li class="divider"></li>
@@ -33,7 +34,7 @@
         <!--Navigation for Desktop and Mobile-->
         <nav>
           <div class="nav-wrapper">
-            <a href="{{url_for('index')}}" class="brand-logo center"><img src="/static/images/lemon-ginger.png"></a>
+            <a href="{{url_for('index')}}" class="brand-logo center"><img src="/static/images/lemon-ginger.png" alt="Lemon & Ginger Recipe Findr Logo"></a>
             <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
             <ul class="right hide-on-med-and-down">
               <li><a href="{{url_for('index')}}">Home</a></li>
@@ -71,6 +72,7 @@
                       <a class="collapsible-header waves-effect">Account<i class="material-icons right">arrow_drop_down</i><i class="material-icons right">account_circle</i></a>
                       <div class="collapsible-body">
                         <ul>
+                          <li class="username-nav">Hi {{session.username|capitalize}}</li>                            
                           <li><a href="{{url_for('add_recipe')}}">Add Recipe</a></li>
                           <li><a href="{{url_for('my_recipes', page=1)}}">My Recipes</a></li>
                           <li><a href="{{url_for('logout')}}">Logout</a></li>
