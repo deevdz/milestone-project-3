@@ -93,7 +93,7 @@
       </h6>
     {% set _stub = recipes.rewind() %}
     <!--Limit no of Tags displayed -->
-    {% for items in tags[0:21] %}
+    {% for items in tags[0:20] %}
           {% if items !="" %}
             <div class="chip">
               <a href="{{url_for('search_tag',tag=items,page=1)}}">{{items}}</a>
