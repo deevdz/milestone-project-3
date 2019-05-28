@@ -160,6 +160,11 @@ All tests were carried out manually and the testing process was as follows:
 + On the Recipe page, verified that the delete button is only displayed to the logged in user that added that recipe to the system.
 + Confirmed that the recipe is deleted from the system by checking the Database.
 
+###### My Recipes
++ Confirm that only recipes added by the user are displayed here
++ Confirm that the user can only see this page once logged in.
++ Confirm that pagination is displayed when user has more than 6 recipes added.
+
 ###### Logout
 + Verified that the user is returned to the homepage and logged out of the system.
 
