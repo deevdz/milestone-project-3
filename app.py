@@ -40,8 +40,11 @@ def index():
     tags = recipes.distinct("recipe_tags")
     random.shuffle(tags)
     username=session.get('username')
+    #Count the number of recipes for the featured slider
+    featured_recipes = recipes.find({'featured_recipe': 'on'})
+    count_featured_recipes = featured_recipes.count()    
     return render_template('index.html', recipes=recipes.find().sort('date_time',pymongo.DESCENDING), 
-    recipeCategory=recipeCategory.find(), page=1, tags=tags, page_title='Lemon & Ginger, Recipe Finder')
+    recipeCategory=recipeCategory.find(), page=1, tags=tags, page_title='Lemon & Ginger, Recipe Finder', count_featured_recipes=count_featured_recipes)
 
 @app.route('/get_recipes')
 def get_recipes():
@@ -87,12 +90,16 @@ def signup():
 def signin():
     tags = recipes.distinct("recipe_tags")
     random.shuffle(tags)
+    #Count the number of recipes for the featured slider
+    featured_recipes = recipes.find({'featured_recipe': 'on'})
+    count_featured_recipes = featured_recipes.count() 
     if not session.get('logged_in'):
         return render_template('login.html', recipeCategory=recipeCategory.find(), tags=tags, page=1, 
-        page_title='Login at Lemon & Ginger Recipe Finder')
+        page_title='Login at Lemon & Ginger Recipe Finder', count_featured_recipes=count_featured_recipes)
     else:
         return render_template('index.html', recipes=recipes.find().sort('date_time',pymongo.DESCENDING), 
-        recipeCategory=recipeCategory.find(), tags=tags, page=1, page_title='Login at Lemon & Ginger, Recipe Finder')
+        recipeCategory=recipeCategory.find(), tags=tags, page=1, page_title='Login at Lemon & Ginger, Recipe Finder', 
+        count_featured_recipes=count_featured_recipes)
 
 
 @app.route('/login', methods=['POST'])
@@ -105,6 +112,9 @@ def login():
     user = userDB.find_one({'username' : username})
     tags = recipes.distinct("recipe_tags")
     random.shuffle(tags)
+    #Count the number of recipes for the featured slider
+    featured_recipes = recipes.find({'featured_recipe': 'on'})
+    count_featured_recipes = featured_recipes.count() 
     
     if not user:
         session['logged_in'] = False
@@ -119,7 +129,7 @@ def login():
         flash('Welcome ' + user['author_name'].capitalize())
         return render_template('index.html', recipes=recipes.find().sort('date_time',pymongo.DESCENDING), 
         recipeCategory=recipeCategory.find(), author=user['author_name'], tags=tags, page=1, 
-        page_title='Welcome to Lemon & Ginger, Recipe Finder')        
+        page_title='Welcome to Lemon & Ginger, Recipe Finder', count_featured_recipes=count_featured_recipes)        
 
     
 @app.route('/logout')
@@ -127,8 +137,12 @@ def logout():
     session['logged_in'] = False
     tags = recipes.distinct("recipe_tags")
     random.shuffle(tags)
+    #Count the number of recipes for the featured slider
+    featured_recipes = recipes.find({'featured_recipe': 'on'})
+    count_featured_recipes = featured_recipes.count()     
     return render_template('index.html', recipes=recipes.find().sort('date_time',pymongo.DESCENDING), 
-    recipeCategory=recipeCategory.find(),tags = tags, page=1, page_title='Logout of Lemon & Ginger, Recipe Finder')  
+    recipeCategory=recipeCategory.find(),tags = tags, page=1, page_title='Logout of Lemon & Ginger, Recipe Finder',
+    count_featured_recipes=count_featured_recipes)  
     
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 # Return all Recipes                                                                                   #
@@ -430,4 +444,4 @@ def something_wrong(error):
 if __name__ == '__main__':
     app.run(host=os.environ.get('IP'),
             port=int(os.environ.get('PORT')),
-            debug=True)
+            debug=False)

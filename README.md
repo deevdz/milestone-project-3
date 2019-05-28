@@ -33,7 +33,7 @@ After browsing through food blogs and recipe archives online the decision was ma
 
 Research was carried out on complimentary fonts and Libre Baskerville and Monsterrat were chosen for the site.
 
-###### User Stories
+##### User Stories
   * As a user - I am immediately aware what the nature of the site is and its purpose
   * As a user - I can navigate through the recipes by various means i.e. Feature Slider, Navigation dropdown
   * As a user - I can browse the site without being a logged in user
@@ -52,7 +52,8 @@ Research was carried out on complimentary fonts and Libre Baskerville and Monste
 
 Features
 -----------------------------------------
-###### Existing Features
+##### Existing Features
+
 The site can be used as a guest or as a logged in user, however some features are only available to logged in users.
 
 Any visitor to the site can view the featured recipes in the homepage slider, use the navigation to filter through recipe categories, search for specific keywords and use the tags to filter recipes. The search function at present only returns results with the keyword appearing in either recipe name, ingredients or recipe category.
@@ -67,38 +68,40 @@ Adding a new recipe will create a new document in the recipe collection using th
 
 A user has the option to edit or delete a recipe that they have added to the site only. Editing the recipe allows the user to update/or add to the existing recipe information. Deleting the recipe permanently removes the recipe from the system.
 
+Any recipe can be rated once by a logged in user. Users can choose between a rating of 1 to 5. Calculating the weighted value of the recipe rating was based on the [following formula](https://stackoverflow.com/questions/10196579/algorithm-used-to-calculate-5-star-ratings/38378697). Each rating is accounted for and the visitor is informed of the user rating and how many times this recipe has been rated.
 
+The site features custom error pages for both 404 and 500 errors.
 
-###### Future Features
+##### Future Features
 
-Images - could be improved by letting the user to upload an image from their computer. Also a gallery of images for a dish would be a nice feature.
+**Images** - could be improved by letting the user to upload an image from their computer. Also a gallery of images for a dish would be a nice feature.
 
-Reviews/Comments - Expand the ratings system to allow users to leave a detailed review/comment about a recipe.
+**Reviews/Comments** - Expand the ratings system to allow users to leave a detailed review/comment about a recipe.
 
-User accounts - Passwords are currently stored in a hash format but it is an important requirement to make sure that user logins are made more secure.
+**User accounts** - Passwords are currently stored in a hash format but it is an important requirement to make sure that user logins are made more secure.
 
-User Dashboard - A dashboard where the user could update their details including password.
+**User Dashboard** - A dashboard where the user could update their details including password.
 
-Following - A feature for users to able to follow other users on the site and receive updates on their dashboard when users add new recipes.
+**Following** - A feature for users to able to follow other users on the site and receive updates on their dashboard when users add new recipes.
 
-Undo Delete - Provide users with an archive of deleted recipes with the option to add the recipe back onto the system
+**Undo Delete** - Provide users with an archive of deleted recipes with the option to add the recipe back onto the system
 
 
 Technologies Used
 -----------------------------------------
 The website is designed using following technologies:
 
-   HTML  
-   CSS  
-   JavaScript  
-   [Python](https://www.python.org/)  
-   [Flask](http://flask.pocoo.org/)  
-   [Mongodb](https://www.mongodb.com/)  
-   [Jquery](https://code.jquery.com/jquery-3.2.1.js)  
-   [Font Awesome library](https://fontawesome.com/)  
-   [Materializecss 0.100.2](http://archives.materializecss.com/0.100.2/)  
-   [Google Fonts](https://fonts.google.com/)  
-   [UIkit](https://getuikit.com/)
+  * HTML
+  * CSS
+  * JavaScript
+  * [Python](https://www.python.org/)
+  * [Flask](http://flask.pocoo.org/)
+  * [Mongodb](https://www.mongodb.com/)
+  * [Jquery](https://code.jquery.com/jquery-3.2.1.js)
+  * [Font Awesome library](https://fontawesome.com/)
+  * [Materializecss 0.100.2](http://archives.materializecss.com/0.100.2/)
+  * [Google Fonts](https://fonts.google.com/)
+  * [UIkit](https://getuikit.com/)
 
 
 Testing
@@ -110,27 +113,84 @@ Developer Tools, android mobile phone and android tablet were used to test the a
 All tests were carried out manually and the testing process was as follows:
 
 **Homepage**
+ + Click on logo or Home and verify that home page appears.
+ + Click on Recipes dropdown - verify all categories are loading as options with links to the correct categories
+ + If visitor is not logged in “Login” should be displayed in the navigation and clicking this link will bring you to the login page.
+ + If visitor is logged in the navigation should read “Account” with dropdown links to Add recipe, My Recipes and Logout. Also should display the correct Username.
+ + Search Button - click to open full screen overlay search box.
+ + Ensure slider displaying correct recipes, links to recipes going to correct pages and arrows on slider working
+ + “You may also be interested in” should display the four newest recipes added to the site with links to the individual recipes.
+ + Clicking on the “Browse All Recipes” button brings you to the All recipes page.
+ + Confirmed that the right side category links link to the correct pages
+ + Verify that 20 tags are being loaded on the right side of the page with links going to search results of that tag.
+ + Confirmed that the social links in the footer open in a new browser window and go to the correct links
 
 **Category Pages**
+ + Click through to each category page and confirmed that the correct header and recipes were displaying
+ + Confirmed that if there were no recipes to display user is prompted to either log in and add a recipe or if already logged in to just add a recipe.
+ + Confirmed that if less than six recipes were displayed that the pagination is hidden
+ + Confirmed that the pagination is working correctly when there are more than 6 recipes to display
+ + Verified that clicking on a recipe brings the user to the correct detailed recipe page.
 
 **User Account**
 
 ###### Register Page
++ Confirmed that clicking on the sign up link brings the user to the registration page
++ All fields are required on the registration form
++ Tested registering successfully and was returned to the homepage as a logged in user with a welcome message.
++ Confirmed that username must be unique - if user tries to register with a username that already exists the following message appears "Username already exists, please try again."
+
 ###### Login Page
++ Confirm that the login link brings the user to the login page
++ If user enters an incorrect username then they will receive the following message "User *** cannot be found on our system. Please try again. "
++ If user enters a correct username but an incorrect password they will receive the following message "Incorrect Password, please try again."
++ If the user enters the correct login details they are brought to the homepage with a welcome message. Navigation changes from Login to Account dropdown with option to Add Recipe, View Recipes and Logout.
+
 ###### Add Recipe
++ User can only add a recipe if they are logged in. If user finds this page without being logged in they are prompted to do so.
++ Confirmed that all fields are required fields except for allergens.
++ Confirmed that recipe is added correctly to the system by seeing it displayed on the site.
+
 ###### Edit Recipe
++ User can only edit a recipe if they are logged in and they have added the recipe to the site. If user finds this page without being logged in they are prompted to do so. 
++ Confirmed that this page is working by clicking on the edit button and seeing the results that are returned.
++ Verify that the edit recipe is working correctly by making a change to the recipe and updating it.
+
 ###### Delete Recipe
++ On the Recipe page, verified that the delete button is only displayed to the logged in user that added that recipe to the system.
++ Confirmed that the recipe is deleted from the system by checking the Database.
+
 ###### Logout
++ Verified that the user is returned to the homepage and logged out of the system.
 
 **Recipe Page**
++ Confirm that clicking on a recipe link, ie through the slider, category cards brings the user to a detailed version of the recipe.
++ Verified that the correct details are being displayed in the correct positions for each recipe.
++ Checked that the social share links are working correctly.
++ Confirmed that the user rating is displaying correctly.
++ User must be logged in to rate a recipe. User is prompted to login if they are not. If the user is logged in they are prompted to rate the recipe. If the user has previously rated the recipe they are not given the option to rate it again.
++ Verified that the recipe tags are working correctly. 
 
 **Search by Keyword**
++ Enter a value into the search form and confirm that the correct results are returned with paginaition where applicable.
++ Confirmed Search box is a required field.
++ Confirmed that clicking anywhere on the screen closes the search overlay.
 
 **Serach by Tag**
++ Click on a tag link and confirm that the correct results are returned for the tag clicked and results are displayed with pagination where applicable.
 
 **Error Pages**
+ + Try going to [http://deevdz-milestone-3.herokuapp.com/test](http://deevdz-milestone-3.herokuapp.com/test) and observe the custom 404 error.
+ + Confirmed that there was a working link back to the homepage and that links in the navigation are working on the 404 error page.
 
-
+**Issues Found & Fixes Implemented**
+- Issue: Homepage slider area would display even if no recipe had the featured recipe switched on. Fix: Count the number of recipes that have the feature switched on if it is less than one then hide the area.
+- Issue: Duplicates of the tags were displaying and the same tags were displaying each time the page loaded. Fix: Used the distinct function solve this issue and then used the shuffle function to randomise the order.
+- Issue: Could not get the links to work on the materialize Homepage slider. Fix: Now using the slider provided by UIKit as it had the functionality required.
+- Issue: Recipes being displayed on the wrong author page. Fix: Made the recipes group by Username rather than Author Name as username has to be unique.
+- Issue: Being logged out of the session too quickly. Fix: Found a fix to the issue [here](https://stackoverflow.com/questions/18662558/flask-login-session-times-out-too-soon)
+- Issue: Adding tags through a form using Materialize chips. Fix: Found a fix here as how to bind the chips to a hidden input field [here](https://stackoverflow.com/questions/42253115/symfony-best-practice-using-materialize-css-chips-with-symfony-forms?rq=1)
+- Issue: Javascript error from the code used to bind the materialize chips to the hidden input field. Fix: Check the page to see if the class exists then execute the code otherwise ignore it. 
 
 Deployment
 -----------------------------------------
@@ -161,13 +221,13 @@ Following steps were taken to deploy the website:
 20. Test connection to DB again to confirm it's working
 21. Confirm that the cloud9 runner is set to python 3
 22. Connect GitHub repository to Heroku using code provided by heroku and github.
+23. Set Debug to False
 
 Credits
 -----------------------------------------
 **Content**
 
 All site recipes and images are sourced from [BBC Food](https://www.bbc.com/food/recipes) and [Pinterest](https://www.pinterest.ie/).
-
 
 **Code References**
 

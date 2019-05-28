@@ -153,7 +153,7 @@
                     <div id='search-box'>
                         <i id="close-btn" class="fa fa-times fa-2x"></i>
                         <form action="{{url_for('receive_keyword', page=1)}}" id='search-form' method='post' target='_top'>
-                            <input id='search-text' name='keyword' placeholder='Search' type='text' />
+                            <input id='search-text' name='keyword' placeholder='Search' type='text' required />
                             <button id='search-button' type='submit'>                     
                                 <span>Search</span>
                             </button>

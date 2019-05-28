@@ -1,5 +1,6 @@
 {% extends 'base.html' %} {% block content %}
 <!--Featured Recipe Slider-->
+{% if count_featured_recipes > 0 %}
 <div class="row margin-30">
   <div class="uk-position-relative uk-visible-toggle uk-light" tabindex="-1" uk-slideshow="min-height: 250; max-height: 400; autoplay: true; animation: push" >
       <ul class="uk-slideshow-items">
@@ -18,6 +19,11 @@
       <a class="uk-position-center-right uk-position-small uk-hidden-hover" href="#" uk-slidenav-next uk-slideshow-item="next"></a>
   </div>
 </div>
+{% else %}
+<div class="row">
+  <h5>There are currently no recipes to display in our featured slider</h5>
+</div>
+{% endif %}
 <div class="row">
   <!--Other Recipes you might like section-->
   <div class="col s12 m8">
