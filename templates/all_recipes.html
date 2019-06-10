@@ -3,6 +3,7 @@
  {% if count_recipes == 0 %}
   <p>We currently have no recipes to display in this category. Why not <a href="{{url_for('signin')}}">login</a> and <a href="{{url_for('add_recipe')}}">add a recipe</a> :)</p>
     {% else %}
+    <!--Details on Total number of Recipes and Pagination-->
     <div class="row">
         <div class="col s12 m6 l4">
             <p>Displaying {{count_recipes}} Recipe(s). Page {{ page }} of {{total_no_of_pages}}</p>
@@ -47,7 +48,7 @@
     {% endfor %}
     </div>
     <!--Right Sidebar-->
-    <div class="col s12  m12 l3 offset-l1">
+    <div class="col s12 m12 l3 offset-l1">
     <div class="row center homepage-categories">
        <h6 class="fancy" style="margin-bottom:30px;">
         <span>Categories</span>

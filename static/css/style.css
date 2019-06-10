@@ -707,6 +707,30 @@ background-color: #fae683;
     background-color: #78766a !important;
 }
 
+@media only screen and (max-width: 801px) {
+.nav-wrapper i {
+    height: 40px !important;
+    line-height: 40px !important;
+}
+.side-nav .collapsible-header, .side-nav.fixed .collapsible-header {
+  padding:0 32px;
+}
+#search-form {
+  width:280px;
+}
+
+#search-text {
+  width: 234px;
+  padding: 5px;
+}
+
+#search-button {
+  width:30px;
+  position:relative;
+  padding:2px;
+}
+}
+
 
 @media only screen and (max-width: 468px) {
 h5 {
@@ -737,4 +761,10 @@ h5 {
 
 .btn, .btn-large, .btn-flat {
     padding: 0 1rem;
+}
+
+.fancy-right span:after {
+  width: 20%;
+}  
+  
 }

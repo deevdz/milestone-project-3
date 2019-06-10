@@ -4,6 +4,7 @@
     {% if count_recipes == 0 %}
         <p>You currently have no recipes on our system. Why not <a href="{{url_for('add_recipe')}}">add one now</a>.</p>
     {% else %}
+    <!--Details on Total number of Recipes and Pagination-->
     <div class="row">
             <div class="col s12 m6">
                   <p>Displaying {{count_recipes}} Recipe(s). Page {{ page }} of {{total_no_of_pages}}</p>   
@@ -24,8 +25,9 @@
             </div>
             {% endif %}
         </div>
+    <!-- Display Recipe Cards -->
     <div class="row">
-    <div class="col s12 m12">        
+        <div class="col s12 m12">        
          {% for recipe in recipes %}
         <div class="col s12 m6 l4">
           <div class="card medium">
@@ -45,7 +47,7 @@
         </div>
     {% endfor %}
     </div>
-</div>
+    </div>
     {% endif%}
     {% else %}
     <p>You must be logged in to edit a recipe </p>
