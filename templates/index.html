@@ -34,7 +34,7 @@
         <p>We currently have no recipes to display in this category. Why not <a href="{{url_for('signin')}}">login</a> and <a href="{{url_for('add_recipe')}}">add a recipe</a> :)</p>
       {% else %}      
       {% for recipe in recipes[0:4] %} 
-        <div class="col s12 m 12 l6">
+        <div class="col s12 m6 l6">
           <div class="card medium">
               <div class="card-image">
                 <a href="{{url_for('recipe_page', recipe_id = recipe._id)}}"><img src="{{recipe.recipe_image}}" alt="{{recipe.recipe_name}}"></a>

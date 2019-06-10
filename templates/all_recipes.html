@@ -4,14 +4,14 @@
   <p>We currently have no recipes to display in this category. Why not <a href="{{url_for('signin')}}">login</a> and <a href="{{url_for('add_recipe')}}">add a recipe</a> :)</p>
     {% else %}
     <div class="row">
-        <div class="col s12 m4">
+        <div class="col s12 m6 l4">
             <p>Displaying {{count_recipes}} Recipe(s). Page {{ page }} of {{total_no_of_pages}}</p>
         </div>
         {% if total_no_of_pages <= 1 %}
-        <div class="col s12 m4">
+        <div class="col s12 m6 l4">
         </div>
         {% else %}        
-        <div class="col s12 m4">
+        <div class="col s12 m6 l4">
             <ul class="pagination right-align">
                 <li id="prev-page-url" {% if page|int > 1 %} class= "" {% else %} class="disabled" {% endif %}>
                     <a {% if page|int > 1 %} href="{{url_for('all_recipes', page=page|int-1)}}"{% endif %}><i class="material-icons">chevron_left</i>Prev</a>
@@ -26,7 +26,7 @@
     <!--Main Section-->
     <div class="row">
     <!--Left Area - Recipes-->
-    <div class="col s12 m8">
+    <div class="col s12 m12 l8">
      {% for recipe in recipes %}
         <div class="col s12 m6">
           <div class="card medium">
@@ -34,20 +34,20 @@
                 <a href="{{url_for('recipe_page', recipe_id = recipe._id)}}"><img src="{{recipe.recipe_image}}" alt="{{recipe.recipe_name}}"></a>
               </div>
               <div class="card-title">
-              <div class="card-content">
-                  <a href="{{url_for('recipe_page', recipe_id = recipe._id)}}"><h6>{{recipe.recipe_name}}</h6></a>
-                  <p>{{recipe.recipe_description}}</p>
-                </div>
-              <div class="card-action">
-                <a href="{{url_for('recipe_page', recipe_id = recipe._id)}}">View Recipe >>></a>
+                <div class="card-content">
+                    <a href="{{url_for('recipe_page', recipe_id = recipe._id)}}"><h6>{{recipe.recipe_name}}</h6></a>
+                    <p>{{recipe.recipe_description}}</p>
+                  </div>
+                <div class="card-action">
+                  <a href="{{url_for('recipe_page', recipe_id = recipe._id)}}">View Recipe >>></a>
+              </div>
             </div>
           </div>
-        </div>
         </div>
     {% endfor %}
     </div>
     <!--Right Sidebar-->
-    <div class="col s12 m3 offset-m1">
+    <div class="col s12  m12 l3 offset-l1">
     <div class="row center homepage-categories">
        <h6 class="fancy" style="margin-bottom:30px;">
         <span>Categories</span>
