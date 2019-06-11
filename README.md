@@ -10,7 +10,7 @@ The project needs to be able to demonstrate the use of CRUD functions:
 2.  Read something
 3.  Update something
 4.  Delete a something
-````
+```
 
 
 Database Schema
@@ -106,10 +106,22 @@ The website is designed using following technologies:
 
 Testing
 -----------------------------------------
+**Automated Testing:**
+
+Using pythons built-in [Unit Test Framework](https://docs.python.org/3/library/unittest.html), automated tests were carried out on routes and forms. A testcase was created by subclassing unittest.TestCase.
+
+The [test suite](https://github.com/deevdz/milestone-project-3/tree/master/tests/test.py) was started with a Setup() and ended with a TearDown() in accordance with the [Ordering Test Code](https://docs.python.org/3/library/unittest.html#organizing-test-code) suggested in the Unit Test Framework.
+
+Automated tests were setup and asserted that all routes behaved as expected i.e 200 - route ok, 404 - route not found.
+
+Tests were established to verify writing to the database and removing from the database i.e. Adding a user to the database and then removing the user and deleting a recipe from the database.
+
 **Responsiveness Testing:**
 
 Developer Tools, android mobile phone and android tablet were used to test the appearance of website on mobile/tablet screen size.  
    
+**User Testing:**
+
 All tests were carried out manually and the testing process was as follows:
 
 **Homepage**

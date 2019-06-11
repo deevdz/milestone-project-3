@@ -197,39 +197,41 @@ input.valid:not([type]), input.valid:not([type]):focus, input[type="text"].valid
 }
 /* Navigation */
 nav ul a{
-text-transform: uppercase;
-color:#78766a;
+  text-transform: uppercase;
+  color:#78766a;
 }
+
 .dropdown-content{
-   width: max-content !important;
-   height:auto !important;
+  width: max-content !important;
+  height:auto !important;
 }
+
 nav {
-    background-color:#fff;
-    height: 90px;
-    line-height: 90px;
-    -webkit-box-shadow: 0 2px 2px 0 rgba(183,182,181,0.14),0 1px 5px 0 rgba(183,182,181,0.12),0 3px 1px -2px rgba(183,182,181,.2);
-    box-shadow: -1px 2px 2px 0 rgba(183,182,181,0.14),0 1px 5px 0 rgba(183,182,181,0.12),0 3px 1px -2px rgba(183,182,181,0.2);
+  background-color:#fff;
+  height: 90px;
+  line-height: 90px;
+  -webkit-box-shadow: 0 2px 2px 0 rgba(183,182,181,0.14),0 1px 5px 0 rgba(183,182,181,0.12),0 3px 1px -2px rgba(183,182,181,.2);
+  box-shadow: -1px 2px 2px 0 rgba(183,182,181,0.14),0 1px 5px 0 rgba(183,182,181,0.12),0 3px 1px -2px rgba(183,182,181,0.2);
 }
 
 nav ul a:hover {
-    background-color: rgba(250,230,131,0.5);
+  background-color: rgba(250,230,131,0.5);
 }
 
 .dropdown-content li > a, .dropdown-content li > span {
-    color: #78766a;
-    text-transform: capitalize;
-    font-size:14px;
-    letter-spacing: 1px;
+  color: #78766a;
+  text-transform: capitalize;
+  font-size:14px;
+  letter-spacing: 1px;
 }
 
 .active {
-    background-color: #ffffff!important;
+  background-color: #ffffff!important;
 }
 
 .nav-wrapper i {
-    height: 90px !important;
-    line-height: 90px !important;
+  height: 90px !important;
+  line-height: 90px !important;
 }
 
 .brand-logo img {
@@ -237,7 +239,7 @@ nav ul a:hover {
 }
 
 nav .button-collapse {
-    color: #78766a;
+  color: #78766a;
 }
 
 .username-nav {
@@ -269,11 +271,12 @@ nav .button-collapse {
   background-color: rgba(152,169,89,0.8);
   cursor: pointer;
   color:#ffffff;
-  
 }
+
 #search-overlay{
   display:none;
 }
+
 .block {
   position: fixed;
   top: 0;
@@ -293,10 +296,6 @@ nav .button-collapse {
   height: 100%;
   vertical-align: middle;
   margin-right: 0;
-  /* Adjusts for spacing */
-  /* For visualization 
-  background: #808080; width: 5px;
-  */
 }
 
 .centered {
@@ -342,24 +341,24 @@ nav .button-collapse {
 }
 
 #search-button {
-position: absolute;
-top: 0;
-right: 0;
-height: 3.8em;
-width: 100px;
-font-size: 15px;
-color: #fff;
-text-align: center;
-line-height: 42px;
-border-width: 0;
-background-color: #98a959;
--webkit-border-radius: 0 2px 2px 0;
--moz-border-radius: 0 2px 2px 0;
-border-radius: 0 2px 2px 0;
-cursor: pointer;
-font-weight: 700;
-letter-spacing: 2px;
-text-transform: uppercase;
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 3.8em;
+  width: 100px;
+  font-size: 15px;
+  color: #fff;
+  text-align: center;
+  line-height: 42px;
+  border-width: 0;
+  background-color: #98a959;
+  -webkit-border-radius: 0 2px 2px 0;
+  -moz-border-radius: 0 2px 2px 0;
+  border-radius: 0 2px 2px 0;
+  cursor: pointer;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
 }
 
 #close-btn{
@@ -376,54 +375,55 @@ text-transform: uppercase;
 /*Add Recipe Styling */
 
 #remove_ingredient.btn-floating, #remove_method_step.btn-floating {
-width: 30px;
-height: 30px;
-line-height: 30px;
-border-radius: 20%;
-margin-top: 1.5em;
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+  border-radius: 20%;
+  margin-top: 1.5em;
 }
 
 #add_ingredient.btn, #add_method_step.btn {
-background-color: #f3d63d;
+  background-color: #f3d63d;
 }
 
 #remove_ingredient.btn-floating, #remove_method_step.btn-floating {
-background-color: #78766a;
+  background-color: #78766a;
 }
 
 #add_ingredient.btn i, #remove_ingredient.btn-floating i, 
 #add_method_step.btn i, #remove_method_step.btn-floating i {
-font-size: 1.4rem;
-line-height: 30px;
+  font-size: 1.4rem;
+  line-height: 30px;
 }
 
 #ingredients.input-field {
   margin-top:0;
 }
 
-/*Login Page */
+/*Login/Register Page Styling */
 
 * {
-box-sizing: border-box;
+  box-sizing: border-box;
 }
  
 *:focus {
-outline: none;
+  outline: none;
 }
 
 .login {
-margin: 20px auto;
-width: 300px;
+  margin: 20px auto;
+  width: 300px;
 }
+
 .login-screen {
-background-color: #98a959;
-padding: 20px;
-border-radius: 5px
+  background-color: #98a959;
+  padding: 20px;
+  border-radius: 5px
 }
  
 .app-title {
-text-align: center;
-color: #fff;
+  text-align: center;
+  color: #fff;
 }
 
 .app-title h1 {
@@ -431,59 +431,59 @@ color: #fff;
 }
  
 .login-form {
-text-align: center;
+  text-align: center;
 }
 .control-group {
-margin-bottom: 10px;
+  margin-bottom: 10px;
 }
  
 .login input {
-text-align: center;
-background-color: #ECF0F1;
-border-bottom: 2px solid #fff !important;
-color:#fff !important;
-border-radius: 3px;
-font-size: 16px;
-font-weight: 200;
-padding: 10px 0;
-width: 250px;
-font-weight: 800;
-transition: border .5s;
+  text-align: center;
+  background-color: #ECF0F1;
+  border-bottom: 2px solid #fff !important;
+  color:#fff !important;
+  border-radius: 3px;
+  font-size: 16px;
+  font-weight: 200;
+  padding: 10px 0;
+  width: 250px;
+  font-weight: 800;
+  transition: border .5s;
 }
  
 .login input:focus {
-border: 2px solid #fff !important;
-box-shadow: none;
+  border: 2px solid #fff !important;
+  box-shadow: none;
 }
  
 .login .btn {
-border: 2px solid transparent;
-background: #f3d63d;
-color: #ffffff;
-font-size: 16px;
-font-weight: 800;
-line-height: 25px;
-padding: 10px 0;
-text-decoration: none;
-text-shadow: none;
-border-radius: 3px;
-box-shadow: none;
-transition: 0.25s;
-display: block;
-width: 250px;
-margin: 0 auto;
-border:none !important;
+  border: 2px solid transparent;
+  background: #f3d63d;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 800;
+  line-height: 25px;
+  padding: 10px 0;
+  text-decoration: none;
+  text-shadow: none;
+  border-radius: 3px;
+  box-shadow: none;
+  transition: 0.25s;
+  display: block;
+  width: 250px;
+  margin: 0 auto;
+  border:none !important;
 }
  
 .login .btn:hover {
-background-color: #fae683;
+  background-color: #fae683;
 }
  
 .login .login-link {
-font-size: 12px;
-color: #444;
-display: block;
-margin-top: 12px;
+  font-size: 12px;
+  color: #444;
+  display: block;
+  margin-top: 12px;
 }
 
 .login .register {
@@ -521,26 +521,26 @@ margin-top: 12px;
 }
 
 .rate.btn {
-border: 1px solid transparent;
-background: #f3d63d;
-color: #ffffff;
-font-size: 14px;
-font-weight: 800;
-line-height: 18px;
-padding: 2px;
-text-decoration: none;
-text-shadow: none;
-border-radius: 3px;
-box-shadow: none;
-transition: 0.25s;
-display: block;
-width: 70px;
-margin: 0 auto;
-border:none !important;
+  border: 1px solid transparent;
+  background: #f3d63d;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 18px;
+  padding: 2px;
+  text-decoration: none;
+  text-shadow: none;
+  border-radius: 3px;
+  box-shadow: none;
+  transition: 0.25s;
+  display: block;
+  width: 70px;
+  margin: 0 auto;
+  border:none !important;
 }
  
 .rate.btn:hover {
-background-color: #fae683;
+  background-color: #fae683;
 }
 
 /*Recipe Page Styling */
@@ -554,7 +554,6 @@ background-color: #fae683;
 .recipe-details .material-icons {
   color:#98a959;
 }
-
 
 /* Sharing Buttons */
 .resp-sharing-button__link,
@@ -697,20 +696,21 @@ background-color: #fae683;
 }
 
 
-
 /* Footer */
 .page-footer {
   background-color: #b7b6bc;
 }
 
 .footer-copyright {
-    background-color: #78766a !important;
+  background-color: #78766a !important;
 }
 
+
+/* Tablet Specific CSS */
 @media only screen and (max-width: 801px) {
 .nav-wrapper i {
-    height: 40px !important;
-    line-height: 40px !important;
+  height: 40px !important;
+  line-height: 40px !important;
 }
 .side-nav .collapsible-header, .side-nav.fixed .collapsible-header {
   padding:0 32px;
@@ -729,21 +729,24 @@ background-color: #fae683;
   position:relative;
   padding:2px;
 }
+
 }
 
-
+/* Mobile Specific CSS */
 @media only screen and (max-width: 468px) {
 h5 {
-    font-size: 1.2rem;
+  font-size: 1.2rem;
 }
 
 .nav-wrapper i {
-    height: 40px !important;
-    line-height: 40px !important;
+  height: 40px !important;
+  line-height: 40px !important;
 }
+
 .side-nav .collapsible-header, .side-nav.fixed .collapsible-header {
   padding:0 32px;
 }
+
 #search-form {
   width:280px;
 }
@@ -760,7 +763,7 @@ h5 {
 }
 
 .btn, .btn-large, .btn-flat {
-    padding: 0 1rem;
+  padding: 0 1rem;
 }
 
 .fancy-right span:after {
