@@ -12,7 +12,6 @@ The project needs to be able to demonstrate the use of CRUD functions:
 4.  Delete a something
 ```
 
-
 Database Schema
 -----------------------------------------
 [MongoDB](https://www.mongodb.com/) was used to create the database for this website and it is hosted by [Atlas](https://www.mongodb.com/cloud/atlas).
@@ -31,7 +30,7 @@ Documentation for the initial planning process can be [found here](https://githu
 
 The wireframes for this site were generated using Adobe Illustrator. Wireframes for the site can be found in the folder [planning > wireframes](https://github.com/deevdz/milestone-project-3/tree/master/planning/wireframes)
 
-After browsing through food blogs and recipe archives online the decision was made to use earthy tones. Colour Palette and final logo design can be [found here]().
+After browsing through food blogs and recipe archives online the decision was made to use earthy tones. Colour Palette and final logo design can be [found here](https://github.com/deevdz/milestone-project-3/blob/master/planning/wireframes/colour-pallete-and-logo.png). I designed the logo in Adobe Photoshop.
 
 Research was carried out on complimentary fonts and Libre Baskerville and Monsterrat were chosen for the site.
 
@@ -56,7 +55,7 @@ Features
 -----------------------------------------
 ##### Existing Features
 
-The site can be used as a guest or as a logged in user, however some features are only available to logged in users.
+The site can be used as a guest or as a logged in user, however, some features are only available to logged in users.
 
 Any visitor to the site can view the featured recipes in the homepage slider, use the navigation to filter through recipe categories, search for specific keywords and use the tags to filter recipes. The search function at present only returns results with the keyword appearing in either recipe name, ingredients or recipe category.
 
@@ -124,7 +123,7 @@ Developer Tools, android mobile phone and android tablet were used to test the a
    
 **User Testing:**
 
-All tests were carried out manually and the testing process was as follows:
+Manual tests were carried out and the testing process was as follows:
 
 **Homepage**
  + Click on logo or Home and verify that home page appears.
