@@ -21,6 +21,8 @@ Some of the queries were easy to forsee while some evolved over the development 
 
 The final database schema consists of five collections which include recipes, users, allergens, recipeCategory and skillLevel. 
 
+![Final Database Schema](https://github.com/deevdz/milestone-project-3/blob/master/planning/database_schema/database-schema.jpg)
+
 Final database schema diagrams can be found in the folder [Database Schema](https://github.com/deevdz/milestone-project-3/blob/master/planning/database_schema).
 
 UX
